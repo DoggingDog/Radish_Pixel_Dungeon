@@ -1388,7 +1388,8 @@ public class Hero extends Char {
 		if(belongings.weapon instanceof PneumFistGloves){
 			PneumFistGloves pneumFistGloves = (PneumFistGloves) hero.belongings.weapon;
 			if(hero.belongings.weapon != null){
-				if(pneumFistGloves.)
+				// 哈人，这段代码是啥时候冒出来的？
+				//if(pneumFistGloves.)
 			} else {
 
 			}
