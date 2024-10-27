@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.FogSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -42,6 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RadishEnemySprite.DrakeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
@@ -273,7 +275,10 @@ public class Drake extends Mob {
         if (alignment != Alignment.NEUTRAL || c != Dungeon.hero) {
             return super.interact(c);
         }
-        stopHiding();
+        if(!isStopHiding){
+            stopHiding();
+            isStopHiding = true;
+        }
         if (Dungeon.hero.invisible <= 0
                 && Dungeon.hero.buff(Swiftthistle.TimeBubble.class) == null
                 && Dungeon.hero.buff(TimekeepersHourglass.timeFreeze.class) == null){
@@ -429,5 +434,24 @@ public class Drake extends Mob {
     public boolean reset() {
         if (state != PASSIVE) state = WANDERING;
         return true;
+    }
+
+
+    private static final String STOPHIDING	= "weapon";
+
+    @Override
+    public void storeInBundle( Bundle bundle ) {
+        super.storeInBundle( bundle );
+        bundle.put( STOPHIDING, isStopHiding );
+    }
+
+    @Override
+    public void restoreFromBundle( Bundle bundle ) {
+        super.restoreFromBundle( bundle );
+        isStopHiding = bundle.getBoolean(STOPHIDING);
+        if(isStopHiding){
+            state = WANDERING;
+            alignment = Alignment.ENEMY;
+        }
     }
 }
