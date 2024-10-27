@@ -92,8 +92,15 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap.Type;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.AfterGlow;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.CloakofGreyFeather;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.CrabArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.DarkCoat;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.EnergyArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.PrisonArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.RatArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
@@ -521,6 +528,14 @@ public class Hero extends Char {
 
 		if (hit && subClass == HeroSubClass.GLADIATOR && wasEnemy){
 			Buff.affect( this, Combo.class ).hit(  );
+		}
+
+		Talent.HoldBreathTracker hb=buff(Talent.HoldBreathTracker.class);
+		if (hb!=null){
+			if (hit && enemy.alignment==Alignment.ENEMY){
+				hb.clear_cb();
+			}
+			hb.reduce();
 		}
 
 		return hit;
@@ -1385,16 +1400,7 @@ public class Hero extends Char {
 
 		enemy = action.target;
 
-		if(belongings.weapon instanceof PneumFistGloves){
-			PneumFistGloves pneumFistGloves = (PneumFistGloves) hero.belongings.weapon;
-			if(hero.belongings.weapon != null){
-				// 哈人，这段代码是啥时候冒出来的？
-				//if(pneumFistGloves.)
-			} else {
-
-			}
-			return false;
-		} else if(belongings.weapon instanceof KillBoatSword){
+		if(belongings.weapon instanceof KillBoatSword){
 			KillBoatSword w2 = (KillBoatSword) hero.belongings.weapon;
 			if(hero.belongings.weapon != null){
 				if (!w2.delayAttack && Dungeon.level.adjacent(enemy.pos,pos)) {
@@ -1464,6 +1470,9 @@ public class Hero extends Char {
 			if (sprite != null) {
 				sprite.showStatus(CharSprite.DEFAULT, Messages.get(this, "wait"));
 			}
+
+			/** 斩舰刀实现 */
+			if(hero.belongings.weapon instanceof KillBoatSword) MoveBoatSword();
 		}
 		resting = fullRest;
 	}
@@ -1474,6 +1483,13 @@ public class Hero extends Char {
 
 		if(Dungeon.level.distance(enemy.pos,pos)<=1) {
 			RlyehHeroDamage(enemy, damage);
+		}
+
+		if (buff(Talent.SpiritBladesTracker.class) != null
+				&& Random.Int(10) < 3*pointsInTalent(Talent.SPIRIT_BLADES)){
+			SpiritBow bow = belongings.getItem(SpiritBow.class);
+			if (bow != null) damage = bow.proc( this, enemy, damage );
+			buff(Talent.SpiritBladesTracker.class).detach();
 		}
 
 		KindOfWeapon wept = belongings.weapon();
@@ -2680,6 +2696,30 @@ public class Hero extends Char {
 				}
 			}
 		}
+	}
+
+	public int tier_for_image(){
+		Armor armor = belongings.armor();
+		if (armor == null ){
+			return 0;
+		} else if (armor instanceof ClassArmor){
+			return 6;
+		} else if (armor instanceof PrisonArmor){
+			return 7;
+		} else if (armor instanceof CrabArmor){
+			return 8;
+		} else if (armor instanceof DarkCoat){
+			return 9;
+		} else if (armor instanceof AfterGlow){
+			return 10;
+		} else if (armor instanceof CloakofGreyFeather){
+			return 11;
+		} else if (armor instanceof RatArmor){
+			return 12;
+		} else if (armor instanceof EnergyArmor){
+			return ((EnergyArmor) armor).Energy();
+		}
+		else return armor.tier;
 	}
 
 }
