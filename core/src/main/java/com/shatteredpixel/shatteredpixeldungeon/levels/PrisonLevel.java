@@ -114,12 +114,12 @@ public class PrisonLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return RandomMap ? Assets.Environment.TILES_BLOOD_PRISON : Assets.Environment.TILES_PRISON;
+		return Assets.Environment.TILES_PRISON;
 	}
 	
 	@Override
 	public String waterTex() {
-		return RandomMap ? Assets.Environment.WATER_B : Assets.Environment.WATER_PRISON;
+		return Assets.Environment.WATER_PRISON;
 	}
 	
 	@Override

@@ -105,12 +105,12 @@ public class SewerLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return RandomMap ? Assets.Environment.TILES_OLD_SEWERS : Assets.Environment.TILES_SEWERS;
+		return Assets.Environment.TILES_SEWERS;
 	}
 	
 	@Override
 	public String waterTex() {
-		return RandomMap ? Assets.Environment.WATER_A : Assets.Environment.WATER_SEWERS;
+		return Assets.Environment.WATER_SEWERS;
 	}
 	
 	@Override

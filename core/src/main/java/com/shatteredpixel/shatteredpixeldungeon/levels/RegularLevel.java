@@ -98,8 +98,6 @@ public abstract class RegularLevel extends Level {
 	
 	protected Room roomEntrance;
 	protected Room roomExit;
-
-	protected boolean RandomMap = Random.Float() >= 0.5f;
 	
 	@Override
 	protected boolean build() {
