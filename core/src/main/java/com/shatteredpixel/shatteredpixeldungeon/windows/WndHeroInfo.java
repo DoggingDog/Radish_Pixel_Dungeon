@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -50,6 +51,7 @@ public class WndHeroInfo extends WndTabbed {
 	private TalentInfoTab talentInfo;
 	private SubclassInfoTab subclassInfo;
 	private ArmorAbilityInfoTab abilityInfo;
+	private ImpSuperTalentInfoTab impSuperTalentInfo;
 
 	private static int WIDTH = 120;
 	private static int MIN_HEIGHT = 125;
@@ -129,6 +131,21 @@ public class WndHeroInfo extends WndTabbed {
 					abilityInfo.visible = abilityInfo.active = value;
 				}
 			});
+
+			//IMP SUPER TALENT
+			impSuperTalentInfo = new ImpSuperTalentInfoTab(cl);
+			add(impSuperTalentInfo);
+			impSuperTalentInfo.setSize(WIDTH, MIN_HEIGHT);
+			finalHeight = (int)Math.max(finalHeight, impSuperTalentInfo.height());
+
+			add(new IconTab(new ImpSprite()) {
+				@Override
+				protected void select(boolean value) {
+					super.select(value);
+					impSuperTalentInfo.visible = impSuperTalentInfo.active = value;
+				}
+			});
+
 		}
 
 		resize(WIDTH, finalHeight);
@@ -370,6 +387,65 @@ public class WndHeroInfo extends WndTabbed {
 				abilityInfos[i].setRect(width-20, abilityDescs[i].top() + (abilityDescs[i].height()-20)/2, 20, 20);
 
 				pos = abilityDescs[i].bottom() + 4*MARGIN;
+			}
+
+			height = Math.max(height, pos - 4*MARGIN);
+
+		}
+	}
+
+	private static class ImpSuperTalentInfoTab extends Component {
+		private RenderedTextBlock title;
+		private RenderedTextBlock message;
+		private RenderedTextBlock[] subClsDescs;
+		private IconButton[] subClsInfos;
+
+		public ImpSuperTalentInfoTab( HeroClass cls ){
+			super();
+			title = PixelScene.renderTextBlock(Messages.titleCase(Messages.get(WndHeroInfo.class, "supertalent")), 9);
+			title.hardlight(TITLE_COLOR);
+			add(title);
+
+			message = PixelScene.renderTextBlock(Messages.get(WndHeroInfo.class, "supertalent_msg"), 6);
+			add(message);
+
+			HeroSubClass[] subClasses = cls.subClasses();
+
+			subClsDescs = new RenderedTextBlock[subClasses.length];
+			subClsInfos = new IconButton[subClasses.length];
+
+			for (int i = 0; i < subClasses.length; i++){
+				subClsDescs[i] = PixelScene.renderTextBlock(subClasses[i].shortDesc(), 6);
+				int finalI = i;
+				subClsInfos[i] = new IconButton( Icons.get(Icons.INFO) ){
+					@Override
+					protected void onClick() {
+						Game.scene().addToFront(new WndInfoImpSuperTalent(cls, subClasses[finalI]));
+					}
+				};
+				add(subClsDescs[i]);
+				add(subClsInfos[i]);
+			}
+
+		}
+
+		@Override
+		protected void layout() {
+			super.layout();
+
+			title.setPos((width-title.width())/2, MARGIN);
+			message.maxWidth((int)width);
+			message.setPos(0, title.bottom()+4*MARGIN);
+
+			float pos = message.bottom()+4*MARGIN;
+
+			for (int i = 0; i < subClsDescs.length; i++){
+				subClsDescs[i].maxWidth((int)width - 20);
+				subClsDescs[i].setPos(0, pos);
+
+				subClsInfos[i].setRect(width-20, subClsDescs[i].top() + (subClsDescs[i].height()-20)/2, 20, 20);
+
+				pos = subClsDescs[i].bottom() + 4*MARGIN;
 			}
 
 			height = Math.max(height, pos - 4*MARGIN);
