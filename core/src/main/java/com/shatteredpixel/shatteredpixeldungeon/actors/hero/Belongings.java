@@ -119,7 +119,11 @@ public class Belongings implements Iterable<Item> {
 	}
 
 	public KindOfWeapon weapon(){
-		if (!lostInventory() || (weapon != null && weapon.keptThroughLostInventory())){
+		//no point in lost invent check, if it's assigned it must be usable
+		if (thrownWeapon != null) return thrownWeapon;
+
+		boolean lostInvent = owner != null && owner.buff(LostInventory.class) != null;
+		if (!lostInvent || (weapon != null && weapon.keptThoughLostInvent)){
 			return weapon;
 		} else {
 			return null;

@@ -169,23 +169,21 @@ public abstract class Char extends Actor {
 	public int HT;
 	public int HP;
 
+	// change from budding
+	protected float critSkill=0;
+	protected float critDamage = 1.5f;
+	protected float critDamageCap = 3f;
+
 	protected float baseSpeed	= 1;
 	protected PathFinder.Path path;
-
-
-
 
 	public int paralysed	    = 0;
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
 
-	//TODO CRIT DAMAGE
-	protected float critSkill=0;
-	protected float critDamage = 1.5f;
-	protected float critDamageCap = 3f;
 
-	//CRIT METHOD
+
 	protected float critSkill() {
 		return critSkill;
 	}
@@ -515,19 +513,23 @@ public abstract class Char extends Actor {
 					crit = ks.isMustCrit;
 				}
 
-				else if (hero.belongings.weapon() instanceof Seekingspear){
-					Seekingspear ss=(Seekingspear) hero.belongings.weapon;
-					current_critdamage+=0.3f+0.05f*ss.buffedLvl();
-					if (surprise){
-						current_crit+=25f;
+				else if (hero.belongings.weapon() instanceof Seekingspear) {
+					Seekingspear ss = (Seekingspear) hero.belongings.weapon;
+					current_critdamage += 0.3f + 0.05f * ss.buffedLvl();
+					if (surprise) {
+						current_crit += 25f;
 					}
-				}else if (hero.belongings.weapon() instanceof MissileWeapon){
+
+				}
+
+				else if (hero.belongings.weapon() instanceof MissileWeapon){
 					Talent.HoldBreathTracker hb=buff(Talent.HoldBreathTracker.class);
 					if (hb!=null){
 						current_crit+=hb.crit_b;
 						current_critdamage+=hb.cd_b;
 					}
 				}
+
 				if (hero.hasTalent(Talent.DEATHBLOW)){
 					current_crit+=15f;
 				}
@@ -548,7 +550,8 @@ public abstract class Char extends Actor {
 			}
 
 			if (this.buff(RingOfTenacity.Tenacity.class)!=null) {current_crit=0;}
-			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 && ( this instanceof Hero && hero.buff(CriticalAttack.class) != null))) {
+			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 &&
+					( this instanceof Hero && hero.buff(CriticalAttack.class) != null))) {
 				dmg*=current_critdamage;
 				crit = true;
 			}

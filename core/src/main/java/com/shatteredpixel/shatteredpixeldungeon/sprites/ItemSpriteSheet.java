@@ -267,6 +267,7 @@ public class ItemSpriteSheet {
 		assignItemRect(ROTTEN_LANCE,    16, 15);
 		assignItemRect(REPAIRV2,        14, 15);
 		assignItemRect(BONE_CLAW,       12, 12);
+		assignItemRect(SILVER_STING,       12, 13);
 
 
 		assignItemRect(RLYEH_BOOK,      14, 16);
@@ -813,6 +814,8 @@ public class ItemSpriteSheet {
 	static{
 		for (int i = BREWS; i < BREWS+16; i++)
 			assignItemRect(i, 12, 14);
+
+		assignItemRect(MAGIC_ROOT, 15, 15);
 
 		assignItemRect(BREW_AQUA, 9, 11);
 	}
