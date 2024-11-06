@@ -126,9 +126,11 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Axe_D;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Bloodblade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.FogSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.GiantKiller;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LongStick;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Seekingspear;
@@ -503,7 +505,11 @@ public abstract class Char extends Actor {
 			boolean surprise =enemy instanceof Mob && ((Mob) enemy).surprisedBy(this);
 			float current_crit=critSkill(),current_critdamage=critDamage();
 			if (this == hero){
-				if (hero.belongings.weapon() instanceof Bloodblade) {
+				if (hero.belongings.weapon() instanceof LongStick) {
+					current_crit += hero.defenseSkill(hero);
+				}
+
+				else if (hero.belongings.weapon() instanceof Bloodblade) {
 					Bloodblade bb = (Bloodblade) hero.belongings.weapon;
 					current_crit += bb.sac;
 				}
@@ -710,14 +716,31 @@ public abstract class Char extends Actor {
 			((Hero) defender).interrupt();
 		}
 
+		if (defender.HP<defender.HT){
+			if (attacker instanceof Hero){
+				if (((Hero) attacker).belongings.weapon() instanceof Axe_D){
+					return true;
+				}
+			}else if (attacker instanceof Statue){
+				if (((Statue) attacker).weapon instanceof Axe_D){
+					return true;
+				}
+			}
+		}
+
 
 		if (attacker instanceof Hero){
 			if (((Hero) attacker).belongings.weapon() instanceof PneumFistGloves){
-				return true;
+				if(((PneumFistGloves) ((Hero) attacker).belongings.weapon()).active && Dungeon.energy>0){
+					return true;
+				}
+
 			}
 		}else if (attacker instanceof Statue){
 			if (((Statue) attacker).weapon instanceof PneumFistGloves){
-				return true;
+				if(((PneumFistGloves) ((Statue) attacker).weapon()).active && Dungeon.energy>0){
+					return true;
+				}
 			}
 		}
 

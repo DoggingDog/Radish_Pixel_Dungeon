@@ -327,7 +327,7 @@ public class Dungeon {
 		Actor.clear();
 		
 		Level level;
-		boolean randomMap = Random.Float()>=0.5f;
+		boolean randomMap = Random.Float()>=0.5f && !SPDSettings.origin_map();
 		if (branch == 0) {
 			switch (depth) {
 				case 0:

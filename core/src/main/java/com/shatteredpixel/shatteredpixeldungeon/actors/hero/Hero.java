@@ -80,7 +80,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Effects;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
@@ -146,6 +149,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CelestialSphere;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KillBoatSword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LockChain;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rlyeh;
@@ -1406,13 +1410,13 @@ public class Hero extends Char {
 
 		enemy = action.target;
 
-		if(belongings.weapon instanceof KillBoatSword){
+		if(belongings.weapon instanceof KillBoatSword) {
 			KillBoatSword w2 = (KillBoatSword) hero.belongings.weapon;
-			if(hero.belongings.weapon != null){
-				if (!w2.delayAttack && Dungeon.level.adjacent(enemy.pos,pos)) {
+			if (hero.belongings.weapon != null) {
+				if (!w2.delayAttack && Dungeon.level.adjacent(enemy.pos, pos)) {
 					sprite.attack(enemy.pos);
 					w2.delayAttack = true;
-				} else if(Dungeon.level.distance( enemy.pos, pos ) > w2.RCH) {
+				} else if (Dungeon.level.distance(enemy.pos, pos) > w2.RCH) {
 					spend(1f);
 					hero.sprite.showStatus(CharSprite.WARNING, Messages.get(w2, "no_rch"));
 					sprite.operate(pos);
@@ -1423,6 +1427,20 @@ public class Hero extends Char {
 					MoveBoatSword();
 					hero.sprite.showStatus(CharSprite.WARNING, Messages.get(w2, "ready"));
 				}
+			}
+			return false;
+
+
+		} else if(belongings.weapon instanceof LockChain) {
+			LockChain lk = (LockChain) hero.belongings.weapon;
+			if(Dungeon.level.distance( enemy.pos, pos ) <= 1){
+				sprite.attack(enemy.pos);
+			} else if(Dungeon.level.distance( enemy.pos,pos ) <= lk.RCH) {
+				chain(enemy.pos);
+				sprite.attack(enemy.pos);
+			} else {
+				ready();
+				GLog.w( Messages.get(LockChain.class, "cant_attack"));
 			}
 			return false;
 		} else if (isCharmedBy( enemy )){
@@ -2727,5 +2745,69 @@ public class Hero extends Char {
 		}
 		else return armor.tier;
 	}
+
+
+
+	private boolean chain(int target){
+		if (enemy.properties().contains(Property.IMMOVABLE))
+			return false;
+
+		Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
+
+		if (chain.collisionPos != enemy.pos
+				|| chain.path.size() < 2
+				|| Dungeon.level.pit[chain.path.get(1)])
+			return false;
+		else {
+			int newPos = -1;
+			for (int i : chain.subPath(1, chain.dist)){
+				if (!Dungeon.level.solid[i] && Actor.findChar(i) == null){
+					newPos = i;
+					break;
+				}
+			}
+
+			if (newPos == -1){
+				return false;
+			} else {
+				final int newPosFinal = newPos;
+
+				if (sprite.visible || enemy.sprite.visible) {
+					new Item().throwSound();
+					Sample.INSTANCE.play(Assets.Sounds.CHAINS);
+					sprite.parent.add(new Chains(sprite.center(),
+							enemy.sprite.destinationCenter(),
+							Effects.Type.CHAIN,
+							new Callback() {
+								public void call() {
+									Actor.add(new Pushing(enemy, enemy.pos, newPosFinal, new Callback() {
+										public void call() {
+											pullEnemy(enemy, newPosFinal);
+										}
+									}));
+									next();
+								}
+							}));
+				} else {
+					pullEnemy(enemy, newPos);
+				}
+			}
+		}
+		return true;
+	}
+
+	private void pullEnemy( Char enemy, int pullPos ){
+		enemy.pos = pullPos;
+		enemy.sprite.place(pullPos);
+		Dungeon.level.occupyCell(enemy);
+		Cripple.prolong(enemy, Cripple.class, 4f);
+		if (enemy == Dungeon.hero) {
+			Dungeon.hero.interrupt();
+			Dungeon.observe();
+			GameScene.updateFog();
+		}
+	}
+
+
 
 }

@@ -303,6 +303,9 @@ public class ItemSpriteSheet {
 	public static final int BEECOMB			= WEP_TIER4+9;
 	public static final int WATERWHEEL		= WEP_TIER4+10;
 	public static final int WINGSWORD		= WEP_TIER4+11;
+
+	public static final int LOCK_CHAIN		= WEP_TIER4+12;
+
 	public static final int DAGGER_S		= WEP_TIER4+13;
 	public static final int SNAKESPEAR		= WEP_TIER4+14;
 
@@ -311,11 +314,15 @@ public class ItemSpriteSheet {
 
 
 	public static final int IAMSB_FLAG	    = WEP_TIER4+19;
+	public static final int LONG_STARK	    = WEP_TIER4+20;
 
 	static{
 		assignItemRect(LONGSWORD,       15, 15);
 		assignItemRect(BATTLE_AXE,      16, 16);
 		assignItemRect(FLAIL,           14, 14);
+
+		assignItemRect(LOCK_CHAIN,      13, 16);
+
 		assignItemRect(RUNIC_BLADE,     14, 14);
 		assignItemRect(ASSASSINS_BLADE, 14, 15);
 		assignItemRect(CROSSBOW,        15, 15);
@@ -323,6 +330,8 @@ public class ItemSpriteSheet {
 
 		assignItemRect(PNEGLOVE_FIVE,          16, 11);
 		assignItemRect(PNEGLOVE_ACTIVE,          16, 11);
+
+		assignItemRect(LONG_STARK,          14, 14);
 
 		//Radish Image
 		
@@ -452,6 +461,8 @@ public class ItemSpriteSheet {
 	public static final int AXE_D			= RAD_TIER5+11;
 	public static final int TONFA			= RAD_TIER5+12;
 	public static final int SCYTHE			= RAD_TIER5+13;
+
+	public static final int KNIGHT_GS			= RAD_TIER5+14;
 	
 	static{
 		assignItemRect(CROSSBOW_S,      15, 15);
