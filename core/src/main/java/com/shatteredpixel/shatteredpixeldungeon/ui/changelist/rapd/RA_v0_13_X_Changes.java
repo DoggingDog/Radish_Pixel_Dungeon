@@ -19,11 +19,60 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v03_6_Changes(changeInfos);
         add_v03_5_Changes(changeInfos);
         add_v03_4_Changes(changeInfos);
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v03_6_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.4.3", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LOCK_CHAIN), "新武器：锁镰",
+                "三阶，力量需求14\n" +
+                        "初始4-20，成长1-4，力量需求15\n" +
+                        "有且仅有额外的攻击距离3，用远端攻击击中敌人后可以不消耗回合的将其拉近\n" +
+                        "近战会交替使用流星锤或镰刀，用流星锤攻击有25%的概率使对手虚弱2+武器等级回合，用镰刀攻击则有25%的概率给予初始值为2+武器等级的流血\n" +
+                        "你的下一次近战攻击会使用镰刀\n" +
+                        "极其奇特的长链武器，战法灵活多变。但有时连续攻击只能顺着武器的势头走，并不受你自己控制"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONG_STARK), "新武器：长棍",
+                "三阶，力量需求14\n" +
+                        "三阶，力量需求14\n" +
+                        "初始4-20，成长1-4\n" +
+                        "此武器的命中值暴击率与攻击速度会随着闪避值的提升而提升。 \n" +
+                        "（闪避每提升一点命中就提升一点，暴击率攻击速度提升1%）  \n" +
+                        "随身而动，随心而行。"));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.STATS), ("全局优化"),
+                ("每层的初始出怪数量增加4。")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_LAND), ("恶魔之力天赋UI"),
+                ("现在可以在英雄界面和开始游戏界面预览恶魔天赋")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY_PORT), ("随机图层"),
+                ("二次优化图层优化，如果不喜欢可在游戏设置里面启用“原始地图风格")));
+
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "修复了以下Bug:\n\n" +
+                        "_来自于 v0.4.0:_\n\n" +
+                        "[修复者：JDSALing]：\n"+
+                        "_-_ 0.修复 部分天赋异常问题\n" +
+                        "_-_ 1.修复 部分素材效果异常问题\n" +
+                        "_-_ 2.修复 上个版本的一些崩溃问题" ));
     }
 
     public static void add_v03_5_Changes( ArrayList<ChangeInfo> changeInfos ) {

@@ -23,7 +23,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
-import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
@@ -102,7 +101,7 @@ public enum Talent {
 	 * [MAGE TALENT]
 	 */
 	//Mage T1
-	EMPOWERING_MEAL(32), SCHOLARS_INTUITION(33), TESTED_HYPOTHESIS(34), BACKUP_BARRIER(35),
+	EMPOWERING_MEAL(32), SCHOLARS_INTUITION(33), LINGERING_MAGIC(34), BACKUP_BARRIER(35),
 	//Mage T2
 	ENERGIZING_MEAL(36), ENERGIZING_UPGRADE(37), WAND_PRESERVATION(38), ARCANE_VISION(39), SHIELD_BATTERY(40),
 	//Mage T3
@@ -699,6 +698,11 @@ public enum Talent {
 			Buff.affect(enemy, SuckerPunchTracker.class);
 		}
 
+		if (hero.hasTalent(Talent.LINGERING_MAGIC)
+				&& hero.buff(LingeringMagicTracker.class) != null){
+			dmg += Random.IntRange(hero.pointsInTalent(Talent.LINGERING_MAGIC) , 2);
+			hero.buff(LingeringMagicTracker.class).detach();
+		}
 
 		//受衅怒火 2024-9-17
 		if (hero.hasTalent(Talent.PROVOKED_ANGER)
@@ -815,7 +819,7 @@ public enum Talent {
 				Collections.addAll(tierTalents, HEARTY_MEAL, ARMSMASTERS_INTUITION, PROVOKED_ANGER, IRON_WILL);
 				break;
 			case MAGE:
-				Collections.addAll(tierTalents, EMPOWERING_MEAL, SCHOLARS_INTUITION, TESTED_HYPOTHESIS, BACKUP_BARRIER);
+				Collections.addAll(tierTalents, EMPOWERING_MEAL, SCHOLARS_INTUITION, LINGERING_MAGIC, BACKUP_BARRIER);
 				break;
 			case ROGUE:
 				Collections.addAll(tierTalents, CACHED_RATIONS, THIEFS_INTUITION, SUCKER_PUNCH, PROTECTIVE_SHADOWS);

@@ -1,23 +1,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.Random;
 
 public class EnergyArmor extends Armor{
 
@@ -52,18 +42,15 @@ public class EnergyArmor extends Armor{
         int oldLvl = level();
         super.level(value);
         energyLeft += 200 *(level()-oldLvl);
-        updateImage();
     }
     @Override
     public Item upgrade() {
         energyLeft +=200;
-        updateImage();
         return super.upgrade();
     }
     @Override
     public Item degrade() {
         energyLeft -=200;
-        updateImage();
         return super.degrade();
     }
     @Override
@@ -87,12 +74,17 @@ public class EnergyArmor extends Armor{
 
         return 3 + 2 * lvl +ad;
     }
-    private void updateImage(){
-        if (energyLeft<=0)
+
+
+    @Override
+    public int image(){
+        if (Dungeon.hero.buff(myShield.class) != null){
             image = ItemSpriteSheet.ARMOR_ENERGY2;
-        else
+        } else {
             image = ItemSpriteSheet.ARMOR_ENERGY1;
+        }
         updateQuickslot();
+        return image;
     }
     private static final String ENERGY_LEFT       = "energy_left";
     private static final String CHARGE_COUNT       = "charge_count";
@@ -102,6 +94,7 @@ public class EnergyArmor extends Armor{
         bundle.put(ENERGY_LEFT,energyLeft);
         bundle.put(CHARGE_COUNT,chargeCount);
         super.storeInBundle(bundle);
+        image();
     }
 
     @Override
@@ -111,11 +104,11 @@ public class EnergyArmor extends Armor{
             energyLeft = bundle.getInt(ENERGY_LEFT);
         else
             energyLeft =450;
-        updateImage();
         if (bundle.contains(CHARGE_COUNT))
             chargeCount = bundle.getInt(CHARGE_COUNT);
         else
             chargeCount =0;
+        image();
     }
     public class chargeShield extends ArmorBuff {
         @Override
@@ -124,8 +117,6 @@ public class EnergyArmor extends Armor{
             if (((Hero)target).STR()>=EnergyArmor.this.STRReq() && EnergyArmor.this.energyLeft>0){
                 chargeCount++;
                 EnergyArmor.this.energyLeft--;
-                if (EnergyArmor.this.energyLeft<=0)
-                    EnergyArmor.this.updateImage();
             }
             if (chargeCount>=30){
                 Buff.affect(target, myShield.class).incShield(12+buffedLvl());

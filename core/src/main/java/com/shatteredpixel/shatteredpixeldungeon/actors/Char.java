@@ -91,6 +91,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.GnollGeomancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Torturer;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
@@ -125,9 +126,12 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Grim;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Axe_D;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Bloodblade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.FogSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.GiantKiller;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LongStick;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Seekingspear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
@@ -167,23 +171,21 @@ public abstract class Char extends Actor {
 	public int HT;
 	public int HP;
 
+	// change from budding
+	protected float critSkill=0;
+	protected float critDamage = 1.5f;
+	protected float critDamageCap = 3f;
+
 	protected float baseSpeed	= 1;
 	protected PathFinder.Path path;
-
-
-
 
 	public int paralysed	    = 0;
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
 
-	//TODO CRIT DAMAGE
-	protected float critSkill=0;
-	protected float critDamage = 1.5f;
-	protected float critDamageCap = 3f;
 
-	//CRIT METHOD
+
 	protected float critSkill() {
 		return critSkill;
 	}
@@ -503,7 +505,11 @@ public abstract class Char extends Actor {
 			boolean surprise =enemy instanceof Mob && ((Mob) enemy).surprisedBy(this);
 			float current_crit=critSkill(),current_critdamage=critDamage();
 			if (this == hero){
-				if (hero.belongings.weapon() instanceof Bloodblade) {
+				if (hero.belongings.weapon() instanceof LongStick) {
+					current_crit += hero.defenseSkill(hero);
+				}
+
+				else if (hero.belongings.weapon() instanceof Bloodblade) {
 					Bloodblade bb = (Bloodblade) hero.belongings.weapon;
 					current_crit += bb.sac;
 				}
@@ -513,19 +519,23 @@ public abstract class Char extends Actor {
 					crit = ks.isMustCrit;
 				}
 
-				else if (hero.belongings.weapon() instanceof Seekingspear){
-					Seekingspear ss=(Seekingspear) hero.belongings.weapon;
-					current_critdamage+=0.3f+0.05f*ss.buffedLvl();
-					if (surprise){
-						current_crit+=25f;
+				else if (hero.belongings.weapon() instanceof Seekingspear) {
+					Seekingspear ss = (Seekingspear) hero.belongings.weapon;
+					current_critdamage += 0.3f + 0.05f * ss.buffedLvl();
+					if (surprise) {
+						current_crit += 25f;
 					}
-				}else if (hero.belongings.weapon() instanceof MissileWeapon){
+
+				}
+
+				else if (hero.belongings.weapon() instanceof MissileWeapon){
 					Talent.HoldBreathTracker hb=buff(Talent.HoldBreathTracker.class);
 					if (hb!=null){
 						current_crit+=hb.crit_b;
 						current_critdamage+=hb.cd_b;
 					}
 				}
+
 				if (hero.hasTalent(Talent.DEATHBLOW)){
 					current_crit+=15f;
 				}
@@ -546,7 +556,8 @@ public abstract class Char extends Actor {
 			}
 
 			if (this.buff(RingOfTenacity.Tenacity.class)!=null) {current_crit=0;}
-			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 && ( this instanceof Hero && hero.buff(CriticalAttack.class) != null))) {
+			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 &&
+					( this instanceof Hero && hero.buff(CriticalAttack.class) != null))) {
 				dmg*=current_critdamage;
 				crit = true;
 			}
@@ -704,6 +715,35 @@ public abstract class Char extends Actor {
 		if (defender instanceof Hero && ((Hero) defender).damageInterrupt){
 			((Hero) defender).interrupt();
 		}
+
+		if (defender.HP<defender.HT){
+			if (attacker instanceof Hero){
+				if (((Hero) attacker).belongings.weapon() instanceof Axe_D){
+					return true;
+				}
+			}else if (attacker instanceof Statue){
+				if (((Statue) attacker).weapon instanceof Axe_D){
+					return true;
+				}
+			}
+		}
+
+
+		if (attacker instanceof Hero){
+			if (((Hero) attacker).belongings.weapon() instanceof PneumFistGloves){
+				if(((PneumFistGloves) ((Hero) attacker).belongings.weapon()).active && Dungeon.energy>0){
+					return true;
+				}
+
+			}
+		}else if (attacker instanceof Statue){
+			if (((Statue) attacker).weapon instanceof PneumFistGloves){
+				if(((PneumFistGloves) ((Statue) attacker).weapon()).active && Dungeon.energy>0){
+					return true;
+				}
+			}
+		}
+
 
 		//invisible chars always hit (for the hero this is surprise attacking)
 		if (attacker.invisible > 0 && attacker.canSurpriseAttack()){

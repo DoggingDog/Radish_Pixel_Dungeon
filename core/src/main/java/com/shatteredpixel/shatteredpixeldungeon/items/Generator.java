@@ -168,6 +168,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Grimtooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeadCleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Katar;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KillBoatSword;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LockChain;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LongStick;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Morello;
@@ -488,8 +490,10 @@ public class Generator {
 					WingSword.class,
 					SufferingDagger.class,
 					PneumFistGloves.class,
+					LockChain.class,
+					LongStick.class,
 			};
-			WEP_T3.probs = new float[]{ 5, 5, 5, 0, 0, 5, 6, 5, 5 };
+			WEP_T3.probs = new float[]{ 5, 5, 5, 0, 0, 5, 6, 5, 5, 5, 5 };
 
 			WEP_T3_NEW.classes = new Class<?>[]{
 					Beecomb.class,

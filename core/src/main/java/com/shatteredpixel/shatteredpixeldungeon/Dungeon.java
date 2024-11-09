@@ -69,6 +69,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.SewerLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.ZeroLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.alterLevel.BloodPrisonLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.alterLevel.FireHallsLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.alterLevel.OldSewerLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.alterLevel.WarCityLevel;
+import com.shatteredpixel.shatteredpixeldungeon.levels.alterLevel.WorkCaveLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
@@ -322,52 +327,83 @@ public class Dungeon {
 		Actor.clear();
 		
 		Level level;
+		boolean randomMap = Random.Float()>=0.5f && !SPDSettings.origin_map();
 		if (branch == 0) {
 			switch (depth) {
 				case 0:
 					level = new ZeroLevel();
 					break;
 				case 1:
+					level = new SewerLevel();
+					break;
 				case 2:
 				case 3:
 				case 4:
-					level = new SewerLevel();
+					if(randomMap){
+						level = new OldSewerLevel();
+					} else {
+						level = new SewerLevel();
+					}
 					break;
 				case 5:
 					level = new SewerBossLevel();
 					break;
 				case 6:
+					level = new PrisonLevel();
+					break;
 				case 7:
 				case 8:
 				case 9:
-					level = new PrisonLevel();
+					if(randomMap){
+						level = new BloodPrisonLevel();
+					} else {
+						level = new PrisonLevel();
+					}
 					break;
 				case 10:
 					level = new PrisonBossLevel();
 					break;
 				case 11:
+					level = new CavesLevel();
+					break;
 				case 12:
 				case 13:
 				case 14:
-					level = new CavesLevel();
+					if(randomMap){
+						level = new WorkCaveLevel();
+					} else {
+						level = new CavesLevel();
+					}
 					break;
 				case 15:
 					level = new CavesBossLevel();
 					break;
 				case 16:
+					level = new CityLevel();
+					break;
 				case 17:
 				case 18:
 				case 19:
-					level = new CityLevel();
+					if(randomMap){
+						level = new WarCityLevel();
+					} else {
+						level = new CityLevel();
+					}
 					break;
 				case 20:
 					level = new CityBossLevel();
 					break;
 				case 21:
+					level = new HallsLevel();
+					break;
 				case 22:
 				case 23:
 				case 24:
-					level = new HallsLevel();
+					if(randomMap){
+						level = new FireHallsLevel();
+					} else {
+						level = new HallsLevel();
+					}
 					break;
 				case 25:
 					level = new HallsBossLevel();

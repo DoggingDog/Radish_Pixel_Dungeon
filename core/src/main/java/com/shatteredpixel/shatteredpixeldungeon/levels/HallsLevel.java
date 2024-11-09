@@ -124,12 +124,12 @@ public class HallsLevel extends RegularLevel {
 	
 	@Override
 	public String tilesTex() {
-		return RandomMap ? Assets.Environment.TILES_FIRE_HALLS : Assets.Environment.TILES_HALLS;
+		return Assets.Environment.TILES_HALLS;
 	}
 	
 	@Override
 	public String waterTex() {
-		return RandomMap ? Assets.Environment.WATER_E : Assets.Environment.WATER_HALLS;
+		return Assets.Environment.WATER_HALLS;
 	}
 	
 	@Override

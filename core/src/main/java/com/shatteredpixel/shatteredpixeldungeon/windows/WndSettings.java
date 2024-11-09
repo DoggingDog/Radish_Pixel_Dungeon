@@ -418,6 +418,7 @@ public class WndSettings extends WndTabbed {
 		ColorBlock sep2;
 		CheckBox chkFont;
 		CheckBox chkVibrate;
+		CheckBox origri_map;
 
 		@Override
 		protected void createChildren() {
@@ -651,6 +652,16 @@ public class WndSettings extends WndTabbed {
 				chkVibrate.checked(SPDSettings.vibration());
 			}
 			add(chkVibrate);
+
+			origri_map = new CheckBox(Messages.get(this, "origin_map")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.origin_map(checked());
+				}
+			};
+			origri_map.checked(SPDSettings.origin_map());
+			add(origri_map);
 		}
 
 		@Override
@@ -691,14 +702,14 @@ public class WndSettings extends WndTabbed {
 			if (width > 200) {
 				chkFont.setRect(0, sep2.y + 1 + GAP, width/2-1, BTN_HEIGHT);
 				chkVibrate.setRect(chkFont.right()+2, chkFont.top(), width/2-1, BTN_HEIGHT);
-				height = chkVibrate.bottom();
-
-			} else {
+				origri_map.setRect(0, chkVibrate.bottom(), width/2-1, BTN_HEIGHT);
+            } else {
 				chkFont.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
 				chkVibrate.setRect(0, chkFont.bottom() + GAP, width, BTN_HEIGHT);
-				height = chkVibrate.bottom();
-			}
-		}
+				origri_map.setRect(0, chkVibrate.bottom() + GAP, width, BTN_HEIGHT);
+            }
+            height = origri_map.bottom();
+        }
 
 	}
 

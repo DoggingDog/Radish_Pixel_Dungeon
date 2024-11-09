@@ -146,6 +146,8 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_SYSTEMFONT	= "system_font";
 	public static final String KEY_VIBRATION    = "vibration";
 
+	public static final String KEY_ORIGINMAP    = "origin_map";
+
 	public static final String KEY_SEEDDEPTH	= "seeddepth";
 
 	//0 = mobile, 1 = mixed (large without inventory in main UI), 2 = large
@@ -231,6 +233,14 @@ public class SPDSettings extends GameSettings {
 
 	public static boolean vibration(){
 		return getBoolean(KEY_VIBRATION, true);
+	}
+
+	public static void origin_map(boolean value){
+		put(KEY_ORIGINMAP, value);
+	}
+
+	public static boolean origin_map(){
+		return getBoolean(KEY_ORIGINMAP, false);
 	}
 
 	//Game State

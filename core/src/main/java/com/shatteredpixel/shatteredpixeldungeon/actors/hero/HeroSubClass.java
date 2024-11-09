@@ -57,6 +57,10 @@ public enum HeroSubClass {
 		return Messages.get(this, name());
 	}
 
+	public String super_desc() {
+		return Messages.get(this, "super_desc",title());
+	}
+
 	public String shortDesc() {
 		return Messages.get(this, name()+"_short_desc");
 	}
