@@ -19,12 +19,37 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v03_7_Changes(changeInfos);
         add_v03_6_Changes(changeInfos);
         add_v03_5_Changes(changeInfos);
         add_v03_4_Changes(changeInfos);
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v03_7_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.4.4", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "修复了以下Bug:\n\n" +
+                        "_来自于 v0.4.3:_\n\n" +
+                        "[修复者：JDSALing]：\n"+
+                        "_-_ 0.修复 能量胸甲闪退异常问题\n" +
+                        "_-_ 1.修复 长棍存档异常问题\n" +
+                        "_-_ 2.修复 DM175护盾丢失问题\n" +
+                        "_-_ 3.修复 怪物数量全局+4问题，应为+2\n" +
+                        "_-_ 4.修复 大太刀不能必定暴击的问题\n" +
+                        "_-_ 5.修复 部分NPC素材异常问题\n" +
+                        "_-_ 6.修复 锁镰的拉怪裂缝，不攻击，以及概率异常问题\n" +
+                        "_-_ 7.部分文案优化迭代" ));
+
     }
 
     public static void add_v03_6_Changes( ArrayList<ChangeInfo> changeInfos ) {
