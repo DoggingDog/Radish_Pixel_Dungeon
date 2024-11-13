@@ -251,7 +251,7 @@ public class SPDSettings extends GameSettings {
 	public static final String KEY_LAST_DAILY	= "last_daily";
 	public static final String KEY_INTRO		= "intro";
 
-	public static final String KEY_SUPPORT_NAGGED= "support_nagged";
+	public static final String KEY_UPDATEREADY = "updateready";
 	
 	public static void intro( boolean value ) {
 		put( KEY_INTRO, value );
@@ -293,12 +293,14 @@ public class SPDSettings extends GameSettings {
 		return getLong( KEY_LAST_DAILY, 0);
 	}
 
-	public static void supportNagged( boolean value ) {
-		put( KEY_SUPPORT_NAGGED, value );
+
+	//补偿
+	public static void UpdateReady(boolean value ) {
+		put( KEY_UPDATEREADY, value );
 	}
 
-	public static boolean supportNagged() {
-		return getBoolean(KEY_SUPPORT_NAGGED, false);
+	public static boolean UpdateReady() {
+		return getBoolean(KEY_UPDATEREADY, true);
 	}
 
 	public static void boatMeeted(boolean meet){put("boat_meeted",meet);}

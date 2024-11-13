@@ -6,13 +6,10 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.food.SmallRation;
-import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.BoatSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MoonLightSprite;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ThunderStormSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
@@ -61,16 +58,35 @@ public class MoonLight extends NPC{
         if (!(c instanceof Hero)){
             return true;
         }
-        if (hastalk<2) {
+
+        if(SPDSettings.UpdateReady() && SPDSettings.challenges() == 0){
+            if(hastalk == 0){
+              GLog.i(Messages.get(this, "ta_msg" + hastalk));
+              hastalk++;
+            } else if (hastalk == 1){
+              GLog.i(Messages.get(this, "ta_msg" + hastalk));
+              hastalk++;
+            } else if (hastalk == 2){
+              GLog.i(Messages.get(this, "ta_msg" + hastalk));
+              hastalk = 13;
+              Generator.Category ca = Generator.Category.RING;
+              Ring w = (Ring) Reflection.newInstance(ca.classes[Random.chances(ca.probs)]);
+            w.cursed=false;
+            w.level(Random.NormalIntRange(2,3));
+            Dungeon.level.drop(w, c.pos);
+            SPDSettings.UpdateReady(false);
+            }
+        } else if (hastalk<2) {
             GLog.i(Messages.get(this, "msg" + hastalk));
             hastalk++;
-        }
-        else if (hastalk==2){
+        } else if (hastalk==2){
             GLog.p(Messages.get(this, "msg" + hastalk));
             hastalk++;
-        }else
+        } else
             GLog.i(Messages.get(this,"loop"));
-        if (hastalk==3) {
+            
+            
+        if (hastalk==3 && !SPDSettings.UpdateReady()) {
             Generator.Category ca = Generator.Category.WEP_T1;
             MeleeWeapon w = (MeleeWeapon) Reflection.newInstance(ca.classes[Random.chances(ca.probs)]);
             w.cursed=false;
@@ -78,6 +94,12 @@ public class MoonLight extends NPC{
             Dungeon.level.drop(w, c.pos);
             hastalk++;
         }
+
+        //补偿
+        if(hastalk == 13){
+            GLog.i(Messages.get(this,"ta_msg3"));
+        }
+
         return true;
     }
 
