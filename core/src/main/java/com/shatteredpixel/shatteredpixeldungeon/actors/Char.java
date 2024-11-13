@@ -135,6 +135,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGlov
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Seekingspear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Taijutsu;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -167,6 +168,8 @@ public abstract class Char extends Actor {
 	public int pos = 0;
 
 	public CharSprite sprite;
+
+	public boolean LockChainCripple = false;
 
 	public int HT;
 	public int HP;
@@ -357,6 +360,9 @@ public abstract class Char extends Actor {
 	protected static final String CRIT		= "crit";
 	protected static final String CRIT_D		= "crit_d";
 
+	//LSD
+	protected static final String LOCK_CHAIN		= "lock_chain";
+
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 
@@ -366,6 +372,8 @@ public abstract class Char extends Actor {
 		bundle.put( TAG_HP, HP );
 		bundle.put( TAG_HT, HT );
 		bundle.put( BUFFS, buffs );
+
+		bundle.put( LOCK_CHAIN, LockChainCripple );
 
 		bundle.put( CRIT, critSkill);
 		bundle.put( CRIT_D, critDamage);
@@ -385,6 +393,8 @@ public abstract class Char extends Actor {
 				((Buff)b).attachTo( this );
 			}
 		}
+
+		LockChainCripple = bundle.getBoolean(LOCK_CHAIN);
 
 		if (bundle.contains(CRIT)){
 			critSkill= bundle.getFloat(CRIT);
@@ -557,7 +567,7 @@ public abstract class Char extends Actor {
 
 			if (this.buff(RingOfTenacity.Tenacity.class)!=null) {current_crit=0;}
 			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 &&
-					( this instanceof Hero && hero.buff(CriticalAttack.class) != null))) {
+					( this instanceof Hero && hero.buff(CriticalAttack.class) != null)) || hero.belongings.weapon instanceof Taijutsu) {
 				dmg*=current_critdamage;
 				crit = true;
 			}
