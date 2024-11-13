@@ -9,7 +9,7 @@ public class CriticalAttack extends Buff{
 
     @Override
     public int icon() {
-        return BuffIndicator.WEAPON;
+        return BuffIndicator.TAI_CRIT;
     }
 
 }
