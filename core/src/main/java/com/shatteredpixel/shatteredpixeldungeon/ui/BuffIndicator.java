@@ -126,6 +126,12 @@ public class BuffIndicator extends Component {
 //	public static final int DUEL_DANCE  = 73;
 	public static final int SCYTHE_S    = 78;
 
+	public static final int FOG_ROAD    = 79;
+
+	public static final int TAI_COLD    = 80;
+
+	public static final int TAI_CRIT    = 82;
+
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
 	
