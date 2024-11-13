@@ -40,7 +40,7 @@ import com.watabou.utils.Random;
 
 public class DM175 extends Mob {
 
-    private boolean onlyShield;
+    private boolean onlyShield = false;
 
     {
         spriteClass = DM175_Sprite.class;
@@ -48,7 +48,10 @@ public class DM175 extends Mob {
         HP = HT = 20;
         defenseSkill = 14;
 
-        Buff.affect(this,Barrier.class).setShield(60);
+        //TODO IDEA解析问题 实际为生效状态
+        if(!onlyShield){
+            Buff.affect(this,Barrier.class).setShield(60);
+        }
 
         EXP = 7;
         maxLvl = 17;
@@ -270,16 +273,12 @@ public class DM175 extends Mob {
         onlyShield = bundle.getBoolean(STRING);
     }
 
-
     @Override
     protected boolean act() {
-        if (state == SLEEPING || state == WANDERING){
-            if(!onlyShield){
-                Buff.affect(this,Barrier.class).setShield(60);
-                onlyShield = true;
-            }
-
+        if (!onlyShield){
+            onlyShield = true;
         }
         return super.act();
     }
+
 }
