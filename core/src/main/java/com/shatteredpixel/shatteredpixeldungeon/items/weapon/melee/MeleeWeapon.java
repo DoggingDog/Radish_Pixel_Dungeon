@@ -25,17 +25,14 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
@@ -45,7 +42,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
@@ -55,8 +51,6 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-
-import java.util.ArrayList;
 
 public class MeleeWeapon extends Weapon {
 
@@ -96,7 +90,7 @@ public class MeleeWeapon extends Weapon {
 			} else {
 
 				if (targetingPrompt() == null){
-					duelistAbility(hero, hero.pos);
+					//duelistAbility(hero, hero.pos);
 					updateQuickslot();
 				} else {
 					usesTargeting = useTargeting();
@@ -104,7 +98,7 @@ public class MeleeWeapon extends Weapon {
 						@Override
 						public void onSelect(Integer cell) {
 							if (cell != null) {
-								duelistAbility(hero, cell);
+								//duelistAbility(hero, cell);
 								updateQuickslot();
 							}
 						}
