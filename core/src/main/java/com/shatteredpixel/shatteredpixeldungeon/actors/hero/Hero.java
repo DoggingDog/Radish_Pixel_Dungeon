@@ -2754,9 +2754,7 @@ public class Hero extends Char {
 
 		Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
-		if (chain.collisionPos != enemy.pos
-				|| chain.path.size() < 2
-				|| Dungeon.level.pit[chain.path.get(1)])
+		if (chain.collisionPos != enemy.pos || chain.path.size() < 2)
 			return false;
 		else {
 			int newPos = -1;
@@ -2800,11 +2798,18 @@ public class Hero extends Char {
 		enemy.pos = pullPos;
 		enemy.sprite.place(pullPos);
 		Dungeon.level.occupyCell(enemy);
-		Cripple.prolong(enemy, Cripple.class, 4f);
-		if (enemy == Dungeon.hero) {
-			Dungeon.hero.interrupt();
-			Dungeon.observe();
-			GameScene.updateFog();
+		Dungeon.hero.interrupt();
+		Dungeon.observe();
+		GameScene.updateFog();
+
+		//Only 一次残废
+		if(!enemy.LockChainCripple){
+			Cripple.prolong(enemy, Cripple.class, 4f);
+			enemy.LockChainCripple = true;
+		}
+
+		if(Dungeon.level.distance(hero.pos,enemy.pos)<=1){
+			enemy.sprite.attack(hero.pos);
 		}
 	}
 
