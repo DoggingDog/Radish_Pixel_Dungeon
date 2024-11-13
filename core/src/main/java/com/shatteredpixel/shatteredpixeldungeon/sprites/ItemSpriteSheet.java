@@ -331,8 +331,6 @@ public class ItemSpriteSheet {
 		assignItemRect(PNEGLOVE_FIVE,          16, 11);
 		assignItemRect(PNEGLOVE_ACTIVE,          16, 11);
 
-		assignItemRect(LONG_STARK,          14, 14);
-
 		//Radish Image
 		
 		assignItemRect(BEECOMB,          14, 16);
@@ -534,10 +532,10 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_HUNTRESS,  13, 15);
 		assignItemRect(ARMOR_DUELIST,   12, 13);
 		assignItemRect(ARMOR_CRAB,   16, 12);
-		assignItemRect(ARMOR_AFTERGLOW,   16, 16);
+		assignItemRect(ARMOR_AFTERGLOW,   13, 13);
 		assignItemRect(ARMOR_RAT,   12, 14);
 		assignItemRect(ARMOR_GREYFEATHER,   14, 13);
-		assignItemRect(ARMOR_AFTERIMAGE,   16, 15);
+		assignItemRect(ARMOR_AFTERIMAGE,   11, 13);
 		assignItemRect(ARMOR_PRISON,   16, 14);
 		assignItemRect(ARMOR_ENERGY1,   16, 14);
 		assignItemRect(ARMOR_ENERGY2,   16, 14);
