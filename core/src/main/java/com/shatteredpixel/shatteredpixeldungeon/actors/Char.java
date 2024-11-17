@@ -136,7 +136,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGlov
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Seekingspear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Taijutsu;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -559,8 +558,7 @@ public abstract class Char extends Actor {
 			}
 
 			if (this.buff(RingOfTenacity.Tenacity.class)!=null) {current_crit=0;}
-			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 &&
-					( this instanceof Hero && hero.buff(CriticalAttack.class) != null)) || hero.belongings.weapon instanceof Taijutsu) {
+			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 && ( this instanceof Hero && hero.buff(CriticalAttack.class) != null))) {
 				dmg*=current_critdamage;
 				crit = true;
 			}
