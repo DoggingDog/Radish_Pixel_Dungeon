@@ -101,6 +101,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.AfterImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.CloakofGreyFeather;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.CrabArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.DarkCoat;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.AntiMagic;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
@@ -149,9 +150,9 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
+import com.shatteredpixel.shatteredpixeldungeon.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -277,26 +278,16 @@ public abstract class Char extends Actor {
 			return true;
 		}
 
-		//we do a little raw position shuffling here so that the characters are never
-		// on the same cell when logic such as occupyCell() is triggered
-		int oldPos = pos;
-		int newPos = c.pos;
-
-		//can't swap or ally warp if either char is immovable
-		if (hasProp(this, Property.IMMOVABLE) || hasProp(c, Property.IMMOVABLE)){
-			return true;
-		}
+		int curPos = pos;
 
 		//warp instantly with allies in this case
-		if (c == Dungeon.hero && Dungeon.hero.hasTalent(Talent.ALLY_WARP)){
+		if (c == hero && hero.hasTalent(Talent.ALLY_WARP)){
 			PathFinder.buildDistanceMap(c.pos, BArray.or(Dungeon.level.passable, Dungeon.level.avoid, null));
 			if (PathFinder.distance[pos] == Integer.MAX_VALUE){
 				return true;
 			}
-			pos = newPos;
-			c.pos = oldPos;
-			ScrollOfTeleportation.appear(this, newPos);
-			ScrollOfTeleportation.appear(c, oldPos);
+			ScrollOfTeleportation.appear(this, c.pos);
+			ScrollOfTeleportation.appear(c, curPos);
 			Dungeon.observe();
 			GameScene.updateFog();
 			return true;
@@ -307,22 +298,24 @@ public abstract class Char extends Actor {
 			return true;
 		}
 
-		c.pos = oldPos;
-		moveSprite( oldPos, newPos );
-		move( newPos );
+		moveSprite( pos, c.pos );
+		move( c.pos );
+		float speedAdj=1f;
+		if (c.buff(CrabArmor.likeCrab.class)!=null){
+			if (c.pos/Dungeon.level.width()== curPos/Dungeon.level.width())	speedAdj=1.75f;
+			else speedAdj=5f/6f;
+		}
+		c.sprite.move( c.pos, curPos );
+		c.move( curPos );
 
-		c.pos = newPos;
-		c.sprite.move( newPos, oldPos );
-		c.move( oldPos );
+		c.spend( 1 / (c.speed() * speedAdj ));
 
-		c.spend( 1 / c.speed() );
-
-		if (c == Dungeon.hero){
-			if (Dungeon.hero.subClass == HeroSubClass.FREERUNNER){
-				Buff.affect(Dungeon.hero, Momentum.class).gainStack();
+		if (c == hero){
+			if (hero.subClass == HeroSubClass.FREERUNNER){
+				Buff.affect(hero, Momentum.class).gainStack();
 			}
 
-			Dungeon.hero.busy();
+			hero.busy();
 		}
 
 		return true;

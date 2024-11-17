@@ -52,7 +52,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Preparation extends Buff implements ActionIndicator.Action {
-	
+	public boolean stay = true;
 	{
 		//always acts after other buffs, so invisibility effects can process first
 		actPriority = BUFF_PRIO - 1;
@@ -236,20 +236,22 @@ public class Preparation extends Buff implements ActionIndicator.Action {
 		
 		return desc;
 	}
-	
+
 	private static final String TURNS = "turnsInvis";
-	
+
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 		turnsInvis = bundle.getInt(TURNS);
+		stay=bundle.getBoolean("do_you_stay");
 		ActionIndicator.setAction(this);
 	}
-	
+
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(TURNS, turnsInvis);
+		bundle.put("do_you_stay",stay);
 	}
 
 	@Override

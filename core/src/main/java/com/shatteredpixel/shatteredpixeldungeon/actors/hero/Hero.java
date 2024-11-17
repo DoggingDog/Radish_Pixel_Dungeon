@@ -39,6 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AnkhInvulnerability
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.BraceYourself;
@@ -61,6 +62,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MoveCount;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
@@ -162,7 +164,6 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -1915,30 +1916,30 @@ public class Hero extends Char {
 
 		if (step != -1) {
 
-			float delay = 1 / speed();
-
-			if (Dungeon.level.pit[step] && !Dungeon.level.solid[step]
-					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).detachesWithinDelay(delay))){
-				if (!Chasm.jumpConfirmed){
-					Chasm.heroJump(this);
-					interrupt();
-				} else {
-					flying = false;
-					remove(buff(Levitation.class)); //directly remove to prevent cell pressing
-					Chasm.heroFall(target);
-				}
-				canSelfTrample = false;
-				return false;
-			}
-
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
+				Buff.affect(this, MoveCount.class).gainStack();
 			}
-
+			if (hasTalent(Talent.MOVING_DEFENSE)){
+				if (Random.Float()<0.33f*pointsInTalent(Talent.MOVING_DEFENSE)+0.01f){
+					if (buff(Barrier.class)==null || buff(Barrier.class).shielding()<lvl)
+						Buff.affect(this, Barrier.class).incShield(1);
+				}
+			}
+			if (buff(Preparation.class)!=null){
+				buff(Preparation.class).stay=false;
+			}
+			float speed = speed();
+			float speedAdj=1f;
+			if (buff(CrabArmor.likeCrab.class)!=null){
+				if (pos/Dungeon.level.width()== step/Dungeon.level.width())	speedAdj=1.75f;
+				else speedAdj=5f/6f;
+			}
+			if (speedAdj*speed>4f && pointsInTalent(Talent.STORM_RUSH)>3 ) Buff.affect(this, Levitation.class,1f);
 			sprite.move(pos, step);
 			move(step);
 
-			spend( delay );
+			spend( 1 / (speed * speedAdj ));
 			justMoved = true;
 
 			search(false);
