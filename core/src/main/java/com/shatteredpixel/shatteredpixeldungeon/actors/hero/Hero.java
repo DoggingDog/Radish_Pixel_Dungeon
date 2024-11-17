@@ -164,6 +164,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
@@ -1915,11 +1916,26 @@ public class Hero extends Char {
 		}
 
 		if (step != -1) {
-
+			float delay = 1 / speed();
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
 				Buff.affect(this, MoveCount.class).gainStack();
 			}
+
+			if (Dungeon.level.pit[step] && !Dungeon.level.solid[step]
+					&& (!flying || buff(Levitation.class) != null && buff(Levitation.class).detachesWithinDelay(delay))){
+				if (!Chasm.jumpConfirmed){
+					Chasm.heroJump(this);
+					interrupt();
+				} else {
+					flying = false;
+					remove(buff(Levitation.class)); //directly remove to prevent cell pressing
+					Chasm.heroFall(target);
+				}
+				canSelfTrample = false;
+				return false;
+			}
+
 			if (hasTalent(Talent.MOVING_DEFENSE)){
 				if (Random.Float()<0.33f*pointsInTalent(Talent.MOVING_DEFENSE)+0.01f){
 					if (buff(Barrier.class)==null || buff(Barrier.class).shielding()<lvl)
