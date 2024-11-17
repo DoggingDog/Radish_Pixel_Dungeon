@@ -1230,7 +1230,9 @@ public abstract class Mob extends Char {
 	}
 
 	protected class Fleeing implements AiState {
-
+		protected void escaped(){
+			//does nothing by default, some enemies have special logic for this
+		}
 		public static final String TAG	= "FLEEING";
 
 		@Override
