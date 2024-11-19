@@ -177,6 +177,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGlov
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rlyeh;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RottenLance;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RuneSlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ScorpionCrossbow;
@@ -466,9 +467,10 @@ public class Generator {
 					BladeShield.class,
 					BoneClaw.class,
 					Spanner.class,
-					Rlyeh.class
+					Rlyeh.class,
+					RuneSlade.class,
 			};
-			WEP_T2.probs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5 };
+			WEP_T2.probs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
 
 			WEP_T2_NEW.classes = new Class<?>[]{
 					Glasssword.class,
