@@ -274,7 +274,7 @@ public class ItemSpriteSheet {
 
 		assignItemRect(RLYEH_BOOK,      14, 16);
 
-		assignItemRect(RUNE_SLADE,      9, 10);
+		assignItemRect(RUNE_SLADE,      13, 14);
 	}
 
 	private static final int WEP_TIER3      =                               xy(1, 8);   //8 slots
