@@ -185,6 +185,9 @@ public class Bomb extends Item {
 
 				int dmg = Char.combatRoll(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
 
+				//伤害上升50%
+				dmg *= 1.5f;
+
 				//those not at the center of the blast take less damage
 				if (ch.pos != cell){
 					dmg = Math.round(dmg*0.67f);
