@@ -76,6 +76,11 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public abstract class Wand extends Item {
+	public String customName = "";
+
+	public String name() {
+		return this.customName.equals("") ? super.name() : this.customName;
+	}
 
 	public static final String AC_ZAP	= "ZAP";
 	public int spellSelected = 0;
@@ -654,6 +659,9 @@ public abstract class Wand extends Item {
 		bundle.put( RESIN_BONUS, resinBonus );
 
 		bundle.put("spellselected",spellSelected);
+		if (!this.customName.equals("")) {
+			bundle.put("customName", this.customName);
+		}
 	}
 	
 	@Override
@@ -673,6 +681,10 @@ public abstract class Wand extends Item {
 		if (bundle.contains("spellselected")){
 			spellSelected=bundle.getInt("spellselected");
 		}
+		if (bundle.contains("customName")) {
+			this.customName = bundle.getString("customName");
+		}
+
 
 	}
 	

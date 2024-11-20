@@ -162,9 +162,12 @@ public class Ring extends KindofMisc {
 			}
 		}
 	}
-	
+
 	@Override
 	public String name() {
+		if (!super.customName.equals("")) {
+			return super.name();
+		}
 		return isKnown() ? super.name() : Messages.get(Ring.class, gem);
 	}
 	
