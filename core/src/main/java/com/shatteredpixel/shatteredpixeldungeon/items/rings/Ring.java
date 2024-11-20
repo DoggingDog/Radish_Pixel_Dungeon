@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -173,24 +174,39 @@ public class Ring extends KindofMisc {
 	
 	@Override
 	public String info(){
-		
-		String desc = isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
-		
+
+		//skip custom notes if anonymized and un-Ided
+		String desc;
+		if (anonymous && (handler == null || !handler.isKnown( this ))){
+			desc = desc();
+
+			//otherwise, check for item type note, rings can have either but not both
+		} else if (Notes.findCustomRecord(customNoteID) == null) {
+			Notes.CustomRecord note = Notes.findCustomRecord(getClass());
+			if (note != null){
+				desc = Messages.get(this, "custom_note", note.title()) + "\n\n" + super.info();
+			} else {
+				desc = super.info();
+			}
+		} else {
+			desc = super.info();
+		}
+
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
-			
+
 		} else if (cursed && cursedKnown) {
 			desc += "\n\n" + Messages.get(Ring.class, "curse_known");
-			
+
 		} else if (!isIdentified() && cursedKnown){
 			desc += "\n\n" + Messages.get(Ring.class, "not_cursed");
-			
+
 		}
-		
+
 		if (isKnown()) {
 			desc += "\n\n" + statsInfo();
 		}
-		
+
 		return desc;
 	}
 	

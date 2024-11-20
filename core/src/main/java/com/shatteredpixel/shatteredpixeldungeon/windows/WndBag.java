@@ -269,11 +269,11 @@ public class WndBag extends WndTabbed {
 			placeItem( null );
 		}
 	}
-	
+
 	protected void placeItem( final Item item ) {
 
 		count++;
-		
+
 		int x = col * (slotWidth + SLOT_MARGIN);
 		int y = TITLE_HEIGHT + row * (slotHeight + SLOT_MARGIN);
 
@@ -286,7 +286,9 @@ public class WndBag extends WndTabbed {
 
 				} else if (selector != null) {
 
-					hide();
+					if (selector.hideAfterSelecting()){
+						hide();
+					}
 					selector.onSelect( item );
 
 				} else {
@@ -304,7 +306,9 @@ public class WndBag extends WndTabbed {
 
 				} else if (selector != null) {
 
-					hide();
+					if (selector.hideAfterSelecting()){
+						hide();
+					}
 					selector.onSelect( item );
 
 				} else {
@@ -344,7 +348,7 @@ public class WndBag extends WndTabbed {
 		if (item == null || (selector != null && !selector.itemSelectable(item))){
 			slot.enable(false);
 		}
-		
+
 		if (++col >= nCols) {
 			col = 0;
 			row++;
@@ -471,5 +475,8 @@ public class WndBag extends WndTabbed {
 		}
 		public abstract boolean itemSelectable( Item item );
 		public abstract void onSelect( Item item );
+		public boolean hideAfterSelecting(){
+			return true; //defaults to hiding the window when an item is picked
+		}
 	}
 }
