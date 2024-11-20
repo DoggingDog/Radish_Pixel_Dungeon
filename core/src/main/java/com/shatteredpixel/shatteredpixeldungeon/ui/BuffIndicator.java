@@ -132,6 +132,8 @@ public class BuffIndicator extends Component {
 
 	public static final int TAI_CRIT    = 82;
 
+	public static final int WAND    	= 83;
+
 	public static final int SIZE_SMALL  = 7;
 	public static final int SIZE_LARGE  = 16;
 	
