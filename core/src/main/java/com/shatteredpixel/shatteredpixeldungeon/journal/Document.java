@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.journal;
 
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -28,13 +29,12 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.DeviceCompat;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
 public enum Document {
-	
+
 	ADVENTURERS_GUIDE(ItemSpriteSheet.GUIDE_PAGE, false),
 	ALCHEMY_GUIDE(ItemSpriteSheet.ALCH_PAGE, false),
 
@@ -44,7 +44,7 @@ public enum Document {
 	CAVES_EXPLORER(ItemSpriteSheet.CAVES_PAGE, true),
 	CITY_WARLOCK(ItemSpriteSheet.CITY_PAGE, true),
 	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true);
-	
+
 	Document( int sprite, boolean lore ){
 		pageIcon = null;
 		pageSprite = sprite;
@@ -61,11 +61,12 @@ public enum Document {
 	public static final int FOUND = 1;
 	public static final int READ = 2;
 	private LinkedHashMap<String, Integer> pagesStates = new LinkedHashMap<>();
-	
+
 	public boolean findPage( String page ) {
 		if (pagesStates.containsKey(page) && pagesStates.get(page) == NOT_FOUND){
 			pagesStates.put(page, FOUND);
 			Journal.saveNeeded = true;
+			Badges.validateCatalogBadges();
 			return true;
 		}
 		return false;
@@ -85,6 +86,19 @@ public enum Document {
 	}
 
 	public boolean deletePage( int pageIdx ) {
+		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
+	}
+
+	public boolean unreadPage( String page ){
+		if (pagesStates.containsKey(page) && pagesStates.get(page) == READ){
+			pagesStates.put(page, FOUND);
+			Journal.saveNeeded = true;
+			return true;
+		}
+		return false;
+	}
+
+	public boolean unreadPage( int pageIdx ) {
 		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
@@ -118,6 +132,7 @@ public enum Document {
 		if (pagesStates.containsKey(page)){
 			pagesStates.put(page, READ);
 			Journal.saveNeeded = true;
+			Badges.validateCatalogBadges();
 			return true;
 		}
 		return false;
@@ -202,23 +217,23 @@ public enum Document {
 	public boolean isLoreDoc(){
 		return loreDocument;
 	}
-	
+
 	public String title(){
 		return Messages.get( this, name() + ".title");
 	}
-	
+
 	public String pageTitle( String page ){
 		return Messages.get( this, name() + "." + page + ".title");
 	}
-	
+
 	public String pageTitle( int pageIdx ){
 		return pageTitle( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
-	
+
 	public String pageBody( String page ){
 		return Messages.get( this, name() + "." + page + ".body");
 	}
-	
+
 	public String pageBody( int pageIdx ){
 		return pageBody( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
@@ -233,9 +248,11 @@ public enum Document {
 
 	public static final String GUIDE_SEARCHING      = "Searching";
 
+	public static final String KING_ATTRITION       = "attrition";
+
 	//pages and default states
 	static {
-		boolean debug = DeviceCompat.isDebug();
+		boolean debug = true;
 		//hero gets these when guidebook is collected
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      debug ? READ : NOT_FOUND);
@@ -252,7 +269,7 @@ public enum Document {
 		ADVENTURERS_GUIDE.pagesStates.put("Levelling",          debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put("Positioning",        debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put("Magic",              debug ? READ : NOT_FOUND);
-		
+
 		//given in sewers
 		ALCHEMY_GUIDE.pagesStates.put("Potions",                debug ? READ : NOT_FOUND);
 		ALCHEMY_GUIDE.pagesStates.put("Stones",                 debug ? READ : NOT_FOUND);
@@ -305,16 +322,16 @@ public enum Document {
 		HALLS_KING.pagesStates.put("ritual",                    debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("new_king",                  debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put("attrition",                 debug ? READ : NOT_FOUND);
+		HALLS_KING.pagesStates.put(KING_ATTRITION,              debug ? NOT_FOUND : NOT_FOUND);
 
 	}
-	
+
 	private static final String DOCUMENTS = "documents";
-	
+
 	public static void store( Bundle bundle ){
-		
+
 		Bundle docsBundle = new Bundle();
-		
+
 		for ( Document doc : values()){
 			Bundle pagesBundle = new Bundle();
 			boolean empty = true;
@@ -328,19 +345,19 @@ public enum Document {
 				docsBundle.put(doc.name(), pagesBundle);
 			}
 		}
-		
+
 		bundle.put( DOCUMENTS, docsBundle );
-		
+
 	}
-	
+
 	public static void restore( Bundle bundle ){
-		
+
 		if (!bundle.contains( DOCUMENTS )){
 			return;
 		}
-		
+
 		Bundle docsBundle = bundle.getBundle( DOCUMENTS );
-		
+
 		for ( Document doc : values()){
 			if (docsBundle.contains(doc.name())){
 				Bundle pagesBundle = docsBundle.getBundle(doc.name());
@@ -353,5 +370,5 @@ public enum Document {
 			}
 		}
 	}
-	
+
 }
