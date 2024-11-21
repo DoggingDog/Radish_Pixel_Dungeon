@@ -38,7 +38,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DemonSpawner;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Ghoul;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
@@ -64,11 +63,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
+import com.shatteredpixel.shatteredpixeldungeon.journal.MobBestiary;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -140,7 +137,6 @@ import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
 
 import java.io.IOException;
@@ -564,13 +560,34 @@ public class GameScene extends PixelScene {
 			}
 
 			switch (Dungeon.level.feeling) {
-				case CHASM:     GLog.w(Messages.get(this, "chasm"));    break;
-				case WATER:     GLog.w(Messages.get(this, "water"));    break;
-				case GRASS:     GLog.w(Messages.get(this, "grass"));    break;
-				case DARK:      GLog.w(Messages.get(this, "dark"));     break;
-				case LARGE:     GLog.w(Messages.get(this, "large"));    break;
-				case TRAPS:     GLog.w(Messages.get(this, "traps"));    break;
-				case SECRETS:   GLog.w(Messages.get(this, "secrets"));  break;
+				case CHASM:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.CHASM_FLOOR);
+					break;
+				case WATER:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.WATER_FLOOR);
+					break;
+				case GRASS:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.GRASS_FLOOR);
+					break;
+				case DARK:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.DARK_FLOOR);
+					break;
+				case LARGE:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.LARGE_FLOOR);
+					break;
+				case TRAPS:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.TRAPS_FLOOR);
+					break;
+				case SECRETS:
+					GLog.w(Dungeon.level.feeling.desc());
+					Notes.add(Notes.Landmark.SECRETS_FLOOR);
+					break;
 			}
 
 			for (Mob mob : Dungeon.level.mobs) {
@@ -1558,15 +1575,18 @@ public class GameScene extends PixelScene {
 		} else if ( o instanceof Mob && ((Mob) o).isActive() ){
 			GameScene.show(new WndInfoMob((Mob) o));
 			if (o instanceof Snake && !Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_SURPRISE_ATKS)){
-				GLog.p(Messages.get(Guidebook.class, "hint"));
 				GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_SURPRISE_ATKS);
 			}
 		} else if ( o instanceof Heap && !((Heap) o).isEmpty() ){
 			GameScene.show(new WndInfoItem((Heap)o));
 		} else if ( o instanceof Plant ){
 			GameScene.show( new WndInfoPlant((Plant) o) );
+			//plants can be harmful to trample, so let the player ID just by examine
+			MobBestiary.setSeen(o.getClass());
 		} else if ( o instanceof Trap ){
 			GameScene.show( new WndInfoTrap((Trap) o));
+			//traps are often harmful to trigger, so let the player ID just by examine
+			MobBestiary.setSeen(o.getClass());
 		} else {
 			GameScene.show( new WndMessage( Messages.get(GameScene.class, "dont_know") ) ) ;
 		}
