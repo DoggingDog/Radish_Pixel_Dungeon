@@ -161,12 +161,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.EndGuard;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.EnemyFlag;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.FogSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.GiantKiller;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glaive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Glasssword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Gloves;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greataxe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatshield;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Greatsword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Grimtooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.HeadCleaver;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Katar;
@@ -179,7 +176,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Morello;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rlyeh;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RottenLance;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RuneSlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
@@ -488,8 +484,8 @@ public class Generator {
 			WEP_T3.classes = new Class<?>[]{
 					Beecomb.class,
 					EnemyFlag.class,
-					Waterwheel.class,
-					RoundShield.class,
+//					Waterwheel.class,
+//					RoundShield.class,
 					Sai.class,
 					SnakeSpear.class,
 					WingSword.class,
@@ -498,7 +494,7 @@ public class Generator {
 					LockChain.class,
 					LongStick.class,
 			};
-			WEP_T3.probs = new float[]{ 5, 5, 5, 0, 0, 5, 6, 5, 5, 5, 5 };
+			WEP_T3.probs = new float[]{ 5, 5, 5, 5, 6, 5, 5, 5, 5 };
 
 			WEP_T3_NEW.classes = new Class<?>[]{
 					Beecomb.class,
@@ -513,7 +509,7 @@ public class Generator {
 			WEP_T4.classes = new Class<?>[]{
 					Bloodblade.class,
 					CompositeCrossbow.class,
-					Darksword.class,
+					//Darksword.class,
 					Morello.class,
 					HeadCleaver.class,
 					Seekingspear.class,
@@ -524,7 +520,7 @@ public class Generator {
 					EndGuard.class,
 					ShadowBooks.class,
 			};
-			WEP_T4.probs = new float[]{ 5, 5, 0, 5, 5, 5, 0, 5, 0, 5, 5, 5 };
+			WEP_T4.probs = new float[]{ 5, 5, 5, 5, 5, 0, 5, 0, 5, 5, 5 };
 
 			WEP_T4_NEW.classes = new Class<?>[]{
 					Bloodblade.class,
@@ -538,11 +534,11 @@ public class Generator {
 			WEP_T4_NEW.probs = new float[]{ 5, 5, 5, 5, 5, 5 };
 
 			WEP_T5.classes = new Class<?>[]{
-					Greatsword.class,
-					Cutterhead.class,
-					Glaive.class,
+//					Greatsword.class,
+//					Cutterhead.class,
+//					Glaive.class,
 					Scythe.class,
-					Greataxe.class,
+//					Greataxe.class,
 					Taijutsu.class,
 					Greatshield.class,
 					Tonfa.class,
@@ -554,7 +550,7 @@ public class Generator {
 					KillBoatSword.class
 
 			};
-			WEP_T5.probs = new float[]{ 0, 0, 0, 5, 0, 5, 5, 5, 5, 5, 5, 5, 7, 5 };
+			WEP_T5.probs = new float[]{ 5, 5, 5, 5, 5, 5, 5, 5, 7, 5 };
 
 			WEP_T5_NEW.classes = new Class<?>[]{
 					Cutterhead.class,
@@ -567,7 +563,8 @@ public class Generator {
 
 			//see Generator.randomArmor
 			ARMOR.classes = new Class<?>[]{};
-			ARMOR.probs = new float[]{};
+			ARMOR.probs = new float[]{
+			};
 
 			ARM_T1.classes = new Class<?>[]{
 					ClothArmor.class
