@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v03_8_Changes(changeInfos);
         add_v03_7_Changes(changeInfos);
         add_v03_6_Changes(changeInfos);
         add_v03_5_Changes(changeInfos);
@@ -26,6 +27,51 @@ public class RA_v0_13_X_Changes {
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v03_8_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.4.5", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNE_SLADE), "新武器：符文外刀",
+                "这柄武器刀刃上的符文会将附魔力量巧妙的转化成更大的杀伤力。\n\n当你在附魔这件武器时，也会升级它。"));
+
+        changes.addButton(new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNE_SLADE,new ItemSprite.Glowing(0x00ff00)), ("全新附魔登场"),
+                ("连击，追寻，附魔登场")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("新挑战：伤痛难愈"),
+                ("替代 恐药异症，挑战详情请查阅挑战描述")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("新挑战：弱点洞悉"),
+                ("替代 信念护体，挑战详情请查阅挑战描述")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.PREFS), ("杂项调整"),
+                (       "1.图鉴系统登场\n" +
+                        "2.探险者日志登场\n" +
+                        "3.新增混乱香炉，遗忘碎片饰品\n" +
+                        "4.炼金釜可鉴定物品\n" +
+                        "5.炸弹伤害全局提升50%\n" +
+                        "6.重命名系统回归\n" +
+                        "7.正式移除部分破碎武器\n" +
+                        "8.上个版本的补偿系统移除")));
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "修复了以下Bug:\n\n" +
+                        "_来自于 v0.4.4:_\n\n" +
+                        "[修复者：JDSALing]：\n"+
+                        "_-_ 0.修复部分文案异常问题\n" +
+                        "_-_ 1.修复部分闪退问题\n" +
+                        "_-_ 2.修复部分房间贴图异常问题\n" +
+                        "_-_ 3.修复回音锤的一个小Bug" ));
     }
 
     public static void add_v03_7_Changes( ArrayList<ChangeInfo> changeInfos ) {
