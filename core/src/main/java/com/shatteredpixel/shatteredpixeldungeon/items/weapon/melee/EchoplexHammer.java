@@ -43,7 +43,7 @@ public class EchoplexHammer extends MeleeWeapon {
         Sample.INSTANCE.play( Assets.Sounds.DEGRADE );
 
         for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
-            if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
+            if (mob.alignment == Char.Alignment.ENEMY && Dungeon.level.heroFOV[mob.pos]) {
                 CellEmitter.center( mob.pos ).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
                 mob.damage(10 + 2 * weapon.level() , weapon );
             }

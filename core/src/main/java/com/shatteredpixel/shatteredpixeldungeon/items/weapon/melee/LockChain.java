@@ -22,10 +22,10 @@ public class LockChain extends MeleeWeapon {
     @Override
     public int proc(Char attacker, Char defender, int damage) {
         if(Dungeon.level.distance( defender.pos, attacker.pos ) <= 1){
-            if(!switchEffect && Random.Float()>=0.25f){
+            if(!switchEffect && Random.Float()>=0.5f){
                 Buff.affect(defender, Weakness.class, 2f+level());
                 switchEffect = true;
-            } else if(switchEffect && Random.Float()>=0.25f) {
+            } else if(switchEffect && Random.Float()>=0.5f) {
                 Buff.affect(defender, Bleeding.class).set(2f*level());
                 switchEffect = false;
             }

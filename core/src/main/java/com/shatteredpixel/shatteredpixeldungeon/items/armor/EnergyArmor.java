@@ -78,7 +78,7 @@ public class EnergyArmor extends Armor{
 
     @Override
     public int image(){
-        if (Dungeon.hero.buff(myShield.class) != null){
+        if (Dungeon.hero != null && Dungeon.hero.buff(myShield.class) != null){
             image = ItemSpriteSheet.ARMOR_ENERGY2;
         } else {
             image = ItemSpriteSheet.ARMOR_ENERGY1;

@@ -71,6 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.WildEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.Runestone;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ChaoticCenser;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.EyeOfNewt;
@@ -79,6 +80,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PetrifiedSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClover;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
@@ -245,7 +248,7 @@ public class SpawnMisc extends TestItem {
             foodList.add(PhantomMeat.class);
         }
 
-        //Book
+        //trList
         if(trList.isEmpty()) {
             trList.add(DimensionalSundial.class);
             trList.add(ExoticCrystals.class);
@@ -258,6 +261,10 @@ public class SpawnMisc extends TestItem {
             trList.add(ThirteenLeafClover.class);
             trList.add(TrapMechanism.class);
             trList.add(WondrousResin.class);
+
+            trList.add(ChaoticCenser.class);
+            trList.add(SaltCube.class);
+            trList.add(ShardOfOblivion.class);
         }
 
         //Misc

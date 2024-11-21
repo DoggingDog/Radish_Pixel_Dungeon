@@ -249,6 +249,8 @@ public class ItemSpriteSheet {
 
 	public static final int RLYEH_BOOK		= WEP_TIER2+19;
 
+	public static final int RUNE_SLADE		= WEP_TIER2+20;
+
 
 	static{
 		assignItemRect(SHORTSWORD,      13, 13);
@@ -271,6 +273,8 @@ public class ItemSpriteSheet {
 
 
 		assignItemRect(RLYEH_BOOK,      14, 16);
+
+		assignItemRect(RUNE_SLADE,      13, 14);
 	}
 
 	private static final int WEP_TIER3      =                               xy(1, 8);   //8 slots
@@ -330,8 +334,6 @@ public class ItemSpriteSheet {
 
 		assignItemRect(PNEGLOVE_FIVE,          16, 11);
 		assignItemRect(PNEGLOVE_ACTIVE,          16, 11);
-
-		assignItemRect(LONG_STARK,          14, 14);
 
 		//Radish Image
 		
@@ -534,10 +536,10 @@ public class ItemSpriteSheet {
 		assignItemRect(ARMOR_HUNTRESS,  13, 15);
 		assignItemRect(ARMOR_DUELIST,   12, 13);
 		assignItemRect(ARMOR_CRAB,   16, 12);
-		assignItemRect(ARMOR_AFTERGLOW,   16, 16);
+		assignItemRect(ARMOR_AFTERGLOW,   13, 13);
 		assignItemRect(ARMOR_RAT,   12, 14);
 		assignItemRect(ARMOR_GREYFEATHER,   14, 13);
-		assignItemRect(ARMOR_AFTERIMAGE,   16, 15);
+		assignItemRect(ARMOR_AFTERIMAGE,   11, 13);
 		assignItemRect(ARMOR_PRISON,   16, 14);
 		assignItemRect(ARMOR_ENERGY1,   16, 14);
 		assignItemRect(ARMOR_ENERGY2,   16, 14);
@@ -668,6 +670,9 @@ public class ItemSpriteSheet {
 	public static final int MIMIC_TOOTH     = TRINKETS+8;
 	public static final int WONDROUS_RESIN  = TRINKETS+9;
 	public static final int EYE_OF_NEWT     = TRINKETS+10;
+	public static final int SALT_CUBE       = TRINKETS+11;
+	public static final int OBLIVION_SHARD  = TRINKETS+12;
+	public static final int CHAOTIC_CENSER  = TRINKETS+13;
 	static{
 		assignItemRect(RAT_SKULL,       16, 11);
 		assignItemRect(PARCHMENT_SCRAP, 10, 14);
@@ -680,6 +685,9 @@ public class ItemSpriteSheet {
 		assignItemRect(MIMIC_TOOTH,     8,  15);
 		assignItemRect(WONDROUS_RESIN,  12, 11);
 		assignItemRect(EYE_OF_NEWT,     12, 12);
+		assignItemRect(SALT_CUBE,       12, 13);
+		assignItemRect(OBLIVION_SHARD,  7,  14);
+		assignItemRect(CHAOTIC_CENSER,  13, 15);
 	}
 
 	private static final int SCROLLS        =                               xy(1, 19);  //16 slots

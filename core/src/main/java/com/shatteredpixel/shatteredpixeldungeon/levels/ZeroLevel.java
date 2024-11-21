@@ -21,9 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
-import static com.shatteredpixel.shatteredpixeldungeon.items.Generator.randomArtifact;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Boat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MoonLight;
@@ -32,23 +31,38 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Owo;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PW;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.SeaShore;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.ThunderStorm;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ZeroLevel extends Level {
-    static final Class<?>[] zero_npc={
-            Boat.class,
-            Owo.class,
-            ThunderStorm.class,
-            SeaShore.class,
-            PW.class,
-            MoonLight.class
-    };
+    static final Class<?>[] zero_npc;
+
+    static {
+        // 创建一个初始的 Class 数组，不包含 MoonLight.class
+        List<Class<?>> npcList = new ArrayList<>(Arrays.asList(
+                Boat.class,
+                Owo.class,
+                ThunderStorm.class,
+                SeaShore.class,
+                PW.class
+        ));
+
+        // 根据 UpdateReady() 的结果来决定是否加入 MoonLight.class
+        if (!SPDSettings.UpdateReady()) {
+            npcList.add(MoonLight.class);
+        }
+
+        // 将最终列表转化为数组
+        zero_npc = npcList.toArray(new Class<?>[0]);
+    }
+
+
+
     private static final int[] true_map = {
             0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,4,4,4,4,4,0,0,0,
@@ -176,6 +190,14 @@ public class ZeroLevel extends Level {
             NPC npcToAdd  = (NPC)Reflection.newInstance(this_npc[c]);
             npcToAdd.pos=poses[i];
             mobs.add(npcToAdd);
+
+
+        }
+
+        if(SPDSettings.UpdateReady() && SPDSettings.challenges()==0) {
+            MoonLight npc3 = new MoonLight();
+            npc3.pos = 27;
+            mobs.add(npc3);
         }
 
     }

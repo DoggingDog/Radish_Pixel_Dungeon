@@ -9,7 +9,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
-import com.watabou.noosa.Image;
 
 public class FogSword extends MeleeWeapon {
 
@@ -57,7 +56,7 @@ public class FogSword extends MeleeWeapon {
 
         @Override
         public int icon() {
-            return BuffIndicator.HEX;
+            return BuffIndicator.FOG_ROAD;
         }
 
         @Override
@@ -68,11 +67,6 @@ public class FogSword extends MeleeWeapon {
                 s = (20 + (float) (ks.level() * 4));
             }
             return Messages.get(this, "desc", s , dispTurns());
-        }
-
-        @Override
-        public void tintIcon(Image icon) {
-            icon.hardlight(0xccbb00);
         }
 
         @Override

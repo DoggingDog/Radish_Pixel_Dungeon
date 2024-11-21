@@ -133,6 +133,18 @@ public class MagesStaff extends MeleeWeapon {
 	}
 
 	@Override
+	public String name() {
+		if (!super.customName.equals("")) {
+			return super.name();
+		} else if (wand == null) {
+			return super.name();
+		} else {
+			String name = Messages.get(wand, "staff_name");
+			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
+		}
+	}
+
+	@Override
 	public void execute(Hero hero, String action) {
 
 		super.execute(hero, action);
@@ -333,16 +345,6 @@ public class MagesStaff extends MeleeWeapon {
 	public String status() {
 		if (wand == null) return super.status();
 		else return wand.status();
-	}
-
-	@Override
-	public String name() {
-		if (wand == null) {
-			return super.name();
-		} else {
-			String name = Messages.get(wand, "staff_name");
-			return enchantment != null && (cursedKnown || !enchantment.curse()) ? enchantment.name( name ) : name;
-		}
 	}
 
 	@Override

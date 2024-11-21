@@ -25,6 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.ChaliceOfBlood;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ChaoticCenser;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
 import com.watabou.utils.Bundle;
 
 public class Regeneration extends Buff {
@@ -60,6 +62,18 @@ public class Regeneration extends Buff {
 	public boolean act() {
 		if (target.isAlive()) {
 
+			//if other trinkets ever get buffs like this should probably make the buff attaching
+			// behaviour more like wands/rings/artifacts
+			if (ChaoticCenser.averageTurnsUntilGas() != -1){
+				Buff.affect(Dungeon.hero, ChaoticCenser.CenserGasTracker.class);
+			}
+
+			//cancel regenning entirely in thie case
+			if (SaltCube.healthRegenMultiplier() == 0){
+				spend(REGENERATION_DELAY);
+				return true;
+			}
+
 			if (target.HP < regencap() && !((Hero)target).isStarving()) {
 				if (regenOn()) {
 					target.HP += 1;
@@ -81,14 +95,15 @@ public class Regeneration extends Buff {
 					delay /= RingOfEnergy.artifactChargeMultiplier(target);
 				}
 			}
+			delay /= SaltCube.healthRegenMultiplier();
 			spend( delay );
-			
+
 		} else {
-			
+
 			diactivate();
-			
+
 		}
-		
+
 		return true;
 	}
 	

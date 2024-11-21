@@ -33,10 +33,39 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
+import com.watabou.utils.Bundle;
 
 import java.util.ArrayList;
 
 public abstract class EquipableItem extends Item {
+
+	public String customName = "";
+	public int customNoteID = -1;
+
+	public String name() {
+		return this.customName.equals("") ? super.name() : this.customName;
+	}
+
+	private static final String CUSTOM_NOTE_ID = "custom_note_id";
+
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (!this.customName.equals("")) {
+			bundle.put("customName", this.customName);
+		}
+		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains("customName")) {
+			this.customName = bundle.getString("customName");
+		}
+		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
+	}
 
 	public static final String AC_EQUIP		= "EQUIP";
 	public static final String AC_UNEQUIP	= "UNEQUIP";
@@ -44,6 +73,8 @@ public abstract class EquipableItem extends Item {
 	{
 		bones = true;
 	}
+
+
 
 	@Override
 	public ArrayList<String> actions(Hero hero ) {

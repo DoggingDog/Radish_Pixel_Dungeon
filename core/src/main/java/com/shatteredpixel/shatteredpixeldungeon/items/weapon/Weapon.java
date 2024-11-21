@@ -31,13 +31,15 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
+import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.CustomWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfForce;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
+import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Dazzling;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
@@ -64,6 +66,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocki
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Striking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Unstable;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampiric;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CelestialSphere;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RuneSlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -117,6 +121,10 @@ abstract public class Weapon extends KindOfWeapon {
 	public boolean enchantHardened = false;
 	public boolean curseInfusionBonus = false;
 	public boolean masteryPotionBonus = false;
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
+	}
 	
 	@Override
 	public int proc( Char attacker, Char defender, int damage ) {
@@ -124,15 +132,22 @@ abstract public class Weapon extends KindOfWeapon {
 		if (enchantment != null && attacker.buff(MagicImmune.class) == null) {
 			damage = enchantment.proc( this, attacker, defender, damage );
 		}
-		
+
 		if (!levelKnown && attacker == Dungeon.hero) {
 			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
 			if (usesLeftToID <= 0) {
-				identify();
-				GLog.p( Messages.get(Weapon.class, "identify") );
-				Badges.validateItemLevelAquired( this );
+				if (ShardOfOblivion.passiveIDDisabled()){
+					if (usesLeftToID > -1){
+						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+					}
+					usesLeftToID = -1;
+				} else {
+					identify();
+					GLog.p(Messages.get(Weapon.class, "identify"));
+					Badges.validateItemLevelAquired(this);
+				}
 			}
 		}
 
@@ -241,17 +256,23 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Char owner) {
-		int reach = RCH;
-		if (owner instanceof Hero && RingOfForce.fightingUnarmed((Hero) owner)){
-			reach = 1; //brawlers stance benefits from enchantments, but not innate reach
-			if (!RingOfForce.unarmedGetsWeaponEnchantment((Hero) owner)){
-				return reach;
-			}
-		}
 		if (hasEnchant(Projecting.class, owner)){
-			return reach + Math.round(enchantment.procChanceMultiplier(owner));
+			if (this instanceof CustomWeapon) {
+				return RCH + 1;
+			}
+			return RCH + Math.round(RingOfArcana.enchantPowerMultiplier(owner));
 		} else {
-			return reach;
+			//天球仪-距离
+			if (this instanceof CelestialSphere) {
+				int wandTotalLevel = 0;
+				ArrayList<Wand> wands = hero.belongings.getAllItems(Wand.class);
+				for (Wand w : wands.toArray(new Wand[0])){
+					wandTotalLevel += w.quantity();
+				}
+				return RCH + wandTotalLevel/3;
+			} else {
+				return RCH;
+			}
 		}
 	}
 
@@ -383,6 +404,11 @@ abstract public class Weapon extends KindOfWeapon {
 
 		Class<? extends Enchantment> oldEnchantment = enchantment != null ? enchantment.getClass() : null;
 		Enchantment ench = Enchantment.random( oldEnchantment );
+
+		//符文升级
+		if(hero.belongings.weapon instanceof RuneSlade){
+			hero.belongings.weapon.level++;
+		}
 
 		return enchant( ench );
 	}

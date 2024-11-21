@@ -33,7 +33,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.ItemStatusHandler;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindofMisc;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -47,6 +49,10 @@ import java.util.LinkedHashMap;
 public class Ring extends KindofMisc {
 	
 	protected Buff buff;
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && levelsToID <= 0;
+	}
 
 	private static final LinkedHashMap<String, Integer> gems = new LinkedHashMap<String, Integer>() {
 		{
@@ -157,32 +163,50 @@ public class Ring extends KindofMisc {
 			}
 		}
 	}
-	
+
 	@Override
 	public String name() {
+		if (!super.customName.equals("")) {
+			return super.name();
+		}
 		return isKnown() ? super.name() : Messages.get(Ring.class, gem);
 	}
 	
 	@Override
 	public String info(){
-		
-		String desc = isKnown() ? super.desc() : Messages.get(this, "unknown_desc");
-		
+
+		//skip custom notes if anonymized and un-Ided
+		String desc;
+		if (anonymous && (handler == null || !handler.isKnown( this ))){
+			desc = desc();
+
+			//otherwise, check for item type note, rings can have either but not both
+		} else if (Notes.findCustomRecord(customNoteID) == null) {
+			Notes.CustomRecord note = Notes.findCustomRecord(getClass());
+			if (note != null){
+				desc = Messages.get(this, "custom_note", note.title()) + "\n\n" + super.info();
+			} else {
+				desc = super.info();
+			}
+		} else {
+			desc = super.info();
+		}
+
 		if (cursed && isEquipped( Dungeon.hero )) {
 			desc += "\n\n" + Messages.get(Ring.class, "cursed_worn");
-			
+
 		} else if (cursed && cursedKnown) {
 			desc += "\n\n" + Messages.get(Ring.class, "curse_known");
-			
+
 		} else if (!isIdentified() && cursedKnown){
 			desc += "\n\n" + Messages.get(Ring.class, "not_cursed");
-			
+
 		}
-		
+
 		if (isKnown()) {
 			desc += "\n\n" + statsInfo();
 		}
-		
+
 		return desc;
 	}
 	
@@ -283,16 +307,23 @@ public class Ring extends KindofMisc {
 		super.restoreFromBundle( bundle );
 		levelsToID = bundle.getFloat( LEVELS_TO_ID );
 	}
-	
+
 	public void onHeroGainExp( float levelPercent, Hero hero ){
 		if (isIdentified() || !isEquipped(hero)) return;
 		levelPercent *= Talent.itemIDSpeedFactor(hero, this);
 		//becomes IDed after 1 level
 		levelsToID -= levelPercent;
 		if (levelsToID <= 0){
-			identify();
-			GLog.p( Messages.get(Ring.class, "identify") );
-			Badges.validateItemLevelAquired( this );
+			if (ShardOfOblivion.passiveIDDisabled()){
+				if (levelsToID > -1){
+					GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+				}
+				levelsToID = -1;
+			} else {
+				identify();
+				GLog.p(Messages.get(Ring.class, "identify"));
+				Badges.validateItemLevelAquired(this);
+			}
 		}
 	}
 

@@ -115,6 +115,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFear;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfFlock;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfIntuition;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfShock;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ChaoticCenser;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.DimensionalSundial;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ExoticCrystals;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.EyeOfNewt;
@@ -123,6 +124,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MossyClump;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ParchmentScrap;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PetrifiedSeed;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClover;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.Trinket;
@@ -177,6 +180,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGlov
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rlyeh;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RottenLance;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RuneSlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ScorpionCrossbow;
@@ -466,9 +470,10 @@ public class Generator {
 					BladeShield.class,
 					BoneClaw.class,
 					Spanner.class,
-					Rlyeh.class
+					Rlyeh.class,
+					RuneSlade.class,
 			};
-			WEP_T2.probs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5 };
+			WEP_T2.probs = new float[]{ 0, 5, 5, 5, 5, 5, 5, 5, 5, 5 };
 
 			WEP_T2_NEW.classes = new Class<?>[]{
 					Glasssword.class,
@@ -705,9 +710,13 @@ public class Generator {
 					TrapMechanism.class,
 					MimicTooth.class,
 					WondrousResin.class,
-					EyeOfNewt.class
+					EyeOfNewt.class,
+
+					SaltCube.class,
+					ChaoticCenser.class,
+					ShardOfOblivion.class,
 			};
-			TRINKET.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+			TRINKET.defaultProbs = new float[]{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1  };
 			TRINKET.probs = TRINKET.defaultProbs.clone();
 
 			for (Category cat : Category.values()){

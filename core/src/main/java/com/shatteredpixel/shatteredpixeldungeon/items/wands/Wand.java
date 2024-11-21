@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
@@ -52,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.talentitem.SpellQueue;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.EndGuard;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -74,6 +76,11 @@ import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public abstract class Wand extends Item {
+	public String customName = "";
+
+	public String name() {
+		return this.customName.equals("") ? super.name() : this.customName;
+	}
 
 	public static final String AC_ZAP	= "ZAP";
 	public int spellSelected = 0;
@@ -110,6 +117,10 @@ public abstract class Wand extends Item {
 		}
 
 		return actions;
+	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
 	}
 	
 	@Override
@@ -342,6 +353,11 @@ public abstract class Wand extends Item {
 	public int buffedLvl() {
 		int lvl = super.buffedLvl();
 
+		if(Dungeon.hero.buff(Berserk.class) != null){
+			lvl += Dungeon.hero.buff(Berserk.class).WandBuffedLvl();
+			updateQuickslot();
+		}
+
 		if (charger != null && charger.target != null) {
 
 			//inside staff, still need to apply degradation
@@ -432,13 +448,23 @@ public abstract class Wand extends Item {
 		}
 
 		if (!isIdentified()) {
-			float uses = Math.min(availableUsesToID, Talent.itemIDSpeedFactor(hero, this));
+			float uses = Math.min( availableUsesToID, Talent.itemIDSpeedFactor(Dungeon.hero, this) );
 			availableUsesToID -= uses;
 			usesLeftToID -= uses;
-			if (usesLeftToID <= 0 || hero.pointsInTalent(Talent.SCHOLARS_INTUITION) == 2) {
-				identify();
-				GLog.p(Messages.get(Wand.class, "identify"));
-				Badges.validateItemLevelAquired(this);
+			if (usesLeftToID <= 0 || Dungeon.hero.pointsInTalent(Talent.SCHOLARS_INTUITION) == 2) {
+				if (ShardOfOblivion.passiveIDDisabled()){
+					if (usesLeftToID > -1){
+						GLog.p(Messages.get(ShardOfOblivion.class, "identify_ready"), name());
+					}
+					usesLeftToID = -1;
+				} else {
+					identify();
+					GLog.p(Messages.get(Wand.class, "identify"));
+					Badges.validateItemLevelAquired(this);
+				}
+			}
+			if (ShardOfOblivion.passiveIDDisabled()){
+				Buff.prolong(curUser, ShardOfOblivion.WandUseTracker.class, 50f);
 			}
 		}
 
@@ -633,6 +659,9 @@ public abstract class Wand extends Item {
 		bundle.put( RESIN_BONUS, resinBonus );
 
 		bundle.put("spellselected",spellSelected);
+		if (!this.customName.equals("")) {
+			bundle.put("customName", this.customName);
+		}
 	}
 	
 	@Override
@@ -652,6 +681,10 @@ public abstract class Wand extends Item {
 		if (bundle.contains("spellselected")){
 			spellSelected=bundle.getInt("spellselected");
 		}
+		if (bundle.contains("customName")) {
+			this.customName = bundle.getString("customName");
+		}
+
 
 	}
 	

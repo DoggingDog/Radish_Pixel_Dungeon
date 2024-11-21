@@ -64,11 +64,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicalFire
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.PitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.ShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.CavesFissureEntranceRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.CavesFissureExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BlazingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ChillingTrap;
@@ -103,7 +103,7 @@ public abstract class RegularLevel extends Level {
 	protected boolean build() {
 
 		builder = builder();
-		
+
 		ArrayList<Room> initRooms = initRooms();
 		Random.shuffle(initRooms);
 		
@@ -212,14 +212,10 @@ public abstract class RegularLevel extends Level {
 			if (!Statistics.amuletObtained) return 0;
 			else                            return 10;
 		}
-
 		int mobs = 3 + Dungeon.depth % 5 + Random.Int(3);
 		if (feeling == Feeling.LARGE){
 			mobs = (int)Math.ceil(mobs * 1.33f);
 		}
-
-		//TODO 2024-1-9 Mobs L2
-		mobs += 2;
 
 		return mobs;
 	}
@@ -229,7 +225,7 @@ public abstract class RegularLevel extends Level {
 		//on floor 1, 8 pre-set mobs are created so the player can get level 2.
 		int mobsToSpawn = Dungeon.depth == 1 ? 8 : mobLimit();
 
-		mobsToSpawn += 4;
+		mobsToSpawn += 2;
 
 		ArrayList<Room> stdRooms = new ArrayList<>();
 		for (Room room : rooms) {
