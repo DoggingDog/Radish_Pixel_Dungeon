@@ -203,7 +203,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	public static class Ward extends NPC {
-
+		public static class WardSentry extends Ward{};
 		public int tier = 1;
 		private int wandLevel = 1;
 
