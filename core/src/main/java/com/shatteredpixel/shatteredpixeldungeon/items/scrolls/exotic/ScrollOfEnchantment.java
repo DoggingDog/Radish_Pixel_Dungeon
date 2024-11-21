@@ -53,7 +53,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 
 		unique = true;
 
-		talentFactor = 2f;
+//		talentFactor = 2f;
 	}
 
 	protected static boolean identifiedByUse = false;

@@ -66,6 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MoveCount;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
@@ -148,11 +149,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLivingEarth;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Seeking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CelestialSphere;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KillBoatSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LockChain;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rlyeh;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
@@ -771,6 +774,11 @@ public class Hero extends Char {
 		KindOfWeapon wep = Dungeon.hero.belongings.attackingWeapon();
 
 		if (wep != null){
+			// mod by DoggingDog on 2024-11-13, 4 Seeking enchantment
+			if(enemy.buff(Seeking.SeekingBuff.class) != null){
+				return true;
+			}
+			//
 			return wep.canReach(this, enemy.pos);
 		} else {
 			return false;
@@ -1916,6 +1924,7 @@ public class Hero extends Char {
 		}
 
 		if (step != -1) {
+
 			float delay = 1 / speed();
 			if (subClass == HeroSubClass.FREERUNNER){
 				Buff.affect(this, Momentum.class).gainStack();
@@ -1952,10 +1961,11 @@ public class Hero extends Char {
 				else speedAdj=5f/6f;
 			}
 			if (speedAdj*speed>4f && pointsInTalent(Talent.STORM_RUSH)>3 ) Buff.affect(this, Levitation.class,1f);
+
 			sprite.move(pos, step);
 			move(step);
 
-			spend( 1 / (speed * speedAdj ));
+			spend( delay );
 			justMoved = true;
 
 			search(false);
@@ -2771,7 +2781,9 @@ public class Hero extends Char {
 
 		Ballistica chain = new Ballistica(pos, target, Ballistica.PROJECTILE);
 
-		if (chain.collisionPos != enemy.pos || chain.path.size() < 2)
+		if (chain.collisionPos != enemy.pos
+				|| chain.path.size() < 2
+				|| Dungeon.level.pit[chain.path.get(1)])
 			return false;
 		else {
 			int newPos = -1;
@@ -2815,18 +2827,11 @@ public class Hero extends Char {
 		enemy.pos = pullPos;
 		enemy.sprite.place(pullPos);
 		Dungeon.level.occupyCell(enemy);
-		Dungeon.hero.interrupt();
-		Dungeon.observe();
-		GameScene.updateFog();
-
-		//Only 一次残废
-		if(!enemy.LockChainCripple){
-			Cripple.prolong(enemy, Cripple.class, 4f);
-			enemy.LockChainCripple = true;
-		}
-
-		if(Dungeon.level.distance(hero.pos,enemy.pos)<=1){
-			enemy.sprite.attack(hero.pos);
+		Cripple.prolong(enemy, Cripple.class, 4f);
+		if (enemy == Dungeon.hero) {
+			Dungeon.hero.interrupt();
+			Dungeon.observe();
+			GameScene.updateFog();
 		}
 	}
 
