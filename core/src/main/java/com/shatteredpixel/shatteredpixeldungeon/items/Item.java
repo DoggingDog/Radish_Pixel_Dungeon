@@ -516,10 +516,9 @@ public class Item implements Bundlable {
 				return Messages.get(this, "custom_note", note.title()) + "\n\n" + desc();
 			}
 		}
-
 		return desc();
 	}
-	
+
 	public String desc() {
 		return Messages.get(this, "desc");
 	}

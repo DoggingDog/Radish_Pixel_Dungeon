@@ -48,23 +48,22 @@ public abstract class EquipableItem extends Item {
 
 	private static final String CUSTOM_NOTE_ID = "custom_note_id";
 
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
+		if (bundle.contains("customName")) {
+			this.customName = bundle.getString("customName");
+		}
+	}
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
+		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
 		if (!this.customName.equals("")) {
 			bundle.put("customName", this.customName);
 		}
-		if (customNoteID != -1)     bundle.put(CUSTOM_NOTE_ID, customNoteID);
-	}
-
-	@Override
-	public void restoreFromBundle(Bundle bundle) {
-		super.restoreFromBundle(bundle);
-		if (bundle.contains("customName")) {
-			this.customName = bundle.getString("customName");
-		}
-		if (bundle.contains(CUSTOM_NOTE_ID))    customNoteID = bundle.getInt(CUSTOM_NOTE_ID);
 	}
 
 	public static final String AC_EQUIP		= "EQUIP";
