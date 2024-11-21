@@ -28,8 +28,8 @@ public class Challenges {
 
 	//Some of these internal IDs are outdated and don't represent what these challenges do
 	public static final int NO_FOOD				= 1;
-	public static final int NO_ARMOR			= 2;
-	public static final int NO_HEALING			= 4;
+	public static final int BAD_POINT 			= 2;
+	public static final int DAMAGE_NO 			= 4;
 	public static final int NO_HERBALISM		= 8;
 	public static final int SWARM_INTELLIGENCE	= 16;
 	public static final int DARKNESS			= 32;
@@ -47,8 +47,8 @@ public class Challenges {
 			"champion_enemies",
 			"stronger_bosses",
 			"no_food",
-			"no_armor",
-			"no_healing",
+			"bad_point",
+			"damage_no",
 			"no_herbalism",
 			"swarm_intelligence",
 			"darkness",
@@ -57,7 +57,7 @@ public class Challenges {
 	};
 
 	public static final int[] MASKS = {
-			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, NO_ARMOR, NO_HEALING, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS,
+			CHAMPION_ENEMIES, STRONGER_BOSSES, NO_FOOD, BAD_POINT, DAMAGE_NO, NO_HERBALISM, SWARM_INTELLIGENCE, DARKNESS, NO_SCROLLS,
 			TEST_MODE
 	};
 

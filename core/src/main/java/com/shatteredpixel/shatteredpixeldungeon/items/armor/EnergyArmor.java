@@ -1,6 +1,5 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.armor;
 
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -60,18 +59,11 @@ public class EnergyArmor extends Armor{
     @Override
     public int DRMax(int lvl){
         int ad=(1+ augment.defenseFactor(lvl))/2;
-        if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-            return Math.max(2 + lvl + augment.defenseFactor(lvl),1+lvl/2);
-        }
         return 3 + 2 * lvl + ad;
     }
     @Override
     public int DRMin(int lvl){
         int ad=(augment.defenseFactor(lvl)-1)/2;
-        if (Dungeon.isChallenged(Challenges.NO_ARMOR)){
-            return 1 + lvl / 2 ;
-        }
-
         return 3 + 2 * lvl +ad;
     }
 

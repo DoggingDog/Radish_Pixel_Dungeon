@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -71,16 +73,25 @@ public class Healing extends Buff {
 		return true;
 	}
 	
+
+
+
 	private int healingThisTick(){
-		return (int)GameMath.gate(1,
-				Math.round(healingLeft * percentHealPerTick) + flatHealPerTick,
+		int heal = (int)GameMath.gate(1, Math.round(healingLeft * percentHealPerTick) + flatHealPerTick,
 				healingLeft);
+
+		if (Dungeon.isChallenged(Challenges.DAMAGE_NO)){
+			heal = 1;
+		}
+		return heal;
 	}
 
 	public void setHeal(int amount, float percentPerTick, int flatPerTick){
 		//multiple sources of healing do not overlap, but do combine the best of their properties
 		healingLeft = Math.max(healingLeft, amount);
+
 		percentHealPerTick = Math.max(percentHealPerTick, percentPerTick);
+
 		flatHealPerTick = Math.max(flatHealPerTick, flatPerTick);
 	}
 	
