@@ -3,9 +3,8 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
 android {
-    //noinspection GradleDependency
-    compileSdk 33
-
+    namespace 'com.shatteredpixel.shatteredpixeldungeon.android'
+    compileSdk appAndroidCompileSDK
     compileOptions.sourceCompatibility = compileOptions.targetCompatibility = appJavaCompatibility
 
     sourceSets.main.assets.srcDirs = [new File(project(':core').projectDir, "/src/main/assets")]
@@ -13,17 +12,15 @@ android {
     defaultConfig {
         manifestPlaceholders = [appName:appName]
         applicationId appPackageName
-        //接入多Dex,解决代码方法超过65535的问题
-        multiDexEnabled true
+
         versionCode appVersionCode
         versionName appVersionName
 
         //noinspection MinSdkTooLow
         minSdkVersion appAndroidMinSDK
         targetSdkVersion appAndroidTargetSDK
+        resourceConfigurations += ['en_US', 'cs', 'de', 'el', 'es', 'fr', 'hu', 'in', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'ru', 'tr', 'uk', 'vi', 'zh_CN']
 
-        resConfigs "en_US", "cs", "tr", "ca", "ko", "pl", "it", "ja",
-                "eo", "ru", "zh_CN", "de", "fr", "es", "pt", "fi", "hu", "in"
     }
 
     buildTypes {
@@ -36,8 +33,10 @@ android {
                 debugImplementation project(':services:news:debugNews')
             }
         }
-
         release {
+
+            //These lines enable R8, which is a code shrinker/optimizer/obfuscator.
+            //This makes release APKs smaller and more efficient, but also makes debugging trickier
             //as the information produced in stack traces must be de-obfuscated.
             //See here: https://developer.android.com/studio/build/shrink-code#decode-stack-trace
             shrinkResources true
@@ -48,10 +47,8 @@ android {
                 releaseImplementation project(':services:updates:githubUpdates')
                 releaseImplementation project(':services:news:shatteredNews')
             }
-            signingConfig signingConfigs.debug
         }
     }
-    namespace 'com.shatteredpixel.shatteredpixeldungeon.android'
 
     sourceSets {
         main {
