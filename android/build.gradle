@@ -27,6 +27,11 @@ android {
         debug {
             //兼容FireBase Debug调试，因此请在虚拟机上运行！（包名一致）
             //            applicationIdSuffix ".indev"
+
+            //Debug环境下会超方法 调用多Dex
+            multiDexEnabled true
+            //屏蔽CrashMap地图
+            firebaseCrashlytics {mappingFileUploadEnabled false}
             versionNameSuffix '-INDEV'
             dependencies {
                 debugImplementation project(':services:updates:debugUpdates')
@@ -64,8 +69,11 @@ dependencies {
     implementation 'cat.ereza:customactivityoncrash:2.3.0'
 
     implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-    //接入多DEX
-    implementation 'com.android.support:multidex:1.0.3'
+
+
+    //接入多DEX 仅在Debug状态下使用
+    implementation "androidx.multidex:multidex:2.0.1"
+
     //只考虑安卓端 电脑端直接呼出URL
     //----------AndroidX 版本
     //app-updater
