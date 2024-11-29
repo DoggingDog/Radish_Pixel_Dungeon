@@ -25,7 +25,6 @@ import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Electricity;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.StormCloud;
@@ -402,14 +401,6 @@ public abstract class Char extends Actor {
 		return attack(enemy, 1f, 0f, 1f);
 	}
 
-
-	//弱点洞悉
-	private int getMinDRByDungeonDepth(int depth) {
-		int[] minDRValues = {1, 3, 5, 7, 9};
-		int index = Math.min(depth / 5, minDRValues.length - 1);
-		return minDRValues[index];
-	}
-
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 
 		if (enemy == null) return false;
@@ -624,14 +615,10 @@ public abstract class Char extends Actor {
 				enemy.buff(Viscosity.ViscosityTracker.class).detach();
 			}
 
-			//vulnerable specifically applies after armor reductions
+
+
 			if ( enemy.buff( Vulnerable.class ) != null){
 				effectiveDamage *= 1.33f;
-			}
-
-			//弱点洞悉
-			if (Dungeon.isChallenged(Challenges.BAD_POINT) && enemy == hero){
-				effectiveDamage += getMinDRByDungeonDepth(Dungeon.depth);
 			}
 
 			effectiveDamage = attackProc( enemy, effectiveDamage );
@@ -652,7 +639,6 @@ public abstract class Char extends Actor {
 				enemy.sprite.showStatus(CharSprite.NEGATIVE,Messages.get(this,"crit"));
 			}
 			enemy.damage( effectiveDamage, this );
-
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
 
