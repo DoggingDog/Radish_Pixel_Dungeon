@@ -432,7 +432,7 @@ public enum Talent {
 	public String desc(boolean metamorphed){
 		if (metamorphed){
 			String metaDesc = Messages.get(this, name() + ".meta_desc");
-			if (!metaDesc.contains("Ms:")) {
+			if (!metaDesc.equals(Messages.NO_TEXT_FOUND)){
 				return Messages.get(this, name() + ".desc") + "\n\n" + metaDesc;
 			}
 		}
