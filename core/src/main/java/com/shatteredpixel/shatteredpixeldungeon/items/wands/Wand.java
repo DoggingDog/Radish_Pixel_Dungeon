@@ -905,4 +905,9 @@ public abstract class Wand extends Item {
 		super.getCurse(extraEffect);
 		updateLevel();
 	}
+
+	public boolean readyToIdentify(){
+		return !isIdentified() && usesLeftToID <= 0;
+	}
+
 }

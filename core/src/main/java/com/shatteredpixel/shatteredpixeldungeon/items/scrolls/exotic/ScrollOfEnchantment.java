@@ -21,15 +21,16 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic;
 
-import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Enchanting;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.InventoryScroll;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfEnchantment;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
@@ -187,8 +188,13 @@ public class ScrollOfEnchantment extends ExoticScroll {
 				((ScrollOfEnchantment)curItem).readAnimation();
 
 				//符文升级
-				if(hero.belongings.weapon instanceof RuneSlade){
-					hero.belongings.weapon.level++;
+				if(wep instanceof RuneSlade){
+					wep.level++;
+					ScrollOfUpgrade.upgrade(curUser);
+					Badges.validateItemLevelAquired( wep );
+					Statistics.upgradesUsed++;
+					Badges.validateMageUnlock();
+					GLog.i(Messages.get(RuneSlade.class,"en_update"));
 				}
 
 				Sample.INSTANCE.play( Assets.Sounds.READ );
