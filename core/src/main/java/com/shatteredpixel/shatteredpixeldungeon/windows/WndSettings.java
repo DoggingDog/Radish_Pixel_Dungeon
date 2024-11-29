@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.SeedFindScene;
 import com.shatteredpixel.shatteredpixeldungeon.services.news.News;
 import com.shatteredpixel.shatteredpixeldungeon.services.updates.Updates;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -843,7 +844,7 @@ public class WndSettings extends WndTabbed {
 		CheckBox chkUpdates;
 		CheckBox chkBetas;
 		CheckBox chkWifi;
-
+		OptionSlider seedFindMaxDepth;
 		@Override
 		protected void createChildren() {
 			title = PixelScene.renderTextBlock(Messages.get(this, "title"), 9);
@@ -901,6 +902,21 @@ public class WndSettings extends WndTabbed {
 				chkWifi.checked(SPDSettings.WiFi());
 				add(chkWifi);
 			}
+
+			seedFindMaxDepth = new OptionSlider(Messages.get(SeedFindScene.class, "depth"),"1","24",1,24 ) {
+				@Override
+				protected void onChange() {
+					if (getSelectedValue() != SPDSettings.getKeySeedDepth()) {
+						SPDSettings.setKeySeeddepth(getSelectedValue());
+					}
+				}
+				@Override
+				public int getTitleTextSize(){
+					return 6;
+				}
+			};
+			seedFindMaxDepth.setSelectedValue(SPDSettings.getKeySeedDepth());
+			add(seedFindMaxDepth);
 		}
 
 		@Override
@@ -932,6 +948,9 @@ public class WndSettings extends WndTabbed {
 				chkWifi.setRect(0, pos + GAP, width, BTN_HEIGHT);
 				pos = chkWifi.bottom();
 			}
+
+			seedFindMaxDepth.setRect(0, pos + GAP, width, BTN_HEIGHT);
+			pos = seedFindMaxDepth.bottom();
 
 			height = pos;
 
