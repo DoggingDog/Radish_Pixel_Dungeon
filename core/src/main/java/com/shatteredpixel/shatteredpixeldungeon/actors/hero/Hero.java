@@ -26,6 +26,7 @@ import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Bones;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -1753,6 +1754,7 @@ public class Hero extends Char {
 
 		int preHP = HP + shielding();
 		int preTrueHP = HP;
+		dmg = (Dungeon.isChallenged(Challenges.BAD_POINT) && dmg<=(1+Dungeon.depth/5*2))?(1+Dungeon.depth/5*2):dmg;
 		super.damage( dmg, src );
 		int postHP = HP + shielding();
 		int effectiveDamage = preHP - postHP;

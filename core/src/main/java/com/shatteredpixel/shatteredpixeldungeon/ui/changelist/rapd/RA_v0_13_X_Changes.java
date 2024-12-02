@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v03_9_Changes(changeInfos);
         add_v03_8_Changes(changeInfos);
         add_v03_7_Changes(changeInfos);
         add_v03_6_Changes(changeInfos);
@@ -27,6 +28,41 @@ public class RA_v0_13_X_Changes {
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v03_9_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.4.6", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), "戒指调整",
+                "1.狂怒之戒成长调整为每级固定20%\n" +
+                           "2.神射之戒耐久从20%-->10%\n" +
+                           "3.闪避之戒成长调整为-->20%"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNE_SLADE), "符文外刀",
+                "修复附魔相关异常"));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_OFF), ("挑战关闭：伤痛难愈"),
+                ("此挑战暂不启用，等待后续调整。")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战改动：弱点洞悉"),
+                ("新效果：治疗药水及其制品的效果被削弱为原来的1/10")));
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "1.少量文本缺失补充\n" +
+                            "2.修复末日守卫迁移后失效的问题\n" +
+                            "3.修复蝎子巨弩迁移后失效的问题\n" +
+                            "4.修复部分楼层贴图异常\n" +
+                            "5.修复兵师直觉异常" ));
     }
 
     public static void add_v03_8_Changes( ArrayList<ChangeInfo> changeInfos ) {

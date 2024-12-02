@@ -226,7 +226,7 @@ public class CursedWand {
 						toHeal = target;
 						toDamage = user;
 					}
-					toHeal.HP = Math.min(toHeal.HT, toHeal.HP + damage);
+					toHeal.HP = Math.min(toHeal.HT, toHeal.HP + damage / (Dungeon.isChallenged(Challenges.DAMAGE_NO) ? 10 : 1));
 					toHeal.sprite.emitter().burst(Speck.factory(Speck.HEALING), 3);
 					toHeal.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString(damage), FloatingText.HEALING );
 
