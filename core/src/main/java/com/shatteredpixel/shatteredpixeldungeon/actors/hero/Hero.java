@@ -1754,7 +1754,10 @@ public class Hero extends Char {
 
 		int preHP = HP + shielding();
 		int preTrueHP = HP;
-		dmg = (Dungeon.isChallenged(Challenges.BAD_POINT) && dmg<=(1+Dungeon.depth/5*2))?(1+Dungeon.depth/5*2):dmg;
+
+		// DoggingDog
+		dmg = (Dungeon.isChallenged(Challenges.BAD_POINT) && dmg<=(1+Dungeon.depth/5*2) && src instanceof Mob)?(1+Dungeon.depth/5*2):dmg;
+
 		super.damage( dmg, src );
 		int postHP = HP + shielding();
 		int effectiveDamage = preHP - postHP;
