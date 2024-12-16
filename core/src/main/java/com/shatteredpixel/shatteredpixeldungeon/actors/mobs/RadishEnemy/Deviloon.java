@@ -208,7 +208,7 @@ public class Deviloon extends Mob {
                 }
                 for(int i:blast_pos_set){
                     int c =  ch.pos + i;
-                    if (c >= 0 && c < Dungeon.level.length() && !Dungeon.level.solid[c]) {
+                    if (c >= 0 && c < Dungeon.level.length() && !Dungeon.level.solid[c] && !Dungeon.level.pit[c]) {
                         BlastRune blastRune_tmp = new BlastRune().set_pos(c);
                         blastRunes.add(blastRune_tmp);
                         Dungeon.level.drop(blastRune_tmp,c);
