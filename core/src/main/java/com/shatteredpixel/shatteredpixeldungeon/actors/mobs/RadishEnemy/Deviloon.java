@@ -75,8 +75,6 @@ public class Deviloon extends Mob {
         properties.add(Property.DEMONIC);
         properties.add(Property.HEADLESS);
 
-        flying = true;
-
         loot = new ArcaneResin().quantity(Random.Int(1,2));
         lootChance = 0.20f;
     }
@@ -115,6 +113,8 @@ public class Deviloon extends Mob {
         // yep the complexity is O(n^2) , i'll optimize it one day.
         // Date : 2024-08-10
         for(Object i:blastRunes.toArray()){
+            if(i==null) continue;
+            if (((BlastRune)i).fuse==null) continue;
             int item_cnt = 0;
             for (Heap heap : Dungeon.level.heaps.valueList()) {
                 if(heap.pos==((BlastRune)i).drop_pos){
@@ -125,6 +125,7 @@ public class Deviloon extends Mob {
                 Actor.addDelayed(((BlastRune)i).fuse = ((BlastRune)i).fuse.ignite((BlastRune) i), 0);
                 blastRunes.remove(i);
             }
+
         }
 
         if (blastCharged && state != HUNTING){
@@ -286,7 +287,9 @@ public class Deviloon extends Mob {
     @Override
     public void die( Object cause ) {
         for(BlastRune i:blastRunes){
-            Actor.addDelayed(((BlastRune)i).fuse = ((BlastRune)i).fuse.ignite((BlastRune) i), 0);
+            if(i!=null)
+               if(((BlastRune)i).fuse != null)
+                    Actor.addDelayed(((BlastRune)i).fuse = ((BlastRune)i).fuse.ignite((BlastRune) i), 0);
         }
         super.die( cause );
     }
@@ -639,7 +642,7 @@ public class Deviloon extends Mob {
                         Heap heap = Dungeon.level.heaps.get(c);
                         if (heap != null){
                             heap.explode();
-                            for(Object i:heap.items){
+                            for(Object i:heap.items.toArray()){
                                 if(i instanceof BlastRune){
                                     Actor.addDelayed(((BlastRune)i).fuse = ((BlastRune)i).fuse.ignite((BlastRune) i), 0);
                                     blastRunes.remove(i);
@@ -677,6 +680,9 @@ public class Deviloon extends Mob {
                     if (ch == Dungeon.hero && !ch.isAlive()) {
                         GLog.n(Messages.get(this, "ondeath"));
                         Dungeon.fail(Bomb.class);
+                    }
+                    if(ch.HP <= 1){
+                        ch.die(BlastRune.class);
                     }
 
                 }
