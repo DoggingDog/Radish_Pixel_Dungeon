@@ -31,6 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.SkyWalker;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfFeatherFall;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.RegularLevel;
@@ -141,6 +142,16 @@ public class Chasm implements Hero.Doom {
 		PixelScene.shake( 4, 1f );
 
 		Dungeon.level.occupyCell(hero );
+
+		// DoggingDog, 20241216
+		if(hero.belongings.armor() != null){
+			if(hero.belongings.armor().hasGlyph(SkyWalker.class,hero)){
+				Buff.affect( hero, Bleeding.class).set( Math.round(hero.HT/ 4f / (6f + (6f*(hero.HP/(float)hero.HT)))), Chasm.class);
+				hero.damage( Math.max( hero.HP / 8, Char.combatRoll( hero.HP / 8, hero.HT / 16 )), new Chasm() );
+				return;
+			}
+		}
+
 		Buff.prolong( hero, Cripple.class, Cripple.DURATION );
 
 		//The lower the hero's HP, the more bleed and the less upfront damage.
