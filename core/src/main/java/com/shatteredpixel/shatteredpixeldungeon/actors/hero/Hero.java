@@ -333,7 +333,7 @@ public class Hero extends Char {
 
 		float calm_bouns = 0;
 		if(buff(Calm.class)!=null){
-			calm_bouns = 0.02f;
+			calm_bouns = 3.02f;
 		}
 
 		return Math.min(critDamage+cdbouns,critDamageCap) * ( 1 + calm_bouns * 100 * ((float) (HT-HP) /HT)) ;
