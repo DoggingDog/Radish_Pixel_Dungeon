@@ -717,6 +717,16 @@ public abstract class Char extends Actor {
 			((Hero) defender).interrupt();
 		}
 
+		if (defender.buff(AfterImage.absoluteEvasion.class)!=null){
+			Buff.detach(defender, AfterImage.absoluteEvasion.class);
+			return false;
+		}
+
+		if (defender.buff(AfterImage.AnotabsoluteEvasion.class)!=null){
+			Buff.detach(defender, AfterImage.AnotabsoluteEvasion.class);
+			return false;
+		}
+
 		if (defender.HP<defender.HT){
 			if (attacker instanceof Hero){
 				if (((Hero) attacker).belongings.weapon() instanceof Axe_D){
