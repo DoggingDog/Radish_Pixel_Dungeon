@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.SkyWalker;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Thorns;
@@ -690,7 +691,7 @@ public class Armor extends EquipableItem {
 
 
 		public static final Class<?>[] common = new Class<?>[]{
-				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class };
+				Obfuscation.class, Swiftness.class, Viscosity.class, Potential.class , SkyWalker.class};
 
 		public static final Class<?>[] uncommon = new Class<?>[]{
 				Brimstone.class, Stone.class, Entanglement.class,

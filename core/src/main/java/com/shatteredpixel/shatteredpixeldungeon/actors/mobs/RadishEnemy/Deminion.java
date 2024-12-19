@@ -49,6 +49,7 @@ public class Deminion extends Mob {
         HP = HT = 60;
         defenseSkill = 24;
 
+        flying = true;
 
         EXP = 12;
         maxLvl = 26;

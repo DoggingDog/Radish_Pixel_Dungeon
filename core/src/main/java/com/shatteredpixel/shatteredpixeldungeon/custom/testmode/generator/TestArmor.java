@@ -22,6 +22,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Flow;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Obfuscation;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Potential;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Repulsion;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.SkyWalker;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Thorns;
@@ -125,6 +126,8 @@ public class TestArmor extends TestGenerator {
                 return Viscosity.class;
             case 3:
                 return Potential.class;
+            case 4:
+                return SkyWalker.class;
             default:
                 return null;
         }
