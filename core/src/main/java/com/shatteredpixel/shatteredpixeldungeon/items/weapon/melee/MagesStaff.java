@@ -21,12 +21,18 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Weakness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -34,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.AfterImage;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
@@ -181,6 +188,40 @@ public class MagesStaff extends MeleeWeapon {
 		if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.MYSTICAL_CHARGE)){
 			Hero hero = (Hero) attacker;
 			ArtifactRecharge.chargeArtifacts(hero, hero.pointsInTalent(Talent.MYSTICAL_CHARGE)/2f);
+		}
+
+		//短棍格斗-T1
+		if (wand != null && attacker instanceof Hero && ((Hero)attacker).subClass == HeroSubClass.BATTLEMAGE || hero.pointsInTalent(Talent.MAGIC_STICK) >= 1) {
+			if (wand.curCharges < wand.maxCharges) wand.partialCharge += 0.5f;
+			ScrollOfRecharging.charge(attacker);
+			wand.onHit(this, attacker, defender, damage, true);
+		}
+
+		//短棍格斗-T2
+		if (hero.pointsInTalent(Talent.MAGIC_STICK) >= 2){
+			if(Random.Float() <= 0.15f && hero.buff(AfterImage.AnotabsoluteEvasion.class) == null){
+				Buff.affect(hero, AfterImage.AnotabsoluteEvasion.class);
+			}
+		}
+
+		//短棍格斗-T3
+		if (hero.pointsInTalent(Talent.MAGIC_STICK) >= 3){
+			if(Random.Float() <= 0.3f){
+				switch (Random.Int(5)){
+					case 2:
+						Buff.prolong(defender, Hex.class, 8f);
+						break;
+					case 3:
+						Buff.prolong(defender, Vertigo.class, 8f);
+						break;
+					case 4:
+						Buff.prolong(defender, Weakness.class, 8f);
+						break;
+					default:
+						Buff.prolong(defender, Vulnerable.class, 8f);
+						break;
+				}
+			}
 		}
 
 		Talent.EmpoweredStrikeTracker empoweredStrike = attacker.buff(Talent.EmpoweredStrikeTracker.class);
