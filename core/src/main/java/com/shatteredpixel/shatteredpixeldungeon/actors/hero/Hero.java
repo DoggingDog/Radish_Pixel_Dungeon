@@ -1569,16 +1569,16 @@ public class Hero extends Char {
 			default:
 		}
 
+		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
+			Berserk berserk = Buff.affect(this, Berserk.class);
+			berserk.damage(damage);
+		}
+
 		return damage;
 	}
 
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
-
-		if (damage > 0 && subClass == HeroSubClass.BERSERKER){
-			Berserk berserk = Buff.affect(this, Berserk.class);
-			berserk.damage(damage);
-		}
 
 		if (belongings.armor() != null) {
 			damage = belongings.armor().proc( enemy, this, damage );
