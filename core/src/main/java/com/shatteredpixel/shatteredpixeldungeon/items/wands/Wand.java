@@ -53,6 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.spells.TelekineticGrab;
 import com.shatteredpixel.shatteredpixeldungeon.items.talentitem.SpellQueue;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.EndGuard;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Morello;
@@ -589,7 +590,6 @@ public abstract class Wand extends Item {
 				timeToZap = -hero.cooldown();
 		}
 
-		GLog.n(""+isMagesStaff);
 		if( !(hero.buff(MagicStick.class)!=null && isMagesStaff)) {
 			curUser.spendAndNext(timeToZap);
 		}else{
@@ -804,7 +804,20 @@ public abstract class Wand extends Item {
 						curWand.fx(shot, new Callback() {
 							public void call() {
 								curWand.onZap(shot);
-								curWand.wandUsed();
+								if (Random.Float() < WondrousResin.extraCurseEffectChance()){
+									WondrousResin.forcePositive = true;
+									CursedWand.cursedZap(curWand,
+											curUser,
+											new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT), new Callback() {
+												@Override
+												public void call() {
+													WondrousResin.forcePositive = false;
+													curWand.wandUsed();
+												}
+											});
+								} else {
+									curWand.wandUsed();
+								}
 							}
 						});
 					}

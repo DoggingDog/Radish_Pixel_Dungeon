@@ -94,8 +94,10 @@ public class Burning extends Buff implements Hero.Doom {
 			int damage = Char.combatRoll( 1, 3 + Dungeon.scalingDepth()/4 );
 			Buff.detach( target, Chill.class);
 
-			if (target instanceof Hero && target.buff(TimekeepersHourglass.timeStasis.class) == null) {
-				
+			if (target instanceof Hero
+					&& target.buff(TimekeepersHourglass.timeStasis.class) == null
+					&& target.buff(TimeStasis.class) == null) {
+
 				Hero hero = (Hero)target;
 
 				hero.damage( damage, this );
@@ -127,7 +129,7 @@ public class Burning extends Buff implements Hero.Doom {
 						Heap.burnFX( hero.pos );
 					}
 				}
-				
+
 			} else {
 				target.damage( damage, this );
 			}

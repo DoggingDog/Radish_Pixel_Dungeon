@@ -1708,4 +1708,8 @@ public class GameScene extends PixelScene {
 			return null;
 		}
 	};
+
+	public static void updateAvatar(){
+		if (scene != null && scene.status != null) scene.status.updateAvatar();
+	}
 }
