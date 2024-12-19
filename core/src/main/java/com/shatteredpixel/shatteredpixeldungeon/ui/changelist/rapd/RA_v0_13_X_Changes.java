@@ -47,10 +47,10 @@ public class RA_v0_13_X_Changes {
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNE_SLADE), "符文外刀",
                 "修复附魔相关异常"));
 
-        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_OFF), ("挑战关闭：伤痛难愈"),
-                ("此挑战暂不启用，等待后续调整。")));
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战优化：弱点洞悉"),
+                ("此挑战效果已正常。")));
 
-        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战改动：弱点洞悉"),
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战改动：伤痛难愈"),
                 ("新效果：治疗药水及其制品的效果被削弱为原来的1/10")));
 
         changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);

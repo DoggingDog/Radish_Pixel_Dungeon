@@ -300,7 +300,7 @@ public class SPDSettings extends GameSettings {
 	}
 
 	public static boolean UpdateReady() {
-		return true;
+		return getBoolean( KEY_UPDATES, true );
 	}
 
 	public static void boatMeeted(boolean meet){put("boat_meeted",meet);}

@@ -1,12 +1,10 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MoonLightSprite;
@@ -59,24 +57,7 @@ public class MoonLight extends NPC{
             return true;
         }
 
-        if(SPDSettings.UpdateReady() && SPDSettings.challenges() == 0){
-            if(hastalk == 0){
-              GLog.i(Messages.get(this, "ta_msg" + hastalk));
-              hastalk++;
-            } else if (hastalk == 1){
-              GLog.i(Messages.get(this, "ta_msg" + hastalk));
-              hastalk++;
-            } else if (hastalk == 2){
-              GLog.i(Messages.get(this, "ta_msg" + hastalk));
-              hastalk = 13;
-              Generator.Category ca = Generator.Category.RING;
-              Ring w = (Ring) Reflection.newInstance(ca.classes[Random.chances(ca.probs)]);
-            w.cursed=false;
-            w.level(Random.NormalIntRange(2,3));
-            Dungeon.level.drop(w, c.pos);
-            SPDSettings.UpdateReady(false);
-            }
-        } else if (hastalk<2) {
+        if (hastalk<2) {
             GLog.i(Messages.get(this, "msg" + hastalk));
             hastalk++;
         } else if (hastalk==2){
@@ -86,7 +67,7 @@ public class MoonLight extends NPC{
             GLog.i(Messages.get(this,"loop"));
             
             
-        if (hastalk==3 && !SPDSettings.UpdateReady()) {
+        if (hastalk==3) {
             Generator.Category ca = Generator.Category.WEP_T1;
             MeleeWeapon w = (MeleeWeapon) Reflection.newInstance(ca.classes[Random.chances(ca.probs)]);
             w.cursed=false;

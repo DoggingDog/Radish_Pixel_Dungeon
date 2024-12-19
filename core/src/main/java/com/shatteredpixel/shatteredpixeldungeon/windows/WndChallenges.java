@@ -117,7 +117,7 @@ public class WndChallenges extends Window {
 			cb.checked((checked & Challenges.MASKS[i]) != 0);
 			cb.active = editable;
 
-			if(Challenges.NAME_IDS[i].equals("bad_point")){
+			if(Challenges.NAME_IDS[i].equals("bad_podyduiint")){
 				cb.active = false;
 				cb.checked(false);
 				cb.alpha(0.5f);

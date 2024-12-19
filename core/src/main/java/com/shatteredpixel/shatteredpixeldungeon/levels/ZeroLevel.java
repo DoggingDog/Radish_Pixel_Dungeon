@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Boat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MoonLight;
@@ -53,9 +52,9 @@ public class ZeroLevel extends Level {
         ));
 
         // 根据 UpdateReady() 的结果来决定是否加入 MoonLight.class
-        if (!SPDSettings.UpdateReady()) {
+
             npcList.add(MoonLight.class);
-        }
+
 
         // 将最终列表转化为数组
         zero_npc = npcList.toArray(new Class<?>[0]);
@@ -192,12 +191,6 @@ public class ZeroLevel extends Level {
             mobs.add(npcToAdd);
 
 
-        }
-
-        if(SPDSettings.UpdateReady() && SPDSettings.challenges()==0) {
-            MoonLight npc3 = new MoonLight();
-            npc3.pos = 27;
-            mobs.add(npc3);
         }
 
     }
