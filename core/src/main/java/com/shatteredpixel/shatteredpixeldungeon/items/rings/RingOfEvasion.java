@@ -33,26 +33,27 @@ public class RingOfEvasion extends Ring {
 	}
 
 	public String statsInfo() {
-		if (isIdentified()) {
+		if (isIdentified()){
 			String info = Messages.get(this, "stats",
-					Messages.decimalFormat("#.##", 100f * (0.2f * soloBuffedBonus())));
-			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)) {
+					Messages.decimalFormat("#.##", 100f * (Math.pow(1.2f, soloBuffedBonus()) - 1f)));
+			if (isEquipped(Dungeon.hero) && soloBuffedBonus() != combinedBuffedBonus(Dungeon.hero)){
 				info += "\n\n" + Messages.get(this, "combined_stats",
-						Messages.decimalFormat("#.##", 100f * (0.2f * combinedBuffedBonus(Dungeon.hero))));
+						Messages.decimalFormat("#.##", 100f * (Math.pow(1.2f, combinedBuffedBonus(Dungeon.hero)) - 1f)));
 			}
 			return info;
 		} else {
-			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 20f));
+			return Messages.get(this, "typical_stats", Messages.decimalFormat("#.##", 12.0f));
 		}
 	}
-	
+
+
 	@Override
 	protected RingBuff buff( ) {
 		return new Evasion();
 	}
-	
+
 	public static float evasionMultiplier( Char target ){
-		return 1 + 0.2f * getBuffedBonus(target, Evasion.class);
+		return (float) Math.pow( 1.2, getBuffedBonus(target, Evasion.class));
 	}
 
 	public class Evasion extends RingBuff {
