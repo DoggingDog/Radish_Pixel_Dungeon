@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.ArcaneResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -351,6 +352,25 @@ public class QuickRecipe extends Component {
 				result.add(new QuickRecipe( new ArcaneResin.Recipe(),
 						new ArrayList<Item>(Arrays.asList(new Wand.PlaceHolder())),
 						new ArcaneResin()));
+				//奥术精炼T4-4 实现
+				if (Dungeon.hero.pointsInTalent(Talent.MAGIC_REFINING) < 4) {
+					result.add(null);
+					result.add(null);
+				}
+				result.add(new QuickRecipe( new ArcaneResin.Recipe(),
+						new ArrayList<Item>(Arrays.asList(new Wand.PlaceHolder())),
+						new ArcaneResin()));
+				//奥术精炼T4-4 实现
+				if (Dungeon.hero.pointsInTalent(Talent.MAGIC_REFINING) >= 4) {
+					result.add(null);
+					result.add(null);
+					result.add(new QuickRecipe( new ArcaneResin.TalentRecipe(),
+							new ArrayList<Item>(Arrays.asList(
+									new UnstableSpell(),
+									new UnstableSpell(),
+									new UnstableSpell())),
+							new ArcaneResin()));
+				}
 				return result;
 			case 7:
 				result.add(new QuickRecipe(new UnstableBrew.Recipe(), new ArrayList<>(Arrays.asList(new Potion.PlaceHolder(), new  Plant.Seed.PlaceHolder())), new UnstableBrew()));

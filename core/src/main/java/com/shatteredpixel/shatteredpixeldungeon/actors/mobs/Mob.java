@@ -57,11 +57,13 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.Fe
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.DirectableAlly;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Surprise;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Wound;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.armor.AfterGlow;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.CrabArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
@@ -740,15 +742,26 @@ public abstract class Mob extends Char {
 			if (enemy != Dungeon.hero){
 				restoration = Math.round(restoration * 0.4f*Dungeon.hero.pointsInTalent(Talent.SOUL_SIPHON)/3f);
 			}
+
 			if (restoration > 0) {
 				Buff.affect(Dungeon.hero, Hunger.class).affectHunger(restoration*Dungeon.hero.pointsInTalent(Talent.SOUL_EATER)/3f);
+				int preHp=Dungeon.hero.HP;
 
-				if (Dungeon.hero.HP < Dungeon.hero.HT) {
-					int heal = (int)Math.ceil(restoration * 0.4f);
-					Dungeon.hero.HP = Math.min(Dungeon.hero.HT, Dungeon.hero.HP + heal);
-					Dungeon.hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(heal), FloatingText.HEALING);
+				if(hero.hasTalent(Talent.DESPERATE_POWER)){
+					float mulRate =mul4DesperatePower(this);
+					restoration = (int)(restoration * mulRate);
 				}
+
+				Dungeon.hero.HP = (int) Math.ceil(Math.min(Dungeon.hero.HT, Dungeon.hero.HP + (restoration * 0.4f)));
+
+				Dungeon.hero.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", Dungeon.hero.HP-preHp);
+				if (Dungeon.hero.buff(AfterGlow.Warmth.class)!=null){
+					Dungeon.hero.buff(AfterGlow.Warmth.class).getWarmth();
+				}
+
+				Dungeon.hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
 			}
+
 		}
 
 		return super.defenseProc(enemy, damage);
@@ -1428,6 +1441,19 @@ public abstract class Mob extends Char {
 		}
 
 		return damage;
+	}
+
+
+	public float mul4DesperatePower(Char enemy){
+		float lvDesPow = (float) hero.pointsInTalent(Talent.DESPERATE_POWER);
+		float stolenHpRate = ((float) this.HT-(float) this.HP)/(float) this.HT*2f;
+		float howMobDesperateThanBeforeMul = 1/(1-lvDesPow*0.125f) - 1;
+
+		stolenHpRate = stolenHpRate>1?1:stolenHpRate;
+		howMobDesperateThanBeforeMul *= stolenHpRate;
+		howMobDesperateThanBeforeMul = howMobDesperateThanBeforeMul>1?1:howMobDesperateThanBeforeMul;
+
+		return 1+howMobDesperateThanBeforeMul;
 	}
 
 	public static void clearHeldAllies(){

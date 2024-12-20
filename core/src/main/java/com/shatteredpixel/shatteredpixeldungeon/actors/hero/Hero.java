@@ -331,7 +331,7 @@ public class Hero extends Char {
 
 		float calm_bouns = 0;
 		if(buff(Calm.class)!=null){
-			calm_bouns = 3.02f;
+			calm_bouns = 0.02f;
 		}
 
 		return Math.min(critDamage+cdbouns,critDamageCap) * ( 1 + calm_bouns * 100 * ((float) (HT-HP) /HT)) ;
@@ -1591,7 +1591,7 @@ public class Hero extends Char {
 
 		return super.defenseProc( enemy, damage );
 	}
-
+	boolean isOnly = false;
 	@Override
 	public void damage( int dmg, Object src ) {
 		if (buff(TimekeepersHourglass.timeStasis.class) != null)
@@ -1687,37 +1687,46 @@ public class Hero extends Char {
 
 			int RH = resistHealth;
 
-			if(ankh != null && canResist){
+			if(ankh != null && canResist && !isOnly){
 				GameScene.show(new WndOptions(new ItemSprite(ItemSpriteSheet.ANKH),
 						Messages.get(Talent.PAIN_SCAR,"title"),
 						Messages.get(Talent.PAIN_SCAR,"desc"),
 						Messages.get(Talent.PAIN_SCAR,"prompt"),
 						Messages.get(Talent.PAIN_SCAR,"cancel")){
 					@Override
+					public void onBackPressed() {
+						//阻止玩家逃课
+					}
+					@Override
 					protected void onSelect(int index){
 						super.onSelect(index);
+						isOnly = true;
 						if( index == 0 ){
 							switch(pointsInTalent(Talent.PAIN_SCAR)){
 								case 1:
 									HT -= 20;
+									isOnly = false;
 									buff(Berserk.class).reducePower(0.2f);
 									GLog.n(Messages.get(Talent.PAIN_SCAR,"resistDeath"));
 									resistHealth +=20;
 									return;
 								case 2:
 									HT -= 15;
+									isOnly = false;
 									buff(Berserk.class).reducePower(0.15f);
 									GLog.n(Messages.get(Talent.PAIN_SCAR,"resistDeath"));
 									resistHealth += 15;
 									return;
 								case 3:
 									HT -= 10;
+									isOnly = false;
 									buff(Berserk.class).reducePower(0.1f);
 									GLog.n(Messages.get(Talent.PAIN_SCAR,"resistDeath"));
 									resistHealth += 10;
 									return;
 							}
 						}else if(index == 1 ){
+							isOnly = false;
 							die(src);
 						}
 					}
