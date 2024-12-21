@@ -1996,7 +1996,7 @@ public class Hero extends Char {
 			sprite.move(pos, step);
 			move(step);
 
-			spend( delay );
+			spend( 1 / (speed * speedAdj ));
 			justMoved = true;
 
 			search(false);

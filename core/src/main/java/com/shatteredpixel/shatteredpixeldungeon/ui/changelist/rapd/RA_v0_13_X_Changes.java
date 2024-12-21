@@ -40,6 +40,12 @@ public class RA_v0_13_X_Changes {
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LONG_STARK), "新武器：长棍",
+                "正式实装此武器，"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.TAIKIG), "新武器：大太刀",
+                "正式实装此武器"));
+
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WONDROUS_RESIN), "奇迹树脂",
                 "1.修复奇迹树脂不生效的问题\n" +
                         "2.同步诅咒法杖的破碎全新效果"));
@@ -53,6 +59,9 @@ public class RA_v0_13_X_Changes {
 
         changes.addButton(new ChangeButton(Icons.get(Icons.WARNING), ("新崩溃界面"),
                 ("由Cold Mint制作的新崩溃界面实装，什么，你连这位都不知道？萝卜的内部更新服务器接口就是薄荷姐姐提供的哦")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHANGES), ("内部更新系统"),
+                ("内部更新系统回归！")));
 
         changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战加强：伤痛难愈"),
                 ("新效果：冻肉露珠/诅咒法杖的吸血都受伤痛难愈的影响变为1")));
@@ -70,7 +79,8 @@ public class RA_v0_13_X_Changes {
                         "3.修复闪避之戒数值加成异常的问题\n" +
                         "4.修复部分楼层贴图异常\n" +
                         "5.修复狂战士物理伤害不加怒气的问题\n" +
-                        "修复法师天赋T4-短棍格斗1-3级不生效异常" ));
+                        "6.修复法师天赋T4-短棍格斗1-3级不生效异常\n" +
+                        "7.修复螃蟹护甲移速不生效的问题" ));
     }
 
     public static void add_v03_9_Changes( ArrayList<ChangeInfo> changeInfos ) {
