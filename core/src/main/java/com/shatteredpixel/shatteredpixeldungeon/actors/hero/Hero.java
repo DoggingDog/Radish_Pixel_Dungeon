@@ -80,6 +80,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -154,11 +155,13 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CelestialSphe
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KillBoatSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LockChain;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LongStick;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Quarterstaff;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rlyeh;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RoundShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scimitar;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Taijutsu;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
@@ -316,6 +319,21 @@ public class Hero extends Char {
 	public float critSkill(){
 		if (buff(RingOfTenacity.Tenacity.class)!=null) {return 0;}
 		float critbonus=0;
+
+		if(hero.belongings.weapon() instanceof Taijutsu && critDamage()>=3f){
+			return 100f;
+		}
+
+		if(hero.belongings.weapon() instanceof LongStick){
+			float Boost = 0;
+			if(Dungeon.hero!=null){
+				Boost += Dungeon.hero.defenseSkill(new Rat());
+				Boost -= Dungeon.hero.lvl;
+				Boost = Math.max(Boost,0);
+				Boost = Math.min(100f,Boost);
+			}
+			critbonus += Boost;
+		}
 
 		return critSkill+critbonus;
 	}
