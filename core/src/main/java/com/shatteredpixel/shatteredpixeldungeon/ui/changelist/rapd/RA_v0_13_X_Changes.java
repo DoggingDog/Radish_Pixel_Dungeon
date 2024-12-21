@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v03_X_Changes(changeInfos);
         add_v03_9_Changes(changeInfos);
         add_v03_8_Changes(changeInfos);
         add_v03_7_Changes(changeInfos);
@@ -28,6 +29,48 @@ public class RA_v0_13_X_Changes {
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v03_X_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.4.7", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.WONDROUS_RESIN), "奇迹树脂",
+                "1.修复奇迹树脂不生效的问题\n" +
+                        "2.同步诅咒法杖的破碎全新效果"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.LENGDS_PAGE), "育言故事",
+                "全新育言故事登场，在探索地牢时阅读一些野史！"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RING_AMETHYST), "T4天赋",
+                "1.战士和法师的T4恶魔天赋已经实装\n" +
+                        "2.部分天赋界面得到重制"));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.WARNING), ("新崩溃界面"),
+                ("由Cold Mint制作的新崩溃界面实装，什么，你连这位都不知道？萝卜的内部更新服务器接口就是薄荷姐姐提供的哦")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战加强：伤痛难愈"),
+                ("新效果：冻肉露珠/诅咒法杖的吸血都受伤痛难愈的影响变为1")));
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战修正：弱点洞悉"),
+                ("修复全局伤害加成问题")));
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "1.少量文本缺失补充\n" +
+                        "2.修复绝对闪避失效的问题\n" +
+                        "3.修复闪避之戒数值加成异常的问题\n" +
+                        "4.修复部分楼层贴图异常\n" +
+                        "5.修复狂战士物理伤害不加怒气的问题\n" +
+                        "修复法师天赋T4-短棍格斗1-3级不生效异常" ));
     }
 
     public static void add_v03_9_Changes( ArrayList<ChangeInfo> changeInfos ) {
