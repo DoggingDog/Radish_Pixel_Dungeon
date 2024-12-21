@@ -136,6 +136,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGlov
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Seekingspear;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Taijutsu;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
@@ -542,7 +543,8 @@ public abstract class Char extends Actor {
 					current_crit+=15f;
 				}
 			}
-			current_critdamage=Math.min(current_critdamage,critDamageCap);
+			if(!(hero.belongings.weapon() instanceof Taijutsu))
+				current_critdamage=Math.min(current_critdamage,critDamageCap);
 			if (this.buff(Scythe.scytheSac.class)!=null){
 				current_crit+=10f;
 				current_critdamage+=0.1f;
@@ -558,6 +560,7 @@ public abstract class Char extends Actor {
 			}
 
 			if (this.buff(RingOfTenacity.Tenacity.class)!=null) {current_crit=0;}
+
 			if (Random.Float()*100<current_crit || crit || (critDamage >= 3 && ( this instanceof Hero && hero.buff(CriticalAttack.class) != null))) {
 				dmg*=current_critdamage;
 				crit = true;
