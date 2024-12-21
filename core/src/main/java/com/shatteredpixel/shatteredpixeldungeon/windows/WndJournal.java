@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.windows;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
@@ -46,9 +47,9 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.journal.MobBestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
+import com.shatteredpixel.shatteredpixeldungeon.journal.MobBestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -1005,7 +1006,11 @@ public class WndJournal extends WndTabbed {
 						Image sprite = new Image(icon);
 						if (seen) {
 							if (ShatteredPixelDungeon.scene() instanceof GameScene){
-								GameScene.show(new WndStory(sprite, doc.pageTitle(page), doc.pageBody(page)));
+								if (doc ==  Document.LEGENDS_STORY){
+									GameScene.show(new WndScrollTitledMessage(sprite,  doc.pageTitle(page), doc.pageBody(page), 152, Chrome.Type.GEM));
+								} else {
+									GameScene.show(new WndStory(sprite, doc.pageTitle(page), doc.pageBody(page)));
+								}
 							} else {
 								ShatteredPixelDungeon.scene().addToFront(new WndStory(sprite, doc.pageTitle(page), doc.pageBody(page)));
 							}

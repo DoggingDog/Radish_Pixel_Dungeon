@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
@@ -36,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndChallenges;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndGame;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndJournal;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndScrollTitledMessage;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndStory;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.input.GameAction;
@@ -314,18 +316,24 @@ public class MenuPane extends Component {
 					WndJournal.last_index = 1;
 					GameScene.show( new WndJournal() );
 				} else if (flashingDoc.pageNames().contains(flashingPage)){
-					GameScene.show( new WndStory( flashingDoc.pageSprite(flashingPage),
-							flashingDoc.pageTitle(flashingPage),
-							flashingDoc.pageBody(flashingPage) ){
-						@Override
-						public void hide() {
-							super.hide();
-							if (SPDSettings.intro()){
-								GameScene.endIntro();
+					if (flashingDoc ==  Document.LEGENDS_STORY){
+						GameScene.show(new WndScrollTitledMessage(flashingDoc.pageSprite(flashingPage),
+								flashingDoc.pageTitle(flashingPage),
+								flashingDoc.pageBody(flashingPage), 152, Chrome.Type.GEM));
+					} else {
+						GameScene.show( new WndStory( flashingDoc.pageSprite(flashingPage),
+								flashingDoc.pageTitle(flashingPage),
+								flashingDoc.pageBody(flashingPage) ){
+							@Override
+							public void hide() {
+								super.hide();
+								if (SPDSettings.intro()){
+									GameScene.endIntro();
+								}
 							}
-						}
-					});
-					flashingDoc.readPage(flashingPage);
+						});
+						flashingDoc.readPage(flashingPage);
+					}
 				} else {
 					GameScene.show( new WndJournal() );
 				}

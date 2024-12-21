@@ -162,7 +162,8 @@ public class Dungeon {
 		LORE_PRISON,
 		LORE_CAVES,
 		LORE_CITY,
-		LORE_HALLS;
+		LORE_HALLS,
+		LORE_STORS;
 
 		public int count = 0;
 

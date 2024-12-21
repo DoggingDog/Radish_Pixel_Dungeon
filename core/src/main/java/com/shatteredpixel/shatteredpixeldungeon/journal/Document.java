@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.DeviceCompat;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -43,7 +44,8 @@ public enum Document {
 	PRISON_WARDEN(ItemSpriteSheet.PRISON_PAGE, true),
 	CAVES_EXPLORER(ItemSpriteSheet.CAVES_PAGE, true),
 	CITY_WARLOCK(ItemSpriteSheet.CITY_PAGE, true),
-	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true);
+	HALLS_KING(ItemSpriteSheet.HALLS_PAGE, true),
+	LEGENDS_STORY(ItemSpriteSheet.LENGDS_PAGE, true);
 
 	Document( int sprite, boolean lore ){
 		pageIcon = null;
@@ -72,10 +74,6 @@ public enum Document {
 		return false;
 	}
 
-	public boolean findPage( int pageIdx ) {
-		return findPage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
-	}
-
 	public boolean deletePage( String page ){
 		if (pagesStates.containsKey(page) && pagesStates.get(page) != NOT_FOUND){
 			pagesStates.put(page, NOT_FOUND);
@@ -83,23 +81,6 @@ public enum Document {
 			return true;
 		}
 		return false;
-	}
-
-	public boolean deletePage( int pageIdx ) {
-		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
-	}
-
-	public boolean unreadPage( String page ){
-		if (pagesStates.containsKey(page) && pagesStates.get(page) == READ){
-			pagesStates.put(page, FOUND);
-			Journal.saveNeeded = true;
-			return true;
-		}
-		return false;
-	}
-
-	public boolean unreadPage( int pageIdx ) {
-		return deletePage( pagesStates.keySet().toArray(new String[0])[pageIdx] );
 	}
 
 	public boolean isPageFound( String page ){
@@ -252,7 +233,7 @@ public enum Document {
 
 	//pages and default states
 	static {
-		boolean debug = true;
+		boolean debug = DeviceCompat.isDebug();
 		//hero gets these when guidebook is collected
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_INTRO,          debug ? READ : NOT_FOUND);
 		ADVENTURERS_GUIDE.pagesStates.put(GUIDE_EXAMINING,      debug ? READ : NOT_FOUND);
@@ -322,8 +303,19 @@ public enum Document {
 		HALLS_KING.pagesStates.put("ritual",                    debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("new_king",                  debug ? READ : NOT_FOUND);
 		HALLS_KING.pagesStates.put("thing",                     debug ? READ : NOT_FOUND);
-		HALLS_KING.pagesStates.put(KING_ATTRITION,              debug ? NOT_FOUND : NOT_FOUND);
+		HALLS_KING.pagesStates.put(KING_ATTRITION,              	debug ? READ : NOT_FOUND);
 
+		LEGENDS_STORY.pagesStates.put("REN_vs_LVB",                 	debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("LVB_Story",                 	debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("Free_Fly",                 	debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("SkyWindows_Sword",            debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("NoSync_Enter",                debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("Body_sendSun",                debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("Cut_Future",                 	debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("ATRI",                 		debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("LvBuyOrange",                 debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("LvGold",                 		debug ? READ : NOT_FOUND);
+		LEGENDS_STORY.pagesStates.put("Lv_Trigger",                 	debug ? READ : NOT_FOUND);
 	}
 
 	private static final String DOCUMENTS = "documents";
