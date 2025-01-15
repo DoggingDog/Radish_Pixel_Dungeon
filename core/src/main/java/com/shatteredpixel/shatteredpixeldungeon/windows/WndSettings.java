@@ -420,6 +420,7 @@ public class WndSettings extends WndTabbed {
 		CheckBox chkFont;
 		CheckBox chkVibrate;
 		CheckBox origri_map;
+		CheckBox origri_normal;
 
 		@Override
 		protected void createChildren() {
@@ -663,6 +664,16 @@ public class WndSettings extends WndTabbed {
 			};
 			origri_map.checked(SPDSettings.origin_map());
 			add(origri_map);
+
+			origri_normal = new CheckBox(Messages.get(this, "origin_normal")){
+				@Override
+				protected void onClick() {
+					super.onClick();
+					SPDSettings.NORMAL_SKIN(checked());
+				}
+			};
+			origri_normal.checked(SPDSettings.NORMAL_SKIN());
+			add(origri_normal);
 		}
 
 		@Override
@@ -704,12 +715,14 @@ public class WndSettings extends WndTabbed {
 				chkFont.setRect(0, sep2.y + 1 + GAP, width/2-1, BTN_HEIGHT);
 				chkVibrate.setRect(chkFont.right()+2, chkFont.top(), width/2-1, BTN_HEIGHT);
 				origri_map.setRect(0, chkVibrate.bottom(), width/2-1, BTN_HEIGHT);
+				origri_normal.setRect(origri_map.right()+2, origri_map.top(), width/2-1, BTN_HEIGHT);
             } else {
 				chkFont.setRect(0, sep2.y + 1 + GAP, width, BTN_HEIGHT);
 				chkVibrate.setRect(0, chkFont.bottom() + GAP, width, BTN_HEIGHT);
 				origri_map.setRect(0, chkVibrate.bottom() + GAP, width, BTN_HEIGHT);
+				origri_normal.setRect(0, origri_map.bottom() + GAP, width, BTN_HEIGHT);
             }
-            height = origri_map.bottom();
+            height = origri_normal.bottom();
         }
 
 	}

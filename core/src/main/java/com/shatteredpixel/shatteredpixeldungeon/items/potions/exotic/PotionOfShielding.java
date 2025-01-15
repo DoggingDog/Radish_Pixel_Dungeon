@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -37,8 +39,13 @@ public class PotionOfShielding extends ExoticPotion {
 	@Override
 	public void apply(Hero hero) {
 		identify();
+		if (Dungeon.isChallenged(Challenges.DAMAGE_NO)){
+			Buff.affect(hero, Barrier.class).setShield((int) (0.6f * hero.HT + 10)/10);
+			hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString((int) (0.6f * hero.HT + 10)/10), FloatingText.SHIELDING );
+		} else {
+			Buff.affect(hero, Barrier.class).setShield((int) (0.6f * hero.HT + 10));
+			hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString((int) (0.6f * hero.HT + 10)), FloatingText.SHIELDING );
+		}
 
-		Buff.affect(hero, Barrier.class).setShield((int) (0.6f * hero.HT + 10));
-		hero.sprite.showStatusWithIcon( CharSprite.POSITIVE, Integer.toString((int) (0.6f * hero.HT + 10)), FloatingText.SHIELDING );
 	}
 }

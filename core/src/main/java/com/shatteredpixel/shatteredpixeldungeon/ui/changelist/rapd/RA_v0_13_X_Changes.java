@@ -8,6 +8,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RadishEnemySprite.GiantWormSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeButton;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v04_1_Changes(changeInfos);
         add_v03_X_Changes(changeInfos);
         add_v03_9_Changes(changeInfos);
         add_v03_8_Changes(changeInfos);
@@ -29,6 +31,60 @@ public class RA_v0_13_X_Changes {
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v04_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.4.8->R2", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.DISPLAY), ("破碎 & 萝卜 UI"),
+                ("现在萝卜地牢默认萝卜UI,如果不习惯可在界面设置中调回破碎经典界面。")));
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 8), ("战士4层恶魔天赋"),
+                ("战士恶魔天赋，完全实装，欢迎尝鲜")));
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.MAGE, 8), ("法师4层恶魔天赋"),
+                ("除'缠怨恶灵'天赋禁用外，其他完全实装，欢迎尝鲜")));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.SEED_CARD), "新初始物品：种子袋",
+                "弥补开局关卡运营问题，可以自选一个种子，腐莓种除外，只能使用一次。"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.STONE_CRAD), "新初始物品：符石袋",
+                "弥补开局关卡运营问题，可以自选一个符石，只能使用一次。"));
+
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+
+        changes.addButton(new ChangeButton(new Image(new GiantWormSprite()), ("巨型蠕虫平衡调整"),
+                ("巨型蠕虫的吸血现在固定为1。")));
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 3), ("战士初始武器强化"),
+                ("战士初始武器基准提升至2-10，成长基准为1-2。")));
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.MAGE, 4), ("法师初始武器强化"),
+                ("法师初始武器基准提升至1-8，成长为1-2。")));
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.ROGUE, 5), ("盗贼初始武器强化"),
+                ("盗贼初始武器基准提升至1-9，成长为1-2。")));
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.HUNTRESS, 6), ("女猎初始武器强化"),
+                ("女猎灵能弓箭伤害强化，从1-6提升到2-6基准数值。")));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战平衡：精英强敌"),
+                ("精英怪生成概率由原先的1/8，调整为1/10")));
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "1.修复DM-175护盾异常问题\n" +
+                        "2.修复部分天赋不生效的问题\n" +
+                        "3.修复伤痛难愈部分挑战未生效的问题" ));
     }
 
     public static void add_v03_X_Changes( ArrayList<ChangeInfo> changeInfos ) {

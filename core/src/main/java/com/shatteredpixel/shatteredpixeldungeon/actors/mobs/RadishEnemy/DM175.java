@@ -48,11 +48,6 @@ public class DM175 extends Mob {
         HP = HT = 20;
         defenseSkill = 14;
 
-        //TODO IDEA解析问题 实际为生效状态
-        if(!onlyShield){
-            Buff.affect(this,Barrier.class).setShield(60);
-        }
-
         EXP = 7;
         maxLvl = 17;
 
@@ -275,7 +270,8 @@ public class DM175 extends Mob {
 
     @Override
     protected boolean act() {
-        if (!onlyShield){
+        if(!onlyShield  && Dungeon.level.heroFOV[pos]){
+            Buff.affect(this, Barrier.class).setShield(60);
             onlyShield = true;
         }
         return super.act();

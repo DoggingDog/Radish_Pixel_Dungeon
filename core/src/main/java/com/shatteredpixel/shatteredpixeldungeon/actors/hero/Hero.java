@@ -683,6 +683,10 @@ public class Hero extends Char {
 			}
 		}
 
+		if (hasTalent(Talent.MOVING_DEFENSE) && pointsInTalent(Talent.MOVING_DEFENSE)>3)
+			if (shielding()>0)
+				dr+=Random.NormalIntRange(2,8);
+
 		if (belongings.armor() != null) {
 			int armDr = Char.combatRoll( belongings.armor().DRMin(), belongings.armor().DRMax());
 			if (STR() < belongings.armor().STRReq()){
@@ -709,7 +713,15 @@ public class Hero extends Char {
 		if (!RingOfForce.fightingUnarmed(this)) {
 			dmg = wep.damageRoll( this );
 
-			if (!(wep instanceof MissileWeapon)) dmg += RingOfForce.armedDamageBonus(this);
+			if (!(wep instanceof MissileWeapon)){
+				dmg += RingOfForce.armedDamageBonus(this);
+				if (hasTalent(Talent.DEVASTATE)){
+					if (buff(Combo.class)!=null){
+						int c=Math.min(buff(Combo.class).getComboCount(),10);
+						dmg+=Random.NormalIntRange(0,pointsInTalent(Talent.DEVASTATE)*c);
+					}
+				}
+			}
 		} else {
 			dmg = RingOfForce.damageRoll(this);
 			if (RingOfForce.unarmedGetsWeaponAugment(this)){
@@ -1600,6 +1612,11 @@ public class Hero extends Char {
 
 		if (belongings.armor() != null) {
 			damage = belongings.armor().proc( enemy, this, damage );
+		}
+
+		if (subClass == HeroSubClass.GLADIATOR && hasTalent(Talent.DEFENSIVE_STRIKE)){
+			if (Random.Float()<0.25F*pointsInTalent(Talent.DEFENSIVE_STRIKE))
+				Buff.affect( this, Combo.class ).hit();
 		}
 
 		WandOfLivingEarth.RockArmor rockArmor = buff(WandOfLivingEarth.RockArmor.class);

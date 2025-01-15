@@ -65,6 +65,8 @@ import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.generator.TestTa
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
+import com.shatteredpixel.shatteredpixeldungeon.items.alive.SeedOfCard;
+import com.shatteredpixel.shatteredpixeldungeon.items.alive.StoneOfCard;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClothArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
@@ -209,6 +211,10 @@ public enum HeroClass {
 		//[TEST MODE]
 		if (Dungeon.isChallenged(Challenges.TEST_MODE))
 			doChallengeSpawn(hero);
+
+
+		new StoneOfCard().collect();
+		new SeedOfCard().collect();
 
 		hero.heroClass = this;
 		Talent.initClassTalents(hero);

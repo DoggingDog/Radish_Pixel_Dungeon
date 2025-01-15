@@ -44,7 +44,7 @@ public class Chrome {
 	}
 	
 	public static NinePatch get( Type type ) {
-		String Asset = Assets.Interfaces.CHROME;
+		String Asset = !SPDSettings.NORMAL_SKIN() ? Assets.Interfaces.CHROME : Assets.Interfaces.NORMAL_CHROME;
 		switch (type) {
 		case WINDOW:
 			return new NinePatch( Asset, 0, 0, 20, 20, 6 );

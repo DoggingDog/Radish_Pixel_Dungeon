@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -44,7 +45,12 @@ public class ElixirOfAquaticRejuvenation extends Elixir {
 	
 	@Override
 	public void apply(Hero hero) {
-		Buff.affect(hero, AquaHealing.class).set(Math.round(hero.HT * 1.5f));
+		if (Dungeon.isChallenged(Challenges.DAMAGE_NO)){
+			Buff.affect(hero, AquaHealing.class).set(Math.round(hero.HT * 1.5f)/10);
+		} else {
+			Buff.affect(hero, AquaHealing.class).set(Math.round(hero.HT * 1.5f));
+		}
+
 	}
 	
 	public static class AquaHealing extends Buff {

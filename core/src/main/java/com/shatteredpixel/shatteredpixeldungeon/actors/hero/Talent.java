@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.SpellSprite;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
@@ -706,6 +707,16 @@ public enum Talent {
 				&& enemy.buff(SuckerPunchTracker.class) == null){
 			dmg += Random.IntRange(hero.pointsInTalent(Talent.SUCKER_PUNCH) , 2);
 			Buff.affect(enemy, SuckerPunchTracker.class);
+		}
+
+		if (hero.hasTalent(THIRSTY_BLADE)){
+			int restoration = Math.round(dmg* hero.pointsInTalent(THIRSTY_BLADE)*0.02f);
+			if (restoration > 0) {
+				int preHp=hero.HP;
+				hero.HP = Math.min(hero.HT, hero.HP + restoration);
+				hero.sprite.showStatus(CharSprite.POSITIVE, "+%dHP", hero.HP-preHp);
+				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), 1);
+			}
 		}
 
 		if (hero.hasTalent(Talent.LINGERING_MAGIC)

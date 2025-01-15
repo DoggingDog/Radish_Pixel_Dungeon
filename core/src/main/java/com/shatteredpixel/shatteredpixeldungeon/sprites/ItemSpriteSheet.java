@@ -967,6 +967,9 @@ public class ItemSpriteSheet {
 	public static final int VIAL        = BAGS+6;
 	public static final int HERB_MAKER  = BAGS+7;
 	public static final int HERB	    = BAGS+8;
+
+	public static final int STONE_CRAD	    = BAGS+10;
+	public static final int SEED_CARD	    = BAGS+11;
 	static{
 		assignItemRect(WATERSKIN,   16, 14);
 		assignItemRect(BACKPACK,    16, 16);

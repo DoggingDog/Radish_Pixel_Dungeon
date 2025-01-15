@@ -483,4 +483,16 @@ public class SPDSettings extends GameSettings {
 	public static boolean windowMaximized(){
 		return getBoolean( KEY_WINDOW_MAXIMIZED, false );
 	}
+
+
+	public static final String KEY_NORMAL = "window_maximized";
+
+	public static void NORMAL_SKIN( boolean value ){
+		put( KEY_NORMAL, value );
+	}
+
+	public static boolean NORMAL_SKIN(){
+		return getBoolean( KEY_NORMAL, false );
+	}
+
 }

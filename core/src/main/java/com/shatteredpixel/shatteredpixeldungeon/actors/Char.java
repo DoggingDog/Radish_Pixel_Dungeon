@@ -38,6 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bleeding;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
@@ -93,6 +94,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Torturer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Wraith;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.MirrorImage;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.PrismaticImage;
 import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.ImmortalShieldAffecter;
@@ -174,6 +176,8 @@ public abstract class Char extends Actor {
 
 	public int HT;
 	public int HP;
+
+	public int DefendProKill = 3;
 
 	// change from budding
 	protected float critSkill=0;
@@ -347,6 +351,8 @@ public abstract class Char extends Actor {
 	protected static final String TAG_SHLD  = "SHLD";
 	protected static final String BUFFS	    = "buffs";
 
+	protected static final String KILL_PREF	    = "kill_pref";
+
 	/**
 	 * CRIT BUNDLE
 	 */
@@ -363,6 +369,9 @@ public abstract class Char extends Actor {
 
 		bundle.put( POS, pos );
 		bundle.put( TAG_HP, HP );
+
+		bundle.put( KILL_PREF, DefendProKill );
+
 		bundle.put( TAG_HT, HT );
 		bundle.put( BUFFS, buffs );
 
@@ -376,6 +385,8 @@ public abstract class Char extends Actor {
 	public void restoreFromBundle( Bundle bundle ) {
 
 		super.restoreFromBundle( bundle );
+
+		DefendProKill = bundle.getInt(KILL_PREF);
 
 		pos = bundle.getInt( POS );
 		HP = bundle.getInt( TAG_HP );
@@ -718,6 +729,12 @@ public abstract class Char extends Actor {
 
 		if (defender instanceof Hero && ((Hero) defender).damageInterrupt){
 			((Hero) defender).interrupt();
+		}
+
+		if (defender.buff(AfterImage.absoluteEvasion.class)!=null && defender instanceof Wraith){
+
+			Buff.detach(defender, AfterImage.absoluteEvasion.class);
+			return false;
 		}
 
 		if (defender.buff(AfterImage.absoluteEvasion.class)!=null){
@@ -1350,6 +1367,21 @@ public abstract class Char extends Actor {
 				result *= 0.5f;
 			}
 		}
+
+		if (this instanceof Hero && ((Hero)this).hasTalent(Talent.IRON_MUSCLE)){
+			int lvl=((Hero)this).pointsInTalent(Talent.IRON_MUSCLE);
+			if (Bleeding.class.isAssignableFrom(effect)){
+				result*=0.5f;
+			}
+			if (Cripple.class.isAssignableFrom(effect) && lvl>1){
+				result*=0.5f;
+			}
+			if (Blindness.class.isAssignableFrom(effect) && lvl>2){
+				result*=0.5f;
+			}
+		}
+
+
 		return result * RingOfElements.resist(this, effect);
 	}
 

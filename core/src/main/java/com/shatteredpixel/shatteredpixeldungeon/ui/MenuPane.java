@@ -74,7 +74,7 @@ public class MenuPane extends Component {
 	protected void createChildren() {
 		super.createChildren();
 
-		bg = new Image(Assets.Interfaces.MENU);
+		bg = new Image(!SPDSettings.NORMAL_SKIN() ? Assets.Interfaces.MENU : Assets.Interfaces.NORMAL_MENU);
 		add(bg);
 
 		depthIcon = Icons.get(Dungeon.level.feeling);
@@ -236,10 +236,10 @@ public class MenuPane extends Component {
 		protected void createChildren() {
 			super.createChildren();
 
-			bg = new Image( Assets.Interfaces.MENU_BTN, 2, 2, 13, 11 );
+			bg = new Image( !SPDSettings.NORMAL_SKIN() ? Assets.Interfaces.MENU_BTN : Assets.Interfaces.NORMAL_MENU_BTN, 2, 2, 13, 11 );
 			add( bg );
 
-			journalIcon = new Image( Assets.Interfaces.MENU_BTN, 31, 0, 11, 7);
+			journalIcon = new Image( !SPDSettings.NORMAL_SKIN() ? Assets.Interfaces.MENU_BTN : Assets.Interfaces.NORMAL_MENU_BTN, 31, 0, 11, 7);
 			add( journalIcon );
 
 			keyIcon = new KeyDisplay();
@@ -364,7 +364,7 @@ public class MenuPane extends Component {
 		protected void createChildren() {
 			super.createChildren();
 
-			image = new Image( Assets.Interfaces.MENU_BTN, 17, 2, 12, 11 );
+			image = new Image( !SPDSettings.NORMAL_SKIN() ? Assets.Interfaces.MENU_BTN : Assets.Interfaces.NORMAL_MENU_BTN, 17, 2, 12, 11 );
 			add( image );
 		}
 
