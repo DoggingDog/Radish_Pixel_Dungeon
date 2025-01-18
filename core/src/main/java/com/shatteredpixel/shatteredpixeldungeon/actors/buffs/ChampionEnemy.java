@@ -28,6 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EliteBadge;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -86,13 +87,17 @@ public abstract class ChampionEnemy extends Buff {
 	}
 
 	public static void rollForChampion(Mob m){
-		// 将 mobsToChampion 的初始值改为 10
-		if (Dungeon.mobsToChampion <= 0) Dungeon.mobsToChampion = 10;
-
+		boolean cursed_badge=(Dungeon.hero.buff(EliteBadge.badgeRecharge.class)!=null && Dungeon.hero.buff(EliteBadge.badgeRecharge.class).isCursed());
+		if (Dungeon.mobsToChampion <= 0) {
+			Dungeon.mobsToChampion = 10;
+			if (Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES) && cursed_badge)
+				Dungeon.mobsToChampion = 5;
+		}
 		Dungeon.mobsToChampion--;
 
-		// 我们仍然滚动生成精英敌人，确保 mobsToChampion 不影响随机数生成（即调用 Random.Int() 的次数是恒定的）
-		Class<? extends ChampionEnemy> buffCls;
+		//we roll for a champion enemy even if we aren't spawning one to ensure that
+		//mobsToChampion does not affect levelgen RNG (number of calls to Random.Int() is constant)
+		Class<?extends ChampionEnemy> buffCls;
 		switch (Random.Int(6)){
 			case 0: default:    buffCls = Blazing.class;      break;
 			case 1:             buffCls = Projecting.class;   break;
@@ -102,8 +107,7 @@ public abstract class ChampionEnemy extends Buff {
 			case 5:             buffCls = Growing.class;      break;
 		}
 
-		// 如果 mobsToChampion 小于或等于 0，并且开启了精英敌人挑战，应用精英buff并将敌人设为游荡状态
-		if (Dungeon.mobsToChampion <= 0 && Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)) {
+		if (Dungeon.mobsToChampion <= 0 && (Dungeon.isChallenged(Challenges.CHAMPION_ENEMIES)||cursed_badge)) {
 			Buff.affect(m, buffCls);
 			m.state = m.WANDERING;
 		}

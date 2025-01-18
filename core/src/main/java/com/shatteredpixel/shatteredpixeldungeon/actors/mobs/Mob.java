@@ -65,6 +65,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.AfterGlow;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.CrabArmor;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EliteBadge;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.MasterThievesArmband;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.ExoticPotion;
@@ -907,6 +908,8 @@ public abstract class Mob extends Char {
 
 		super.die( cause );
 
+		EliteBadgeGetEnergy();
+
 		if (!(this instanceof Wraith)
 				&& soulMarked
 				&& Random.Float() < (0.4f*Dungeon.hero.pointsInTalent(Talent.NECROMANCERS_MINIONS)/3f)){
@@ -1428,6 +1431,33 @@ public abstract class Mob extends Char {
 						}
 					}
 				}
+			}
+		}
+	}
+
+	//精英证章充能方法
+	private void EliteBadgeGetEnergy(){
+		EliteBadge.badgeRecharge bad = Dungeon.hero.buff(EliteBadge.badgeRecharge.class);
+		if (bad != null && this.alignment==Alignment.ENEMY) {
+			int ge=10;
+			float gc=0.5f+bad.itemLevel()*0.1f;
+			boolean iselite=false;
+			for (Buff b:buffs()){
+				if (b instanceof ChampionEnemy){
+					iselite=true;
+				}
+			}
+			if (iselite) {
+				ge=(5+(Dungeon.scalingDepth()-1)/5)*10;
+				gc=4f+bad.itemLevel()*0.4f;
+			}
+			if ( this instanceof RipperDemon || this instanceof Ghoul){
+				ge/=2;
+				gc/=2f;
+			}
+			if (!(this instanceof Wraith)) {
+				bad.gainExp(ge);
+				bad.gainCharge(gc*0.85f);
 			}
 		}
 	}
