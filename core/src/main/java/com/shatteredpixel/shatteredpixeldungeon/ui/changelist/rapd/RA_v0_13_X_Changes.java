@@ -9,6 +9,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RadishEnemySprite.GiantWormSprite;
+import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeButton;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v04_2_Changes(changeInfos);
         add_v04_1_Changes(changeInfos);
         add_v03_X_Changes(changeInfos);
         add_v03_9_Changes(changeInfos);
@@ -31,6 +33,45 @@ public class RA_v0_13_X_Changes {
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v04_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.4.9-R3", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 8), ("战士天赋：精巧纹章"),
+                ("修复 精巧纹章不生效 和 天赋2阶强化不生效")));
+
+        changes.addButton(new ChangeButton(new Image(new RatKingSprite()), ("鼠王优化"),
+                ("对于有恶魔之力的英雄，鼠王会有新的特殊对话。")));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_ELTIE7), "精英证章",
+                "功能修正：精英证章充能异常和其他小问题"));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.ARTIFACT_CONCEAL), "匿踪斗篷",
+                "功能修正：匿踪斗篷充能异常修正"));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.CHALLENGE_ON), ("挑战重制：荒芜之地"),
+                ("草本身也不是很能在地牢里长的多好……\n\n-在每区，有50%/60%/70%/80%/90%的草变为枯草，额外生成的草也遵循此规律。\n\n之前的荒芜之地挑战规则全部废弃")));
+
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "_-_1、修复法术序列实际效果与描述不符\n" +
+                            "_-_2、修复藤蔓陷阱天赋失效\n" +
+                            "_-_3、修复获得小恶魔的恶魔之力后回去见鼠王并没有特殊互动\n" +
+                            "_-_4、修复奇迹树脂描述有问题，但实际效果没问题\n" +
+                            "_-_5、修复匿踪斗篷不随使用而升级，修复精英证章无法充能和其他异常\n" +
+                            "_-_6、修复仍有一些原版武器在生成池中未被删掉，但保留【十字弩】\n" +
+                            "_-_7、 修复盗贼一层天赋的小干粮 和 矿洞任务文本缺失" ));
     }
 
     public static void add_v04_1_Changes( ArrayList<ChangeInfo> changeInfos ) {
