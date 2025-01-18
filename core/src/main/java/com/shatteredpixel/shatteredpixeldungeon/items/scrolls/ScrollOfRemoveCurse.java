@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Stubbornness;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -125,6 +126,13 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			}
 			if (item instanceof Weapon){
 				Weapon w = (Weapon) item;
+				// DoggingDog 20241223
+				if(w.hasCurseEnchant()&& !((Stubbornness)(w.enchantment)).isRemoveOnce() && w.enchantment instanceof Stubbornness ){
+					procced = true;
+					((Stubbornness)(w.enchantment)).setRemovedOnce();
+					continue;
+				}
+				//
 				if (w.hasCurseEnchant()){
 					w.enchant(null);
 					procced = true;

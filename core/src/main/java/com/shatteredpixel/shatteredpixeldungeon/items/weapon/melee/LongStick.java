@@ -38,7 +38,8 @@ public class LongStick extends MeleeWeapon {
             Boost *= 0.01f;
             Boost = Math.min(1f,Boost);
         }
-        return baseDelay(owner) * (1f/speedMultiplier(owner)) - Boost;
+        float dF = baseDelay(owner) * (1f/speedMultiplier(owner)) - Boost;
+        return Math.max(dF,0.1f);
     }
 
 
