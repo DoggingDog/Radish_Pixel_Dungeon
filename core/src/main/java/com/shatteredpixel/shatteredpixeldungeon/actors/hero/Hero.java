@@ -112,6 +112,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.AlchemistsToolkit;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CapeOfThorns;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfConcealment;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.EtherealChains;
@@ -2124,6 +2125,9 @@ public class Hero extends Char {
 		EtherealChains.chainsRecharge chains = buff(EtherealChains.chainsRecharge.class);
 		if (chains != null) chains.gainExp(percent);
 
+		CloakOfConcealment.conceal concealment = buff(CloakOfConcealment.conceal.class);
+		if (concealment!=null) concealment.gainExp(exp);
+
 		HornOfPlenty.hornRecharge horn = buff(HornOfPlenty.hornRecharge.class);
 		if (horn != null) horn.gainCharge(percent);
 
@@ -2256,6 +2260,9 @@ public class Hero extends Char {
 			stealth = belongings.armor().stealthFactor(this, stealth);
 		}
 
+		//匿踪斗篷方法
+		if (buff(CloakOfConcealment.Disposed.class)!=null)
+			stealth-=4f;
 		return stealth;
 	}
 
