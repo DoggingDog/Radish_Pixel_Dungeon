@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor.Glyph;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -73,7 +74,7 @@ public class Viscosity extends Glyph {
 			int level = Math.max( 0, this.level );
 
 			float percent = (level+1)/(float)(level+6);
-			percent *= genericProcChanceMultiplier(target);
+			percent *= RingOfArcana.enchantPowerMultiplier(target)*target.talentProc();
 
 			int amount;
 			if (percent > 1f){

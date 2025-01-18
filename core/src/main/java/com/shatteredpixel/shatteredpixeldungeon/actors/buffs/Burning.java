@@ -31,12 +31,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Thief;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Brimstone;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.ChargrilledMeat;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.FrozenCarpaccio;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -181,7 +181,7 @@ public class Burning extends Buff implements Hero.Doom {
 					&& ((Hero) ch).belongings.armor() != null
 					&& ((Hero) ch).belongings.armor().hasGlyph(Brimstone.class, ch)){
 				//generate avg of 1 shield per turn per 50% boost, to a max of 4x boost
-				float shieldChance = 2*(Armor.Glyph.genericProcChanceMultiplier(ch) - 1f);
+				float shieldChance = 2*(RingOfArcana.enchantPowerMultiplier(ch)*ch.talentProc() - 1f);
 				int shieldCap = Math.round(shieldChance*4f);
 				int shieldGain = (int)shieldChance;
 				if (Random.Float() < shieldChance%1) shieldGain++;

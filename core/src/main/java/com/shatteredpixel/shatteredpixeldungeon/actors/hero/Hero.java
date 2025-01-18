@@ -2883,6 +2883,10 @@ public class Hero extends Char {
 		}
 	}
 
-
+	@Override
+	public float talentProc(){
+		if (hasTalent(Talent.RUNIC_TRANSFERENCE) && (pointsInTalent(Talent.RUNIC_TRANSFERENCE)>1)) return 1.25f;
+		return super.talentProc();
+	}
 
 }
