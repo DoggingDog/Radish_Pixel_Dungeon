@@ -444,8 +444,7 @@ public class CursedWand {
 
 			if (Dungeon.level.map[pos] != Terrain.ALCHEMY
 					&& !Dungeon.level.pit[pos]
-					&& Dungeon.level.traps.get(pos) == null
-					&& !Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+					&& Dungeon.level.traps.get(pos) == null) {
 				return true;
 			} else {
 				return false;

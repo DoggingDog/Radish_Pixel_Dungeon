@@ -22,14 +22,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.plants;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barkskin;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -58,18 +55,18 @@ public abstract class Plant implements Bundlable {
 	public void trigger(){
 
 		Char ch = Actor.findChar(pos);
-
-		if (ch instanceof Hero){
-			((Hero) ch).interrupt();
+		if (!(this instanceof VineTrap)) {
+			if (ch instanceof Hero) {
+				((Hero) ch).interrupt();
+			}
+			wither();
+			activate(ch);
+		}else {
+			if (ch == null || ch.alignment == Char.Alignment.ENEMY){
+				wither();
+				activate(ch);
+			}
 		}
-
-//		if (Dungeon.level.heroFOV[pos] && Dungeon.hero.hasTalent(Talent.NATURES_AID)){
-//			// 3/5 turns based on talent points spent
-//			Barkskin.conditionallyAppend(Dungeon.hero, 2, 1 + 2*(Dungeon.hero.pointsInTalent(Talent.NATURES_AID)));
-//		}
-
-		wither();
-		activate( ch );
 	}
 	
 	public abstract void activate( Char ch );
@@ -147,8 +144,7 @@ public abstract class Plant implements Bundlable {
 		protected void onThrow( int cell ) {
 			if (Dungeon.level.map[cell] == Terrain.ALCHEMY
 					|| Dungeon.level.pit[cell]
-					|| Dungeon.level.traps.get(cell) != null
-					|| Dungeon.isChallenged(Challenges.NO_HERBALISM)) {
+					|| Dungeon.level.traps.get(cell) != null ) {
 				super.onThrow( cell );
 			} else {
 				Dungeon.level.plant( this, cell );

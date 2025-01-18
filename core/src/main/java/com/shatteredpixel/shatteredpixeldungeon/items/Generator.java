@@ -496,7 +496,7 @@ public class Generator {
 					LockChain.class,
 					LongStick.class,
 			};
-			WEP_T3.probs = new float[]{ 5, 5, 5, 5, 6, 5, 5, 5, 5 };
+			WEP_T3.probs = new float[]{ 5, 5, 0, 5, 6, 5, 5, 5, 5 };
 
 			WEP_T3_NEW.classes = new Class<?>[]{
 					Beecomb.class,
@@ -522,7 +522,7 @@ public class Generator {
 					EndGuard.class,
 					ShadowBooks.class,
 			};
-			WEP_T4.probs = new float[]{ 5, 5, 5, 5, 5, 0, 5, 0, 5, 5, 5 };
+			WEP_T4.probs = new float[]{ 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5 };
 
 			WEP_T4_NEW.classes = new Class<?>[]{
 					Bloodblade.class,
@@ -552,7 +552,7 @@ public class Generator {
 					KillBoatSword.class
 
 			};
-			WEP_T5.probs = new float[]{ 5, 5, 5, 5, 5, 5, 5, 5, 7, 5 };
+			WEP_T5.probs = new float[]{ 5, 5, 0, 5, 5, 5, 5, 5, 7, 5 };
 
 			WEP_T5_NEW.classes = new Class<?>[]{
 					Cutterhead.class,
