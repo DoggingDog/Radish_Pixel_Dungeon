@@ -208,7 +208,7 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 				curItem.detach(curUser.belongings.backpack);
 			}
 			identifiedByUse = false;
-			
+
 			INSTANCE = this;
 
 			this.replacing = replacing;

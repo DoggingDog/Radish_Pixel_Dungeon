@@ -36,7 +36,7 @@ public class RA_v0_13_X_Changes {
     }
 
     public static void add_v04_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
-        ChangeInfo changes = new ChangeInfo("v0.4.9-R3", true, "");
+        ChangeInfo changes = new ChangeInfo("v0.4.9-R3->R4", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
@@ -65,13 +65,23 @@ public class RA_v0_13_X_Changes {
         changeInfos.add(changes);
 
         changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-                "_-_1、修复法术序列实际效果与描述不符\n" +
-                            "_-_2、修复藤蔓陷阱天赋失效\n" +
-                            "_-_3、修复获得小恶魔的恶魔之力后回去见鼠王并没有特殊互动\n" +
-                            "_-_4、修复奇迹树脂描述有问题，但实际效果没问题\n" +
-                            "_-_5、修复匿踪斗篷不随使用而升级，修复精英证章无法充能和其他异常\n" +
-                            "_-_6、修复仍有一些原版武器在生成池中未被删掉，但保留【十字弩】\n" +
-                            "_-_7、 修复盗贼一层天赋的小干粮 和 矿洞任务文本缺失" ));
+
+                "_-_V0.4.9-R4\n" +
+                        "_-_ 修复战士1-1天赋，低于50%不生效异常\n" +
+                        "_-_ 修复顽疾诅咒带来的各种严重闪退问题，并追加了特殊文本\n" +
+                        "_-_ 修复因处理精巧纹章带来的各种底层异常，包括附魔符石&蜕变秘卷部分功能失效，以及导致符文剃刀失效\n" +
+                        "_-_ 优化法师4-1恶魔天赋，使之兼容242破碎底层\n" +
+                        "_-_ 移除十字弩\n" +
+                        "_-_ 部分文案优化\n"+
+                        "_-_ 法师天赋：充能强化部分效果异常或不生效修正\n",
+                        "_-_V0.4.9-R3\n" +
+                            "_-_ 修复法术序列实际效果与描述不符\n" +
+                            "_-_ 修复藤蔓陷阱天赋失效\n" +
+                            "_-_ 修复获得小恶魔的恶魔之力后回去见鼠王并没有特殊互动\n" +
+                            "_-_ 修复奇迹树脂描述有问题，但实际效果没问题\n" +
+                            "_-_ 修复匿踪斗篷不随使用而升级，修复精英证章无法充能和其他异常\n" +
+                            "_-_ 修复仍有一些原版武器在生成池中未被删掉，但保留【十字弩】\n" +
+                            "_-_  修复盗贼一层天赋的小干粮 和 矿洞任务文本缺失" ));
     }
 
     public static void add_v04_1_Changes( ArrayList<ChangeInfo> changeInfos ) {

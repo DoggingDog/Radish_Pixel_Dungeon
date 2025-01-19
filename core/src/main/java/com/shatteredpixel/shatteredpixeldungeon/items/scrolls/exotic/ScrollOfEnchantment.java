@@ -188,7 +188,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 			if (index < 3) {
 				wep.enchant(enchantments[index]);
 				GLog.p(Messages.get(StoneOfEnchantment.class, "weapon"));
-				((ScrollOfEnchantment)curItem).readAnimation();
+				((ScrollOfEnchantment)curItem).readAnimation(true);
 
 				//符文升级
 				if(wep instanceof RuneSlade){
@@ -261,7 +261,7 @@ public class ScrollOfEnchantment extends ExoticScroll {
 			if (index < 3) {
 				arm.inscribe(glyphs[index]);
 				GLog.p(Messages.get(StoneOfEnchantment.class, "armor"));
-				((ScrollOfEnchantment)curItem).readAnimation();
+				((ScrollOfEnchantment)curItem).readAnimation(true);
 
 				Sample.INSTANCE.play( Assets.Sounds.READ );
 				Enchanting.show(curUser, arm);

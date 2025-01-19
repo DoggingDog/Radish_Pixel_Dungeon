@@ -76,7 +76,9 @@ public abstract class Scroll extends Item {
 	public static final String AC_READ	= "READ";
 
 	protected static final float TIME_TO_READ	= 1f;
-
+	public static void clearLabels(){
+		handler = null;
+	}
 	private static final LinkedHashMap<String, Integer> runes = new LinkedHashMap<String, Integer>() {
 		{
 			put("KAUNAN",ItemSpriteSheet.SCROLL_KAUNAN);

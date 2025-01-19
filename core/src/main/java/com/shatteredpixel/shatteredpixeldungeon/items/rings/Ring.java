@@ -53,7 +53,9 @@ public class Ring extends KindofMisc {
 	public boolean readyToIdentify(){
 		return !isIdentified() && levelsToID <= 0;
 	}
-
+	public static void clearGems(){
+		handler = null;
+	}
 	private static final LinkedHashMap<String, Integer> gems = new LinkedHashMap<String, Integer>() {
 		{
 			put("garnet",ItemSpriteSheet.RING_GARNET);

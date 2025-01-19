@@ -105,8 +105,10 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			Degrade.detach(curUser, Degrade.class);
 			procced = true;
 		}
-
-		if (procced) {
+		Weapon w = (Weapon) item;
+		if(w.hasCurseEnchant() && w.enchantment instanceof Stubbornness ){
+			GLog.w( Messages.get(ScrollOfRemoveCurse.class, "cleansed_to") );
+		} else if (procced) {
 			GLog.p( Messages.get(this, "cleansed") );
 		} else {
 			GLog.i( Messages.get(this, "not_cleansed") );
@@ -127,12 +129,14 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			if (item instanceof Weapon){
 				Weapon w = (Weapon) item;
 				// DoggingDog 20241223
-				if(w.hasCurseEnchant()&& !((Stubbornness)(w.enchantment)).isRemoveOnce() && w.enchantment instanceof Stubbornness ){
-					procced = true;
-					((Stubbornness)(w.enchantment)).setRemovedOnce();
-					continue;
-				}
-				//
+				if(w.hasCurseEnchant() && w.enchantment instanceof Stubbornness ){
+					Stubbornness w1 = ((Stubbornness) w.enchantment);
+                    if (!w1.isRemoveOnce()) {
+                        procced = true;
+                        ((Stubbornness) (w.enchantment)).setRemovedOnce();
+                        continue;
+                    }
+                }
 				if (w.hasCurseEnchant()){
 					w.enchant(null);
 					procced = true;

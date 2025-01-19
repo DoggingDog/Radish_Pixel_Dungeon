@@ -522,7 +522,7 @@ public class Generator {
 					EndGuard.class,
 					ShadowBooks.class,
 			};
-			WEP_T4.probs = new float[]{ 5, 5, 5, 5, 5, 0, 5, 5, 5, 5, 5 };
+			WEP_T4.probs = new float[]{ 5, 5, 5, 5, 5, 0, 5, 0, 5, 5, 5 };
 
 			WEP_T4_NEW.classes = new Class<?>[]{
 					Bloodblade.class,
