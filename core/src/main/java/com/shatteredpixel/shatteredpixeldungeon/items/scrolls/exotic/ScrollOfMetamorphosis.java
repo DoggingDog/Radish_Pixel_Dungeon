@@ -204,7 +204,11 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 		public WndMetamorphReplace(Talent replacing, int tier){
 			super();
-
+			if (!identifiedByUse && curItem instanceof ScrollOfMetamorphosis) {
+				curItem.detach(curUser.belongings.backpack);
+			}
+			identifiedByUse = false;
+			
 			INSTANCE = this;
 
 			this.replacing = replacing;
@@ -279,7 +283,11 @@ public class ScrollOfMetamorphosis extends ExoticScroll {
 
 		@Override
 		public void onBackPressed() {
-			((ScrollOfMetamorphosis)curItem).confirmCancelation(this);
+			if (curItem instanceof ScrollOfMetamorphosis) {
+				((ScrollOfMetamorphosis) curItem).confirmCancelation(this);
+			} else {
+				super.onBackPressed();
+			}
 		}
 	}
 }
