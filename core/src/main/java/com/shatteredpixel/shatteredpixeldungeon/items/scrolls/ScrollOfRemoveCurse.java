@@ -105,9 +105,16 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 			Degrade.detach(curUser, Degrade.class);
 			procced = true;
 		}
-		Weapon w = (Weapon) item;
-		if(w.hasCurseEnchant() && w.enchantment instanceof Stubbornness ){
-			GLog.w( Messages.get(ScrollOfRemoveCurse.class, "cleansed_to") );
+		if (item instanceof Weapon){
+
+			//We Must Spiral LoadApp
+			Weapon w = (Weapon) item;
+			if(w.hasCurseEnchant() && w.enchantment instanceof Stubbornness){
+				GLog.w(Messages.get(ScrollOfRemoveCurse.class, "cleansed_to"));
+			} else if (procced) {
+				GLog.p( Messages.get(this, "cleansed") );
+			}
+
 		} else if (procced) {
 			GLog.p( Messages.get(this, "cleansed") );
 		} else {

@@ -811,6 +811,11 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : defender.buffs(ChampionEnemy.class)){
 			defRoll *= buff.evasionAndAccuracyFactor();
 		}
+
+		for (ChampionHero buff : defender.buffs(ChampionHero.class)){
+			defRoll *= buff.evasionAndAccuracyFactor();
+		}
+
 		defRoll *= AscensionChallenge.statModifier(defender);
 
 		return (acuRoll * accMulti) >= defRoll;
@@ -857,6 +862,11 @@ public abstract class Char extends Actor {
 		for (ChampionEnemy buff : buffs(ChampionEnemy.class)){
 			buff.onAttackProc( enemy );
 		}
+
+		for (ChampionHero buff : buffs(ChampionHero.class)){
+			buff.onAttackProc( enemy );
+		}
+
 		return damage;
 	}
 
@@ -979,6 +989,10 @@ public abstract class Char extends Actor {
 			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
 		}
 
+		for (ChampionHero buff : buffs(ChampionHero.class)){
+			dmg = (int) Math.ceil(dmg * buff.damageTakenFactor());
+		}
+
 		Class<?> srcClass = src.getClass();
 		if (isImmune( srcClass )) {
 			dmg = 0;
@@ -1089,6 +1103,8 @@ public abstract class Char extends Actor {
 		} else if (HP == 0 && buff(DeathMark.DeathMarkTracker.class) != null){
 			DeathMark.processFearTheReaper(this);
 		}
+
+
 	}
 
 	//these are misc. sources of physical damage which do not apply armor, they get a different icon

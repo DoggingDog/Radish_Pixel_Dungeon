@@ -36,13 +36,16 @@ public class RA_v0_13_X_Changes {
     }
 
     public static void add_v04_2_Changes( ArrayList<ChangeInfo> changeInfos ) {
-        ChangeInfo changes = new ChangeInfo("v0.4.9-R3->R4", true, "");
+        ChangeInfo changes = new ChangeInfo("v0.4.9-R3->R6", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
         changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.HUNTRESS, 8), ("女猎天赋：疾风骤雨"),
+                ("疾风骤雨现在可以正常使用了！")));
 
         changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.WARRIOR, 8), ("战士天赋：精巧纹章"),
                 ("修复 精巧纹章不生效 和 天赋2阶强化不生效")));
@@ -65,7 +68,15 @@ public class RA_v0_13_X_Changes {
         changeInfos.add(changes);
 
         changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
-
+                "_-_V0.4.9-R6\n" +
+                        "_-_ 修复英雄精英附魔特效异常问题\n" +
+                        "_-_ 修复苦痛刻痕使用祝福的十字架死亡的异常\n" +
+                        "_-_ 部分文案优化\n",
+                "_-_V0.4.9-R5\n" +
+                        "_-_ 修复顽疾诅咒的一些遗漏崩溃问题\n" +
+                        "_-_ 修复重击附魔特效带来的无响应(ANR)异常\n" +
+                        "_-_ 修复苦痛刻痕无法正常使用的问题\n" +
+                        "_-_ 部分文案优化\n",
                 "_-_V0.4.9-R4\n" +
                         "_-_ 修复战士1-1天赋，低于50%不生效异常\n" +
                         "_-_ 修复顽疾诅咒带来的各种严重闪退问题，并追加了特殊文本\n" +

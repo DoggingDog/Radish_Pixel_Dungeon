@@ -1,14 +1,11 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
-import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Lightning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
 
 /*
@@ -29,8 +26,7 @@ public class Striking extends Weapon.Enchantment {
 
         if(Random.Float() < procChance){
             Buff.prolong(defender, Paralysis.class,paralysisDuration);
-            defender.sprite.emitter().burst(Speck.factory(Speck.STAR), level );
-
+            defender.sprite.emitter().burst(Speck.factory(Speck.STAR), Random.Int(10,20));
         }
 
         return damage;
