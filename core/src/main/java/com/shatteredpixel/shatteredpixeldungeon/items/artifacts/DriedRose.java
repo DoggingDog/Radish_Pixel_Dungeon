@@ -31,8 +31,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LockedFloor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MoveCount;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Belongings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -387,9 +388,9 @@ public class DriedRose extends Artifact {
 
 		@Override
 		public boolean act() {
-			
+
 			spend( TICK );
-			
+
 			if (ghost == null && ghostID != 0){
 				Actor a = Actor.findById(ghostID);
 				if (a != null){
@@ -402,33 +403,41 @@ public class DriedRose extends Artifact {
 			if (ghost != null && !ghost.isAlive()){
 				ghost = null;
 			}
-			
+
 			//rose does not charge while ghost hero is alive
 			if (ghost != null && !cursed && target.buff(MagicImmune.class) == null){
-				
+				defaultAction = AC_DIRECT;
+
 				//heals to full over 500 turns
-				if (ghost.HP < ghost.HT && Regeneration.regenOn()) {
-					partialCharge += (ghost.HT / 500f) * RingOfEnergy.artifactChargeMultiplier(target);
+				LockedFloor lock = target.buff(LockedFloor.class);
+				if (ghost.HP < ghost.HT && (lock == null || lock.regenOn())) {
+					float toGain=(ghost.HT / 500f) * RingOfEnergy.artifactChargeMultiplier(target);
+					if (target.buff(MoveCount.class)!=null)
+						toGain*=target.buff(MoveCount.class).chargeMultiplier(Dungeon.hero);
+					partialCharge += toGain;
 					updateQuickslot();
-					
-					while (partialCharge > 1) {
+
+					if (partialCharge > 1) {
 						ghost.HP++;
 						partialCharge--;
 					}
 				} else {
 					partialCharge = 0;
 				}
-				
+
 				return true;
+			} else {
+				defaultAction = AC_SUMMON;
 			}
-			
+
+			LockedFloor lock = target.buff(LockedFloor.class);
 			if (charge < chargeCap
 					&& !cursed
 					&& target.buff(MagicImmune.class) == null
-					&& Regeneration.regenOn()) {
+					&& (lock == null || lock.regenOn())) {
 				//500 turns to a full charge
 				partialCharge += (1/5f * RingOfEnergy.artifactChargeMultiplier(target));
-				while (partialCharge > 1){
+				if (partialCharge > 1){
 					charge++;
 					partialCharge--;
 					if (charge == chargeCap){
@@ -448,7 +457,7 @@ public class DriedRose extends Artifact {
 				}
 
 				if (spawnPoints.size() > 0) {
-					Wraith.spawnAt(Random.element(spawnPoints), Wraith.class);
+					Wraith.spawnAt(Random.element(spawnPoints));
 					Sample.INSTANCE.play(Assets.Sounds.CURSED);
 				}
 

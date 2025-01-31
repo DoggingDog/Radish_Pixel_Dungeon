@@ -4,6 +4,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.ChangesScene;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v05_0_Changes(changeInfos);
         add_v04_2_Changes(changeInfos);
         add_v04_1_Changes(changeInfos);
         add_v03_X_Changes(changeInfos);
@@ -33,6 +35,46 @@ public class RA_v0_13_X_Changes {
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v05_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.5.0", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.HUNTRESS, 6), ("女猎恶魔天赋完全实装"),
+                ("射技决斗 疾风骤雨 药镖专家 大地之心均已实装")));
+
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNE_SLADE+1), "新武器：轮刃",
+                "你的所有护甲值都会转化为此武器的攻击力。这件武器对目标周围的敌人造成溅射效果。\n\n笨重难用的武器。挥动它，几乎意味着放弃全身上下所有的防御手段。\n\n四阶，力量需求16，初始8-20，成长1-5\n\n开发组碎碎念：好像是骰杀里面武器改，不过咱也不知道啦，祝各位玩的开心。"));
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.ROGUE, 6), ("盗贼恶魔天赋完全实装"),
+                ("严阵以待 能量回收 动能转换 风暴奔袭均已实装")));
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        Image critImage = new Image(Assets.Effects.TEXT_ICONS,49,7,7,7);
+        critImage.scale.set(PixelScene.align(1.72f));
+        changes.addButton(new ChangeButton(critImage, ("暴击视觉效果调整"),
+                ("暴击现在不再显示为一个文本，而是一个图标\n\n图标灵感：某农暴击图标")));
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "_-_V0.5.0\n" +
+                        "_-_ 修复部分文案异常\n" +
+                        "_-_ 修复藤蔓陷阱天赋失效\n" +
+                        "_-_ 拉莱耶文本现在不会伤害英雄\n" +
+                        "_-_ 修复巨型蠕虫特殊攻击效果失效\n" +
+                        "_-_ 修复气动拳套未气动时仍然在说能量不足\n" +
+                        "_-_ 修复装备武力之戒之后武器会出现决斗家的充能\n" +
+                        "_-_ 修复在伤痛难愈挑战下，部分食物出现1血异常效果\n" +
+                        "_-_ 移除育言故事\n" +
+                        "_-_ 修复一堆异常" ));
     }
 
     public static void add_v04_2_Changes( ArrayList<ChangeInfo> changeInfos ) {

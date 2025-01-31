@@ -78,12 +78,22 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.El
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.warrior.Endure;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DM100;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Elemental;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Artillerist;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.GnollZealot;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Mayfly;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Scorpio;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Shaman;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Snake;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Statue;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Tengu;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Warlock;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.YogDzewa;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Chains;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CheckedCell;
@@ -772,6 +782,10 @@ public class Hero extends Char {
 			((HeroSprite)sprite).sprint( 1f );
 		}
 
+		if (hasTalent(Talent.BRISK_PACE)){
+			speed*=(1+0.025f*pointsInTalent(Talent.BRISK_PACE)*visibleEnemies());
+		}
+
 		NaturesPower.naturesPowerTracker natStrength = buff(NaturesPower.naturesPowerTracker.class);
 		if (natStrength != null){
 			speed *= (2f + 0.25f*pointsInTalent(Talent.GROWING_POWER));
@@ -853,6 +867,10 @@ public class Hero extends Char {
 			//But there's going to be that one guy who gets a furor+force ring combo
 			//This is for that one guy, you shall get your fists of fury!
 			float speed = RingOfFuror.attackSpeedMultiplier(this);
+
+			if (hero.buff(SnipersMark.class) != null && hero.hasTalent(Talent.BOW_DULES)) {
+				speed += 0.5f;
+			}
 
 			//ditto for furor + sword dance!
 			if (buff(Scimitar.SwordDance.class) != null){
@@ -1557,10 +1575,6 @@ public class Hero extends Char {
 	public int attackProc( final Char enemy, int damage ) {
 		damage = super.attackProc( enemy, damage );
 
-		if(Dungeon.level.distance(enemy.pos,pos)<=1) {
-			RlyehHeroDamage(enemy, damage);
-		}
-
 		if (buff(Talent.SpiritBladesTracker.class) != null
 				&& Random.Int(10) < 3*pointsInTalent(Talent.SPIRIT_BLADES)){
 			SpiritBow bow = belongings.getItem(SpiritBow.class);
@@ -1589,7 +1603,9 @@ public class Hero extends Char {
 
 		switch (subClass) {
 			case SNIPER:
-				if (wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow) && enemy != this) {
+
+				if (!(sniperSpecial) && wep instanceof MissileWeapon && !(wep instanceof SpiritBow.SpiritArrow ||wep instanceof SpiritBow.ALTSpiritArrow) && enemy != this) {
+
 					Actor.add(new Actor() {
 
 						{
@@ -1600,12 +1616,51 @@ public class Hero extends Char {
 						protected boolean act() {
 							if (enemy.isAlive()) {
 								int bonusTurns = hasTalent(Talent.SHARED_UPGRADES) ? wep.buffedLvl() : 0;
-								Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
+								if( !hero.hasTalent(Talent.BOW_DULES) ){
+									Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
+								} else if(hero.buff(SnipersMark.class)!=null){
+									//hero.buff(SnipersMark.class).setSec(enemy.id(), bonusTurns);
+									Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).setSec(enemy.id(), bonusTurns);
+								}else{
+									Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
+								}
 							}
 							Actor.remove(this);
 							return true;
 						}
 					});
+				}else if(!(sniperSpecial) && (wep instanceof SpiritBow.SpiritArrow ||wep instanceof SpiritBow.ALTSpiritArrow)  && enemy != this){
+					if(hasTalent(Talent.BOW_DULES) && pointsInTalent(Talent.BOW_DULES)>=2) {
+						boolean ranged = enemy instanceof Tengu || enemy instanceof YogDzewa || enemy instanceof Mayfly || enemy instanceof DM100 || enemy instanceof Shaman || enemy instanceof GnollZealot || enemy instanceof Warlock || enemy instanceof Elemental.FireElemental || enemy instanceof Elemental.ChaosElemental || enemy instanceof Elemental.FrostElemental || enemy instanceof Elemental.ShockElemental || enemy instanceof Artillerist || enemy instanceof Scorpio || enemy instanceof Eye;
+						//Mayfly, DM100, Shaman, GnollZealot, Warlock, Elemental.FireElemental , Elemental.NewbornFireElemental , Elemental.ChaosElemental, Elemental.FrostElemental, Elemental.ShockElemental, Artillerist, Acidic, Scorpio ,eye
+						//Tengu, YogDzewa
+
+                        if (enemy instanceof Mob && (((Mob) enemy).surprisedBy(this)) ||(pointsInTalent(Talent.BOW_DULES)>=3 && ranged)){
+
+							Actor.add(new Actor() {
+
+								{
+									actPriority = VFX_PRIO;
+								}
+
+								@Override
+								protected boolean act() {
+									if (enemy.isAlive()) {
+										int bonusTurns = hasTalent(Talent.SHARED_UPGRADES) ? wep.buffedLvl() : 0;
+										if (!hero.hasTalent(Talent.BOW_DULES)) {
+											Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
+										} else if (hero.buff(SnipersMark.class) != null) {
+											Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).setSec(enemy.id(), bonusTurns);
+										} else {
+											Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
+										}
+									}
+									Actor.remove(this);
+									return true;
+								}
+							});
+						}
+					}
 				}
 				break;
 			default:
@@ -1935,10 +1990,15 @@ public class Hero extends Char {
 			return false;
 		}
 
+
+
 		int step = -1;
 
 		if (Dungeon.level.adjacent( pos, target )) {
-
+			if (subClass == HeroSubClass.FREERUNNER){
+				Buff.affect(this, Momentum.class).gainStack();
+				Buff.affect(this, MoveCount.class).gainStack();
+			}
 			path = null;
 
 			if (Actor.findChar( target ) == null) {
@@ -2565,6 +2625,11 @@ public class Hero extends Char {
 				&& belongings.armor().hasGlyph(Brimstone.class, this)){
 			return true;
 		}
+
+		if (hasTalent(Talent.STORM_RUSH) && pointsInTalent(Talent.STORM_RUSH)>2){
+			if (effect == Cripple.class || effect == Chill.class || effect == Slow.class) return true;
+		}
+
 		return super.isImmune(effect);
 	}
 

@@ -72,7 +72,6 @@ public class LazyTest extends TestGenerator {
     @Override
     public void execute(Hero hero, String action){
         if(action.equals(AC_GIVE)){
-            new PotionOfExperience().quantity(100).identify().collect();
             new PotionOfFrost().quantity(100).identify().collect();
             new PotionOfHaste().quantity(100).identify().collect();
             new PotionOfHealing().quantity(100).identify().collect();
@@ -154,6 +153,10 @@ public class LazyTest extends TestGenerator {
 
             for (int i = 0; i < 6; i++) {
                 new PotionOfStrength().apply(hero);
+            }
+
+            for (int i = 0; i < 31; i++) {
+                new PotionOfExperience().apply(hero);
             }
 
             RingOfConcentration roa = new RingOfConcentration();

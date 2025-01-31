@@ -7,9 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -38,16 +36,14 @@ public class StormAttackArrow extends MissileWeapon {
     public int damageRoll(Char owner) {
         if(owner instanceof Hero){
             int lv = ((Hero) owner).pointsInTalent(Talent.STORM_ATTACK);
-            if(lv % 2 == 0){
-                SpiritBow bow = ((Hero) owner).belongings.getItem(SpiritBow.class);
-                if(bow != null){
+            SpiritBow bow = ((Hero) owner).belongings.getItem(SpiritBow.class);
+            switch (lv){
+                case 2: case 4:
                     return bow.damageRoll(owner)/4;
-                }
-                else return 1;
+                default:
+                    return 1;
             }
-            else return 1;
-        }
-        else {
+        } else {
             return 1;
         }
     }
@@ -90,99 +86,184 @@ public class StormAttackArrow extends MissileWeapon {
 
     @Override
     public void cast(final Hero user, final int dst) {
-        final int cell = throwPos( user, dst );
-        if (user.pointsInTalent(Talent.STORM_ATTACK)-2>0){
-            if (flurryCount == -1) flurryCount = 2;
+        final int cell = throwPos(user, dst);
 
-            final Char enemy = Actor.findChar( cell );
-
-            if (enemy == null){
-                if (user.buff(Talent.LethalMomentumTracker.class) != null){
-                    user.buff(Talent.LethalMomentumTracker.class).detach();
-                    user.next();
-                } else {
-                    user.spendAndNext(castDelay(user, dst));
-                }
-                flurryCount = -1;
-
-                if (flurryActor != null){
-                    flurryActor.next();
-                    flurryActor = null;
-                }
-                return;
-            }
-
-            QuickSlotButton.target(enemy);
-
-            user.busy();
-
-            throwSound();
-
-            user.sprite.zap(cell);
-            ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
-                    reset(user.sprite,
-                            cell,
-                            this,
-                            new Callback() {
-                                @Override
-                                public void call() {
-                                    if (enemy.isAlive()) {
-                                        curUser = user;
-                                        onThrow(cell);
-                                    }
-
-                                    flurryCount--;
-                                    if (flurryCount > 0){
-                                        Actor.add(new Actor() {
-
-                                            {
-                                                actPriority = VFX_PRIO-1;
-                                            }
-
-                                            @Override
-                                            protected boolean act() {
-                                                flurryActor = this;
-                                                int target = QuickSlotButton.autoAim(enemy, StormAttackArrow.this);
-                                                if (target == -1) target = cell;
-                                                cast(user, target);
-                                                Actor.remove(this);
-                                                return false;
-                                            }
-                                        });
-                                        curUser.next();
-                                    } else {
-                                        if (user.buff(Talent.LethalMomentumTracker.class) != null){
-                                            user.buff(Talent.LethalMomentumTracker.class).detach();
-                                            user.next();
-                                        } else {
-                                            user.spendAndNext(castDelay(user, dst));
-                                        }
-                                        flurryCount = -1;
-                                    }
-
-                                    if (flurryActor != null){
-                                        flurryActor.next();
-                                        flurryActor = null;
-                                    }
-                                }
-                            });
-
+        // Check if the user has enough points in StormAttack talent
+        if (user.pointsInTalent(Talent.STORM_ATTACK) - 2 > 0) {
+            handleFlurryAttack(user, dst, cell);
         } else {
+            handleSeerShotOrDefault(user, dst, cell);
+        }
 
-            if (user.hasTalent(Talent.SEER_SHOT)
-                    && user.buff(Talent.SeerShotCooldown.class) == null){
-                int shotPos = throwPos(user, dst);
-                if (Actor.findChar(shotPos) == null) {
-                    RevealedArea a = Buff.affect(user, RevealedArea.class, 5 * user.pointsInTalent(Talent.SEER_SHOT));
-                    a.depth = Dungeon.depth;
-                    a.branch = Dungeon.branch;
-                    a.pos = shotPos;
-                    Buff.affect(user, Talent.SeerShotCooldown.class, 20f);
-                }
-            }
+        // Additional logic for 疾风骤雨 based on talent level
+        handleStormAttack(user, dst, cell);
+    }
 
-            super.cast(user, dst);
+    private void handleStormAttack(final Hero user, final int dst, final int cell) {
+        int stormLevel = user.pointsInTalent(Talent.STORM_ATTACK);
+
+        // Add extra arrows based on talent level
+        switch (stormLevel) {
+            case 1:
+                // +1: Extra 1 arrow with fixed damage 1
+                shootExtraArrow(user, dst, 1, 1);
+                break;
+            case 2:
+                // +2: Extra 1 arrow with 25% damage
+                shootExtraArrow(user, dst, 1, 0.25f);
+                break;
+            case 3:
+                // +3: Extra 2 arrows with fixed damage 1
+                shootExtraArrow(user, dst, 2, 1);
+                break;
+            case 4:
+                // +4: Extra 2 arrows with 25% damage
+                shootExtraArrow(user, dst, 2, 0.25f);
+                break;
+            default:
+                // No extra arrows if stormLevel is 0 or invalid
+                break;
         }
     }
+
+    private void shootExtraArrow(final Hero user, final int dst, int numArrows, float damageMultiplier) {
+        for (int i = 0; i < numArrows; i++) {
+            final int extraArrowCell = calculateExtraArrowCell(user, dst);
+            QuickSlotButton.target(user);
+            user.busy();
+            throwSound();
+            user.sprite.zap(extraArrowCell);
+
+            // Create extra arrows with the specified damage
+            ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+                    reset(user.sprite, extraArrowCell, this, new Callback() {
+                        @Override
+                        public void call() {
+                            // Apply damage based on multiplier (fixed or percentage)
+                            int damage = (damageMultiplier == 1) ? 1 : (int)(user.damageRoll() * damageMultiplier);
+                            applyExtraArrowDamage(extraArrowCell, damage);
+                        }
+                    });
+        }
+    }
+
+    private void applyExtraArrowDamage(int cell, int damage) {
+        Char target = Actor.findChar(cell);
+        if (target != null) {
+            target.damage(damage,this);
+        }
+    }
+
+    private int calculateExtraArrowCell(final Hero user, final int dst) {
+        // Assuming you want the extra arrows to shoot at the same target position or nearby
+        return throwPos(user, dst); // Can be adjusted if needed to shoot at different positions
+    }
+
+    private void handleFlurryAttack(final Hero user, final int dst, final int cell) {
+        if (flurryCount == -1) {
+            flurryCount = 2; // Initialize flurryCount if not set
+        }
+
+        final Char enemy = Actor.findChar(cell);
+
+        if (enemy == null) {
+            handleMissOrNoEnemy(user, dst);
+        } else {
+            performFlurryAttack(user, dst, enemy, cell);
+        }
+    }
+
+    private void handleMissOrNoEnemy(final Hero user, final int dst) {
+        if (user.buff(Talent.LethalMomentumTracker.class) != null) {
+            user.buff(Talent.LethalMomentumTracker.class).detach();
+            user.next();
+        } else {
+            user.spendAndNext(castDelay(user, dst));
+        }
+
+        flurryCount = -1;
+
+        if (flurryActor != null) {
+            flurryActor.next();
+            flurryActor = null;
+        }
+    }
+
+    private void performFlurryAttack(final Hero user, final int dst, final Char enemy, final int cell) {
+        QuickSlotButton.target(enemy);
+        user.busy();
+        throwSound();
+        user.sprite.zap(cell);
+
+        ((MissileSprite) user.sprite.parent.recycle(MissileSprite.class)).
+                reset(user.sprite, cell, this, new Callback() {
+                    @Override
+                    public void call() {
+                        if (enemy.isAlive()) {
+                            curUser = user;
+                            onThrow(cell);
+                        }
+
+                        flurryCount--;
+
+                        if (flurryCount > 0) {
+                            scheduleNextFlurry(user, enemy, cell);
+                        } else {
+                            finalizeFlurryAttack(user, dst);
+                        }
+                    }
+                });
+    }
+
+    private void scheduleNextFlurry(final Hero user, final Char enemy, final int cell) {
+        Actor.add(new Actor() {
+            {
+                actPriority = VFX_PRIO - 1;
+            }
+
+            @Override
+            protected boolean act() {
+                flurryActor = this;
+                int target = QuickSlotButton.autoAim(enemy, StormAttackArrow.this);
+                if (target == -1) target = cell;
+                cast(user, target);
+                Actor.remove(this);
+                return false;
+            }
+        });
+        curUser.next();
+    }
+
+    private void finalizeFlurryAttack(final Hero user, final int dst) {
+        if (user.buff(Talent.LethalMomentumTracker.class) != null) {
+            user.buff(Talent.LethalMomentumTracker.class).detach();
+            user.next();
+        } else {
+            user.spendAndNext(castDelay(user, dst));
+        }
+
+        flurryCount = -1;
+
+        if (flurryActor != null) {
+            flurryActor.next();
+            flurryActor = null;
+        }
+    }
+
+    private void handleSeerShotOrDefault(final Hero user, final int dst, final int cell) {
+        if (user.hasTalent(Talent.SEER_SHOT) && user.buff(Talent.SeerShotCooldown.class) == null) {
+            int shotPos = throwPos(user, dst);
+            if (Actor.findChar(shotPos) == null) {
+                RevealedArea a = Buff.affect(user, RevealedArea.class, 5 * user.pointsInTalent(Talent.SEER_SHOT));
+                a.depth = Dungeon.depth;
+                a.branch = Dungeon.branch;
+                a.pos = shotPos;
+                Buff.affect(user, Talent.SeerShotCooldown.class, 20f);
+            }
+        }
+
+        super.cast(user, dst);
+    }
+
 }
 

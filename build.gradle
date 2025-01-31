@@ -23,8 +23,8 @@ allprojects {
         appName = 'Radish Pixel Dungeon'
         appPackageName = 'com.shatteredpixel.radishpixeldungeon'
 
-        appVersionCode = 2501220
-        appVersionName = '0.4.9-R6-base2.4.2'
+        appVersionCode = 2502010
+        appVersionName = '0.5.0-base2.4.2'
 
         appJavaCompatibility = JavaVersion.VERSION_1_8
 

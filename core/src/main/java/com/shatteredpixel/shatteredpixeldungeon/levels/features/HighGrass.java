@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Dungeon.hero;
+
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -35,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Dewdrop;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
+import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Camouflage;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.SandalsOfNature;
@@ -44,6 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.PetrifiedSeed;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.plants.VineTrap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.Random;
 
@@ -70,6 +74,17 @@ public class HighGrass {
 					level.drop(new MagicRoot(), pos).sprite.drop();
 				}
 			}
+		}
+
+		if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.LAND_HEART)){
+			Buff.affect(Dungeon.hero, Talent.HIGHGRSS_SPEED.class, 1f);
+
+			if(hero.pointsInTalent(Talent.LAND_HEART) >= 2){
+				Waterskin waterskin = hero.belongings.getItem(Waterskin.class);
+				Dewdrop dewdrop = new Dewdrop();
+				waterskin.collectDew(dewdrop);
+			}
+
 		}
 
 		if (level.map[pos] == Terrain.FURROWED_GRASS){
@@ -173,6 +188,11 @@ public class HighGrass {
 				if (statue.armor() != null && statue.armor().hasGlyph(Camouflage.class, statue)){
 					Camouflage.activate(statue, statue.armor().buffedLvl());
 				}
+			}
+			if (ch instanceof Hero && ((Hero) ch).hasTalent(Talent.VINE_TRAP)){
+				//GLog.p("create trap!");
+				Buff.affect(ch, VineTrap.PlantBuff.class,ch.cooldown()).set(pos);
+				//Dungeon.plantVineTrap(pos);
 			}
 			
 		}

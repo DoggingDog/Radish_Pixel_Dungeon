@@ -153,6 +153,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BladeShield;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Bloodblade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.BoneClaw;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CelestialSphere;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CircleSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CompositeCrossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Crossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Cutterhead;
@@ -179,7 +180,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGlov
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Rlyeh;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RottenLance;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RuneSlade;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.RunicBlade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sai;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.ScorpionCrossbow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
@@ -511,18 +511,17 @@ public class Generator {
 			WEP_T4.classes = new Class<?>[]{
 					Bloodblade.class,
 					CompositeCrossbow.class,
-					//Darksword.class,
 					Morello.class,
 					HeadCleaver.class,
 					Seekingspear.class,
-					RunicBlade.class,
+					CircleSword.class,
 					Grimtooth.class,
 					Crossbow.class,
 					CelestialSphere.class,
 					EndGuard.class,
 					ShadowBooks.class,
 			};
-			WEP_T4.probs = new float[]{ 5, 5, 5, 5, 5, 0, 5, 0, 5, 5, 5 };
+			WEP_T4.probs = new float[]{ 5, 5, 5, 5, 5, 5, 5, 0, 5, 5, 5 };
 
 			WEP_T4_NEW.classes = new Class<?>[]{
 					Bloodblade.class,

@@ -64,6 +64,9 @@ public class GiantWorm extends Mob{
 
     @Override
     public int attackProc( Char enemy, int damage ) {
+
+        damage = super.attackProc( enemy, damage );
+
         int healthSteal = 1;
         HP += healthSteal;
         if(HP>HT) Buff.affect(this,Barrier.class).setShield(damage);

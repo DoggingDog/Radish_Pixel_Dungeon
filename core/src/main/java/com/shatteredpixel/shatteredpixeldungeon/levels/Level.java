@@ -87,6 +87,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
+import com.shatteredpixel.shatteredpixeldungeon.plants.VineTrap;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -1075,6 +1076,12 @@ public abstract class Level implements Bundlable {
 					return false;
 				}
 			}
+		}
+
+		Plant plant = Dungeon.level.plants.get( cell );
+		if (plant != null){
+			if (plant instanceof VineTrap)
+				plant.wither();
 		}
 
 		int terr = map[cell];

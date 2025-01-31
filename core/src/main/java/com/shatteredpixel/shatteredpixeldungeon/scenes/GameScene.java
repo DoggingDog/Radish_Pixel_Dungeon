@@ -21,9 +21,9 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
-import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Chrome;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
@@ -145,7 +145,7 @@ import java.util.Comparator;
 import java.util.Locale;
 
 public class GameScene extends PixelScene {
-
+	public static boolean logActorThread;
 	static GameScene scene;
 
 	private SkinnedBlock water;
@@ -734,6 +734,30 @@ public class GameScene extends PixelScene {
 			if (ActionIndicator.action instanceof MeleeWeapon.Charger) {
 				//Champion weapon swap uses items, needs refreshing whenever item displays are updated
 				ActionIndicator.refresh();
+			}
+		}
+
+		if (logActorThread){
+			if (actorThread != null){
+				logActorThread = false;
+				String s = "";
+				for (StackTraceElement t:
+						actorThread.getStackTrace()){
+					s += "\n";
+					s += t.toString();
+				}
+				Class<? extends Actor> cl =
+						Actor.getCurrentActorClass();
+				String msg = "Actor therad dump was requested.\n\n" +
+						"Seed:" + Dungeon.seed +
+						"\n\ndepth:" + Dungeon.depth +
+						"\n\nchallenges:" + Dungeon.challenges +
+						"\n\ncurrent actor:" + cl +
+						"\n\ntrace:" + s;
+				Gdx.app.getClipboard().setContents(msg);
+				ShatteredPixelDungeon.reportException(new RuntimeException(msg)
+				);
+				add(new WndMessage(Messages.get(this,"copied")));
 			}
 		}
 

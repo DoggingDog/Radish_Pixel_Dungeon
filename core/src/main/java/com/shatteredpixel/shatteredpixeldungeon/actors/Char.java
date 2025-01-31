@@ -141,6 +141,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Taijutsu;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.ShockingDart;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Chasm;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
@@ -413,6 +414,9 @@ public abstract class Char extends Actor {
 		return attack(enemy, 1f, 0f, 1f);
 	}
 
+
+	private boolean crit=false;
+
 	public boolean attack( Char enemy, float dmgMulti, float dmgBonus, float accMulti ) {
 
 		if (enemy == null) return false;
@@ -452,7 +456,7 @@ public abstract class Char extends Actor {
 			if(this instanceof Hero){
 				Hero h = (Hero) this;
 				if(h.pointsInTalent(Talent.LAND_HEART)>=3){
-					GLog.n("阶段1");
+
 					int ePos = enemy.pos;
 
 					Point c = Dungeon.level.cellToPoint(pos);
@@ -468,12 +472,11 @@ public abstract class Char extends Actor {
 							GLog.n(""+Dungeon.level.map[curr]);
 							if(Dungeon.level.map[curr] == Terrain.FURROWED_GRASS || Dungeon.level.map[curr] == Terrain.HIGH_GRASS){
 								dr = 0;
-								GLog.n("阶段2");
 							}
 						}
 					}
 
-					/*
+
 					for (int y = Math.max(0, ec.y - 1); y <= Math.min(Dungeon.level.height()-1, c.y + 1); y++){
 
 						int left = ec.x - 1;
@@ -484,11 +487,10 @@ public abstract class Char extends Actor {
 							GLog.n(""+Dungeon.level.map[curr]);
 							if(Dungeon.level.map[curr] == Terrain.FURROWED_GRASS || Dungeon.level.map[curr] == Terrain.HIGH_GRASS ){
 								dr = 0;
-								GLog.n("阶段3");
 							}
 						}
 					}
-					*/
+
 
 
 				};
@@ -515,7 +517,7 @@ public abstract class Char extends Actor {
 								Buff.affect(this, Talent.PowerRecycleTracker.class,0.0f);
 				}
 			}
-			boolean crit=false;
+
 			boolean surprise =enemy instanceof Mob && ((Mob) enemy).surprisedBy(this);
 			float current_crit=critSkill(),current_critdamage=critDamage();
 			if (this == hero){
@@ -649,9 +651,11 @@ public abstract class Char extends Actor {
 				return true;
 			}
 
+			//暴击
 			if(crit){
-				enemy.sprite.showStatus(CharSprite.NEGATIVE,Messages.get(this,"crit"));
+				enemy.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(effectiveDamage), FloatingText.CRIT);
 			}
+
 			enemy.damage( effectiveDamage, this );
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
@@ -729,6 +733,12 @@ public abstract class Char extends Actor {
 
 		if (defender instanceof Hero && ((Hero) defender).damageInterrupt){
 			((Hero) defender).interrupt();
+		}
+
+		if (hero.pointsInTalent(Talent.MEDART_SPECIALIST) >= 2 ) {
+			if(hero.belongings.thrownWeapon instanceof TippedDart){
+				return true;
+			}
 		}
 
 		if (defender.buff(AfterImage.absoluteEvasion.class)!=null && defender instanceof Wraith){
@@ -1066,6 +1076,9 @@ public abstract class Char extends Actor {
 		if (sprite != null) {
 			//defaults to normal damage icon if no other ones apply
 			int                                                         icon = FloatingText.PHYS_DMG;
+
+			if(crit)													icon = FloatingText.CRIT+3;
+
 			if (NO_ARMOR_PHYSICAL_SOURCES.contains(src.getClass()))     icon = FloatingText.PHYS_DMG_NO_BLOCK;
 			if (AntiMagic.RESISTS.contains(src.getClass()))             icon = FloatingText.MAGIC_DMG;
 			if (src instanceof Pickaxe)                                 icon = FloatingText.PICK_DMG;

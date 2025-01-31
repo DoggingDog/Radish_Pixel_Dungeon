@@ -94,7 +94,7 @@ public class PneumFistGloves extends MeleeWeapon {
             int oppositeAdjacent = defender.pos + (defender.pos - attacker.pos);
             Ballistica trajectory = new Ballistica(defender.pos, oppositeAdjacent, Ballistica.MAGIC_BOLT);
             WandOfBlastWave.throwChar(defender, trajectory, (int) (2+(0.5*level())), true, true, this);
-        } else {
+        } else if(active) {
             attacker.sprite.showStatusWithIcon(CharSprite.WARNING, Messages.get(this,"low"), FloatingText.STRENGTH);
         }
 

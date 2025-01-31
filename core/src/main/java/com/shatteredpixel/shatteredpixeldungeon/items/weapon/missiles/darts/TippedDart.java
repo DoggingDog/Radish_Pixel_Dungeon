@@ -228,5 +228,13 @@ public abstract class TippedDart extends Dart {
 		return getTipped(s, quantity );
 		
 	}
+
+	@Override
+	protected void decrementDurability(){
+		if( Dungeon.hero.pointsInTalent(Talent.MEDART_SPECIALIST) >= 3 && Math.random() <= 0.33d){
+			return;
+		}
+		super.decrementDurability();
+	}
 	
 }

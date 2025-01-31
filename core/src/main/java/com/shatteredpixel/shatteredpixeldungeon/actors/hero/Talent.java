@@ -159,7 +159,8 @@ public enum Talent {
 	HOLD_BREATH(105, 3), SEER_SHOT(106, 3),
 	//Huntress T4
 	BRISK_PACE(224,4),PHASE_FILLING(225,4),
-	BOW_DULES(226,4),STORM_ATTACK(227,4),
+	BOW_DULES(226,4),
+	STORM_ATTACK(227,4),
 	MEDART_SPECIALIST(228,4),LAND_HEART(229,4),
 	//Sniper T3
 	FARSIGHT(107, 3), SHARED_ENCHANTMENT(108, 3), SHARED_UPGRADES(109, 3),
@@ -379,6 +380,11 @@ public enum Talent {
 	}
 	public static class CounterAbilityTacker extends FlavourBuff{};
 
+	public static class HIGHGRSS_SPEED extends FlavourBuff{
+		public int icon() { return BuffIndicator.HASTE;}
+		public void tintIcon(Image icon) { icon.hardlight(0xFfa500);
+		}
+	};
 	int icon;
 	int maxPoints;
 

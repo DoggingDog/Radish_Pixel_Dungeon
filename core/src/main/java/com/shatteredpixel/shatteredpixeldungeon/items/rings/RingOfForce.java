@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -34,8 +33,6 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-
-import java.util.ArrayList;
 
 public class RingOfForce extends Ring {
 
@@ -50,19 +47,6 @@ public class RingOfForce extends Ring {
 	
 	public static int armedDamageBonus( Char ch ){
 		return getBuffedBonus( ch, Force.class);
-	}
-
-	@Override
-	public boolean doUnequip(Hero hero, boolean collect, boolean single) {
-		if (super.doUnequip(hero, collect, single)){
-			if (hero.buff(BrawlersStance.class) != null && hero.buff(Force.class) == null){
-				//clear brawler's stance if no ring of force is equipped
-				hero.buff(BrawlersStance.class).active = false;
-			}
-			return true;
-		} else {
-			return false;
-		}
 	}
 	
 	// *** Weapon-like properties ***
