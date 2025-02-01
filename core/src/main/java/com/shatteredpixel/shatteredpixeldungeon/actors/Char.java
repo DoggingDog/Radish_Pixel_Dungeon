@@ -193,6 +193,7 @@ public abstract class Char extends Actor {
 	public int invisible		= 0;
 
 
+	public static class CritClass{};
 
 	protected float critSkill() {
 		return critSkill;
@@ -650,11 +651,14 @@ public abstract class Char extends Actor {
 			}
 
 			//TODO 不会 交给狗哥）2025.2.1 19：45
-			if(crit){
-				enemy.sprite.showStatusWithIcon(CharSprite.NEGATIVE, Messages.get(this,"crit"), FloatingText.CRIT );
-			}
 
-			enemy.damage( effectiveDamage, this );
+			// DoggingDog on 2024-02-01
+			if(crit){
+				enemy.damage( effectiveDamage, new CritClass() );
+			}
+			else
+				enemy.damage( effectiveDamage, this );
+
 			if (buff(FireImbue.class) != null)  buff(FireImbue.class).proc(enemy);
 			if (buff(FrostImbue.class) != null) buff(FrostImbue.class).proc(enemy);
 
@@ -1094,6 +1098,8 @@ public abstract class Char extends Actor {
 			if (src instanceof Viscosity.DeferedDamage)                 icon = FloatingText.DEFERRED;
 			if (src instanceof Corruption)                              icon = FloatingText.CORRUPTION;
 			if (src instanceof AscensionChallenge)                      icon = FloatingText.AMULET;
+
+			if(src instanceof CritClass) 								icon = FloatingText.CRIT;
 
 			sprite.showStatusWithIcon(CharSprite.NEGATIVE, Integer.toString(dmg + shielded), icon);
 		}
