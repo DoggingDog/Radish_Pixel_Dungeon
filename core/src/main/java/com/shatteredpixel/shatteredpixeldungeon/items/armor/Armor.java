@@ -7,6 +7,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -41,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CircleSword;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -404,7 +406,11 @@ public class Armor extends EquipableItem {
 	public int buffedLvl() {
 
 		if(Dungeon.hero.belongings.armor == this ) {
-			return hero.belongings.armor.level() + RingOfKing.updateMultiplier(Dungeon.hero);
+			if(Dungeon.hero.buff( Degrade.class ) != null){
+				return super.buffedLvl();
+			} else {
+				return hero.belongings.armor.level() + RingOfKing.updateMultiplier(Dungeon.hero);
+			}
 		}
 
 		if (isEquipped( Dungeon.hero ) || Dungeon.hero.belongings.contains( this )){
@@ -487,13 +493,21 @@ public class Armor extends EquipableItem {
 		String info = desc();
 
 		if (levelKnown) {
-			info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(), DRMax(), STRReq());
+			if(hero.belongings.weapon() instanceof CircleSword){
+				info += "\n\n" + Messages.get(Armor.class, "curr_absorb", 0, 0, STRReq());
+			} else {
+				info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(), DRMax(), STRReq());
+			}
 
 			if (STRReq() > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
-			info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
+			if(hero.belongings.weapon() instanceof CircleSword){
+				info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
+			} else {
+				info += "\n\n" + Messages.get(Armor.class, "avg_absorb", 0, 0, STRReq(0));
+			}
 
 			if (STRReq(0) > Dungeon.hero.STR()) {
 				info += " " + Messages.get(Armor.class, "probably_too_heavy");

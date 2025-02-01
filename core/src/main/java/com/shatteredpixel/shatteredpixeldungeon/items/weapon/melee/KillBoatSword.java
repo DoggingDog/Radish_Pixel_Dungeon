@@ -16,7 +16,7 @@ public class KillBoatSword extends MeleeWeapon {
     }
     @Override
     public int max(int lvl) {
-        return 60 + lvl * 8;
+        return 60 + lvl * 10;
     }
 
 }

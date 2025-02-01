@@ -11,6 +11,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RadishEnemySprite.GiantWormSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatKingSprite;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.shatteredpixel.shatteredpixeldungeon.ui.changelist.ChangeButton;
@@ -38,7 +40,7 @@ public class RA_v0_13_X_Changes {
     }
 
     public static void add_v05_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
-        ChangeInfo changes = new ChangeInfo("v0.5.0", true, "");
+        ChangeInfo changes = new ChangeInfo("v0.5.0-1", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
@@ -49,8 +51,11 @@ public class RA_v0_13_X_Changes {
         changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.HUNTRESS, 6), ("女猎恶魔天赋完全实装"),
                 ("射技决斗 疾风骤雨 药镖专家 大地之心均已实装")));
 
+        changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.KILL_BOAT), "武器增强：斩舰刃",
+                "成长从2-8改为2-10。"));
+
         changes.addButton( new ChangeButton(new ItemSprite(ItemSpriteSheet.RUNE_SLADE+1), "新武器：轮刃",
-                "你的所有护甲值都会转化为此武器的攻击力。这件武器对目标周围的敌人造成溅射效果。\n\n笨重难用的武器。挥动它，几乎意味着放弃全身上下所有的防御手段。\n\n四阶，力量需求16，初始8-20，成长1-5\n\n开发组碎碎念：好像是骰杀里面武器改，不过咱也不知道啦，祝各位玩的开心。"));
+                "你的所有护甲值都会转化为此武器的攻击力。这件武器对目标周围的敌人造成溅射效果。\n\n笨重难用的武器。挥动它，几乎意味着放弃全身上下所有的防御手段。【穿戴后防御变为0】\n\n四阶，力量需求16，初始8-20，成长1-5\n\n开发组碎碎念：好像是骰杀里面武器改，不过咱也不知道啦，祝各位玩的开心。"));
 
         changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.ROGUE, 6), ("盗贼恶魔天赋完全实装"),
                 ("严阵以待 能量回收 动能转换 风暴奔袭均已实装")));
@@ -59,12 +64,20 @@ public class RA_v0_13_X_Changes {
         changes.hardlight(CharSprite.WARNING);
         changeInfos.add(changes);
 
+        changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.DEGRADE, true), "降级增强",
+                "修复武器/护甲降级不生效的问题，同时，在降级状态下，国王之戒的效果完全失效。"));
+
         Image critImage = new Image(Assets.Effects.TEXT_ICONS,49,7,7,7);
         critImage.scale.set(PixelScene.align(1.72f));
         changes.addButton(new ChangeButton(critImage, ("暴击视觉效果调整"),
                 ("暴击现在不再显示为一个文本，而是一个图标\n\n图标灵感：某农暴击图标")));
 
         changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "_-_V0.5.1\n" +
+                        "_-_ 修复始终暴击的异常\n" +
+                        "_-_ 修复轮刃可以伤害自己的异常\n" +
+                        "_-_ 优化决斗家的一些赘余代码\n" +
+                        "_-_ 部分文案优化\n",
                 "_-_V0.5.0\n" +
                         "_-_ 修复部分文案异常\n" +
                         "_-_ 修复藤蔓陷阱天赋失效\n" +

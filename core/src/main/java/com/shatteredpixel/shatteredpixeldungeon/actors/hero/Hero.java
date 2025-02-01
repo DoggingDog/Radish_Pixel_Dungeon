@@ -63,10 +63,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Levitation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MindVision;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Momentum;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MonkEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MoveCount;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Paralysis;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Preparation;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Regeneration;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
@@ -164,6 +162,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Seeking;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CelestialSphere;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CircleSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Flail;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.KillBoatSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LockChain;
@@ -512,9 +511,7 @@ public class Hero extends Char {
 
 	@Override
 	public void hitSound(float pitch) {
-		if (!RingOfForce.fightingUnarmed(this)) {
-			belongings.attackingWeapon().hitSound(pitch);
-		} else if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
+		if (RingOfForce.getBuffedBonus(this, RingOfForce.Force.class) > 0) {
 			//pitch deepens by 2.5% (additive) per point of strength, down to 75%
 			super.hitSound( pitch * GameMath.gate( 0.75f, 1.25f - 0.025f*STR(), 1f) );
 		} else {
@@ -607,11 +604,7 @@ public class Hero extends Char {
 			accuracy *= 1.50f;
 		}
 
-		if (!RingOfForce.fightingUnarmed(this)) {
-			return (int)(attackSkill * accuracy * wep.accuracyFactor( this, target ));
-		} else {
-			return (int)(attackSkill * accuracy);
-		}
+		return (int)(attackSkill * accuracy);
 	}
 
 	@Override
@@ -670,14 +663,6 @@ public class Hero extends Char {
 			return Messages.get(RoundShield.GuardTracker.class, "guarded");
 		}
 
-		if (buff(MonkEnergy.MonkAbility.Focus.FocusActivation.class) != null){
-			buff(MonkEnergy.MonkAbility.Focus.FocusActivation.class).detach();
-			if (sprite != null && sprite.visible) {
-				Sample.INSTANCE.play(Assets.Sounds.HIT_PARRY, 1, Random.Float(0.96f, 1.05f));
-			}
-			return Messages.get(Monk.class, "parried");
-		}
-
 		return super.defenseVerb();
 	}
 
@@ -699,14 +684,16 @@ public class Hero extends Char {
 			if (shielding()>0)
 				dr+=Random.NormalIntRange(2,8);
 
-		if (belongings.armor() != null) {
+		if(hero.belongings.weapon() instanceof CircleSword){
+			dr = 0;
+		} else if (belongings.armor() != null) {
 			int armDr = Char.combatRoll( belongings.armor().DRMin(), belongings.armor().DRMax());
 			if (STR() < belongings.armor().STRReq()){
 				armDr -= 2*(belongings.armor().STRReq() - STR());
 			}
 			if (armDr > 0) dr += armDr;
 		}
-		if (belongings.weapon() != null && !RingOfForce.fightingUnarmed(this))  {
+		if (belongings.weapon() != null)  {
 			int wepDr = Char.combatRoll( 0 , belongings.weapon().defenseFactor( this ) );
 			if (STR() < ((Weapon)belongings.weapon()).STRReq()){
 				wepDr -= 2*(((Weapon)belongings.weapon()).STRReq() - STR());
@@ -718,14 +705,12 @@ public class Hero extends Char {
 	}
 
 	@Override
-	public int damageRoll() {
-		KindOfWeapon wep = belongings.attackingWeapon();
+	public int damageRoll() {  //TODO FIX
+		KindOfWeapon wep = belongings.weapon();
 		int dmg;
-
-		if (!RingOfForce.fightingUnarmed(this)) {
+		if (wep!=null){
 			dmg = wep.damageRoll( this );
-
-			if (!(wep instanceof MissileWeapon)){
+			if (!(wep instanceof MissileWeapon)) {
 				dmg += RingOfForce.armedDamageBonus(this);
 				if (hasTalent(Talent.DEVASTATE)){
 					if (buff(Combo.class)!=null){
@@ -736,26 +721,14 @@ public class Hero extends Char {
 			}
 		} else {
 			dmg = RingOfForce.damageRoll(this);
-			if (RingOfForce.unarmedGetsWeaponAugment(this)){
-				dmg = ((Weapon)belongings.attackingWeapon()).augment.damageFactor(dmg);
-			}
 		}
 
 		if( attackDelay() >1 && hasTalent(Talent.STRONGMAN) && !(wep instanceof SpiritBow)){
 			dmg += (int) (dmg * Math.max (attackDelay() - (1f / 3f * pointsInTalent(Talent.STRONGMAN)),0.75f));
 		}
 
-		PhysicalEmpower emp = buff(PhysicalEmpower.class);
-		if (emp != null){
-			dmg += emp.dmgBoost;
-			emp.left--;
-			if (emp.left <= 0) {
-				emp.detach();
-			}
-			Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG, 0.75f, 1.2f);
-		}
-
 		if (dmg < 0) dmg = 0;
+
 		return dmg;
 	}
 
@@ -804,7 +777,7 @@ public class Hero extends Char {
 	public boolean canSurpriseAttack(){
 		KindOfWeapon w = belongings.attackingWeapon();
 		if (!(w instanceof Weapon))             return true;
-		if (RingOfForce.fightingUnarmed(this))  return true;
+
 		if (STR() < ((Weapon)w).STRReq())       return false;
 		if (w instanceof Flail)                 return false;
 
@@ -858,33 +831,22 @@ public class Hero extends Char {
 			}
 		}
 
-		if (!RingOfForce.fightingUnarmed(this)) {
+        //Normally putting furor speed on unarmed attacks would be unnecessary
+        //But there's going to be that one guy who gets a furor+force ring combo
+        //This is for that one guy, you shall get your fists of fury!
+        float speed = RingOfFuror.attackSpeedMultiplier(this);
 
-			return delay * belongings.attackingWeapon().delayFactor( this );
+        if (hero.buff(SnipersMark.class) != null && hero.hasTalent(Talent.BOW_DULES)) {
+            speed += 0.5f;
+        }
 
-		} else {
-			//Normally putting furor speed on unarmed attacks would be unnecessary
-			//But there's going to be that one guy who gets a furor+force ring combo
-			//This is for that one guy, you shall get your fists of fury!
-			float speed = RingOfFuror.attackSpeedMultiplier(this);
+        //ditto for furor + sword dance!
+        if (buff(Scimitar.SwordDance.class) != null){
+            speed += 0.6f;
+        }
 
-			if (hero.buff(SnipersMark.class) != null && hero.hasTalent(Talent.BOW_DULES)) {
-				speed += 0.5f;
-			}
-
-			//ditto for furor + sword dance!
-			if (buff(Scimitar.SwordDance.class) != null){
-				speed += 0.6f;
-			}
-
-			//and augments + brawler's stance! My goodness, so many options now compared to 2014!
-			if (RingOfForce.unarmedGetsWeaponAugment(this)){
-				delay = ((Weapon)belongings.weapon).augment.delayFactor(delay);
-			}
-
-			return delay/speed;
-		}
-	}
+        return delay/speed;
+    }
 
 	@Override
 	public void spend( float time ) {
@@ -1591,11 +1553,7 @@ public class Hero extends Char {
 		}
 
 		KindOfWeapon wep;
-		if (RingOfForce.fightingUnarmed(this) && !RingOfForce.unarmedGetsWeaponEnchantment(this)){
-			wep = null;
-		} else {
-			wep = belongings.attackingWeapon();
-		}
+		wep = belongings.attackingWeapon();
 
 		if (wep != null) damage = wep.proc( this, enemy, damage );
 

@@ -27,6 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Berserk;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Degrade;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
@@ -319,8 +320,13 @@ abstract public class Weapon extends KindOfWeapon {
 	//overrides as other things can equip these
 	@Override
 	public int buffedLvl() {
+
 		if(hero.belongings.weapon == this ) {
-			return hero.belongings.weapon.level() + RingOfKing.updateMultiplier(Dungeon.hero);
+			if(Dungeon.hero.buff( Degrade.class ) != null){
+				return super.buffedLvl();
+			} else {
+				return hero.belongings.weapon.level() + RingOfKing.updateMultiplier(Dungeon.hero);
+			}
 		}
 
 		if (isEquipped( hero ) || hero.belongings.contains( this )){
