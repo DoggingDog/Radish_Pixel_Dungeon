@@ -493,7 +493,7 @@ public class Armor extends EquipableItem {
 		String info = desc();
 
 		if (levelKnown) {
-			if(hero.belongings.weapon() instanceof CircleSword){
+			if(hero.belongings.weapon() instanceof CircleSword && hero.belongings.armor() == this){
 				info += "\n\n" + Messages.get(Armor.class, "curr_absorb", 0, 0, STRReq());
 			} else {
 				info += "\n\n" + Messages.get(Armor.class, "curr_absorb", DRMin(), DRMax(), STRReq());
@@ -503,10 +503,10 @@ public class Armor extends EquipableItem {
 				info += " " + Messages.get(Armor.class, "too_heavy");
 			}
 		} else {
-			if(hero.belongings.weapon() instanceof CircleSword){
-				info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
-			} else {
+			if(hero.belongings.weapon() instanceof CircleSword && hero.belongings.armor() == this){
 				info += "\n\n" + Messages.get(Armor.class, "avg_absorb", 0, 0, STRReq(0));
+			} else {
+				info += "\n\n" + Messages.get(Armor.class, "avg_absorb", DRMin(0), DRMax(0), STRReq(0));
 			}
 
 			if (STRReq(0) > Dungeon.hero.STR()) {
