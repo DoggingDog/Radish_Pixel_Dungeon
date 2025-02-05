@@ -1468,8 +1468,12 @@ public class Hero extends Char {
 			if(Dungeon.level.distance( enemy.pos, pos ) <= 1){
 				sprite.attack(enemy.pos);
 			} else if(Dungeon.level.distance( enemy.pos,pos ) <= lk.RCH) {
-				chain(enemy.pos);
-				sprite.attack(enemy.pos);
+				if(chain(enemy.pos)){
+					chain(enemy.pos);
+				} else {
+					ready();
+					GLog.w( Messages.get(LockChain.class, "cant_attack_2"));
+				}
 			} else {
 				ready();
 				GLog.w( Messages.get(LockChain.class, "cant_attack"));
