@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
@@ -187,8 +188,14 @@ public class Shopkeeper extends NPC {
 	public static int sellPrice(Item item){
 		int ax= 5 * (Dungeon.depth / 5 + 1);
 		if (item instanceof MeleeWeapon){
+
 			int price = 20 * ((MeleeWeapon)item).tier;
-			if (((MeleeWeapon)item).hasGoodEnchant()) {
+
+            if (((Weapon) item).enchantment != null) {
+                price *= 1.2;  // 附魔增加 20%
+            }
+
+            if (((MeleeWeapon)item).hasGoodEnchant()) {
 				price *= 1.2;
 			}
 			if (item.cursedKnown && (item.cursed || ((MeleeWeapon)item).hasCurseEnchant())) {
@@ -233,8 +240,20 @@ public class Shopkeeper extends NPC {
 			if (price < 1) {
 				price = 1;
 			}
+
+			if(item.level > 0){
+				price *= (int) (1 + (item.level() * 0.3f));  // 不做强制转换
+			}
+
+
+
 			return price *ax;
+
+
+
 		}
+
+
 		return item.value() * ax;
 	}
 	

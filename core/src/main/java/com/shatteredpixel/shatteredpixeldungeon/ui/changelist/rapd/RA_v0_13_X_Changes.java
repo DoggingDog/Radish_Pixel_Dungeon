@@ -40,7 +40,7 @@ public class RA_v0_13_X_Changes {
     }
 
     public static void add_v05_0_Changes( ArrayList<ChangeInfo> changeInfos ) {
-        ChangeInfo changes = new ChangeInfo("v0.5.0-1", true, "");
+        ChangeInfo changes = new ChangeInfo("v0.5.0-2", true, "");
         changes.hardlight(Window.TITLE_COLOR);
         changeInfos.add(changes);
 
@@ -67,12 +67,20 @@ public class RA_v0_13_X_Changes {
         changes.addButton( new ChangeButton(new BuffIcon(BuffIndicator.DEGRADE, true), "降级增强",
                 "修复武器/护甲降级不生效的问题，同时，在降级状态下，国王之戒的效果完全失效。"));
 
+        changes.addButton(new ChangeButton(Icons.get(Icons.GOLD), ("商店售卖调整"),
+                ("每增加一级售卖的价格就增加30%，有任何附魔加20%，出售价格从之前的3倍改为2倍。")));
+
         Image critImage = new Image(Assets.Effects.TEXT_ICONS,49,7,7,7);
         critImage.scale.set(PixelScene.align(1.72f));
         changes.addButton(new ChangeButton(critImage, ("暴击视觉效果调整"),
                 ("暴击现在不再显示为一个文本，而是一个图标\n\n图标灵感：某农暴击图标")));
 
         changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "_-_V0.5.2\n" +
+                        "_-_ 修复武器攻速的严重异常\n" +
+                        "_-_ 修复拉莱耶文本反伤异常\n" +
+                        "_-_ 修复锁镰回合结算异常\n" +
+                        "_-_ 修正轮刃文本显示异常",
                 "_-_V0.5.1\n" +
                         "_-_ 修复始终暴击的异常\n" +
                         "_-_ 修复轮刃可以伤害自己的异常\n" +

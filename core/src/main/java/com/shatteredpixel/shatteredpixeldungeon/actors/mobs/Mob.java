@@ -1433,10 +1433,6 @@ public abstract class Mob extends Char {
 				damage(damage, new Rlyeh());
 				//因为再处理无伤害会更麻烦，所以这里改成打多少回多少
 				enemy.HP += Math.min(enemy.HT, damage);
-				//一个神奇的特性会导致满血额外+1点血量，所以-1
-				if(enemy.HP == enemy.HT){
-					enemy.damage(1,new Rlyeh());
-				}
 			}
 		} else {
 			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
@@ -1446,9 +1442,6 @@ public abstract class Mob extends Char {
 						if (w2.chance()) {
 							damage(((Statue) mob).weapon.damageRoll(mob), new Rlyeh());
 							enemy.HP += Math.min(enemy.HT, damage);
-							if(enemy.HP == enemy.HT){
-								damage(1,new Rlyeh());
-							}
 						}
 					}
 				}
