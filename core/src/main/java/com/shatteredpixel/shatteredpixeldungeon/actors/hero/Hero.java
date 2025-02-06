@@ -846,7 +846,8 @@ public class Hero extends Char {
         }
 
 		// DoggingDog on 20250205
-		delay *= belongings.attackingWeapon().delayFactor( this );
+		if(belongings.attackingWeapon() != null)
+			delay *= belongings.attackingWeapon().delayFactor( this );
 
 
         return delay/speed;
