@@ -467,6 +467,8 @@ public enum Icons {
 				return new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK);
 			case HUNTRESS:
 				return new ItemSprite(ItemSpriteSheet.SPIRIT_BOW);
+			case RECTOR:
+				return new ItemSprite(ItemSpriteSheet.HOLYANKH);
 			default:
 				return null;
 		}

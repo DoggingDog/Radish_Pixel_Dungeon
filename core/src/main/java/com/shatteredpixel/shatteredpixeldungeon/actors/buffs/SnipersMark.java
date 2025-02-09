@@ -26,7 +26,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
@@ -152,16 +151,18 @@ public class SnipersMark extends FlavourBuff implements ActionIndicator.Action {
 
 		bow.sniperSpecial = true;
 		bow.sniperSpecialBonusDamage = level*Dungeon.hero.pointsInTalent(Talent.SHARED_UPGRADES)/10f;
-		if (hero.hasTalent(Talent.BOW_DULES)) {
-			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
-				if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
-					cell = mob.pos;
-					arrow.cast(hero, cell);
-				}
-			}
-		} else {
-			arrow.cast(hero, cell);
-		}
+//		if (hero.hasTalent(Talent.BOW_DULES)) {
+//			for (Mob mob : Dungeon.level.mobs.toArray(new Mob[0])) {
+//				if (mob.alignment != Char.Alignment.ALLY && Dungeon.level.heroFOV[mob.pos]) {
+//					cell = mob.pos;
+//					arrow.cast(hero, cell);
+//				}
+//			}
+//		} else {
+//			arrow.cast(hero, cell);
+//		}
+
+		arrow.cast(hero, cell);
 
 		detach();
 

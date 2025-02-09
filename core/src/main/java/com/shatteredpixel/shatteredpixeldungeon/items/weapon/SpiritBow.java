@@ -631,7 +631,9 @@ public class SpiritBow extends Weapon {
 										int bonusTurns = Dungeon.hero.hasTalent(Talent.SHARED_UPGRADES) ? hero.belongings.weapon().buffedLvl() : 0;
 										if (enemy instanceof Mob && ((Mob) enemy).surprisedBy(hero)
 										&& hero.pointsInTalent(Talent.BOW_DULES)>=3) {
-											Buff.prolong(hero, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
+											if(hero.buff(SnipersMark.class) == null){
+												Buff.prolong(hero, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
+											}
 										}
 
 										flurryCount--;

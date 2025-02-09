@@ -1618,8 +1618,6 @@ public class Hero extends Char {
 											Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
 										} else if (hero.buff(SnipersMark.class) != null) {
 											Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).setSec(enemy.id(), bonusTurns);
-										} else {
-											Buff.prolong(Hero.this, SnipersMark.class, SnipersMark.DURATION + bonusTurns).set(enemy.id(), bonusTurns);
 										}
 									}
 									Actor.remove(this);

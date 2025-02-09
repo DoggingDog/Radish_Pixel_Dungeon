@@ -44,6 +44,11 @@ public enum HeroSubClass {
 	SNIPER(HeroIcon.SNIPER),
 	WARDEN(HeroIcon.WARDEN),
 
+	//Rector Sub Class
+	BATTLEPREIST(HeroIcon.PATLE),
+	REDCARDINAL(HeroIcon.REDLORD),
+
+	//Never Used Duelist
 	CHAMPION(HeroIcon.CHAMPION),
 	MONK(HeroIcon.MONK);
 
