@@ -195,7 +195,12 @@ public enum Talent {
 	//Elemental Strike T4
 	ELEMENTAL_REACH(148, 4), STRIKING_FORCE(149, 4), DIRECTED_POWER(150, 4),
 	//Duelist A3 T4
-	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4);
+	FEIGNED_RETREAT(151, 4), EXPOSE_WEAKNESS(152, 4), COUNTER_ABILITY(153, 4),
+
+	/**
+	 * [RECTOR TALENT]
+	 */
+	PRAYER_BEFORE_MEALS(288,2),MENTAL_TELEPATHY(289,2), RAIN_GRACE(290,2),DEVOTIONAL(291,2);
 
 	public static class MagicRootDropped extends CounterBuff{{revivePersists = true;}};
 
@@ -854,6 +859,9 @@ public enum Talent {
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, NATURES_BOUNTY, SURVIVALISTS_INTUITION, FOLLOWUP_STRIKE, UNDERESTIMATED);
+				break;
+			case RECTOR:
+				Collections.addAll(tierTalents, PRAYER_BEFORE_MEALS,MENTAL_TELEPATHY,RAIN_GRACE,DEVOTIONAL);
 				break;
 		}
 		for (Talent talent : tierTalents){

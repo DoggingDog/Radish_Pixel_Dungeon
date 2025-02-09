@@ -230,7 +230,7 @@ public class ItemSpriteSheet {
 		assignItemRect(RAPIER,          13, 14);
 		assignItemRect(DAGGER,          12, 13);
 		assignItemRect(MAGES_STAFF,     15, 16);
-		assignItemRect(HOLYANKH,		16, 14);
+		assignItemRect(HOLYANKH,		12, 12);
 	}
 
 	private static final int WEP_TIER2      =                               xy(9, 7);   //8 slots

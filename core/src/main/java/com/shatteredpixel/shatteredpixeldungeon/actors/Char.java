@@ -112,6 +112,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.TimekeepersHourglass;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.exotic.PotionOfCleansing;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.Pickaxe;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfBenediction;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfElements;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfTenacity;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetribution;
@@ -802,6 +803,18 @@ public abstract class Char extends Actor {
 		}
 
 		float acuRoll = Random.Float( acuStat );
+
+		//祝福之戒
+		float bless_adj_a=1.25f,bless_adj_d=1.25f;
+		if (hero.buff(RingOfBenediction.Benediction.class) != null) {
+			if (attacker == hero)
+				bless_adj_a *= RingOfBenediction.periodMultiplier(attacker);
+			else if (defender == hero)
+				bless_adj_d *= RingOfBenediction.periodMultiplier(attacker);
+		}
+		if (attacker.buff(Bless.class) != null) acuRoll *= bless_adj_a;
+		//祝福之戒
+
 		if (attacker.buff(Bless.class) != null) acuRoll *= 1.25f;
 		if (attacker.buff(  Hex.class) != null) acuRoll *= 0.8f;
 		if (attacker.buff( Daze.class) != null) acuRoll *= 0.5f;
@@ -888,8 +901,19 @@ public abstract class Char extends Actor {
 
 	public float speed() {
 		float speed = baseSpeed;
+
+		/** 祝福之戒 */
+		float ben_mul=1f;
+		if (this == hero ){
+			Buff ben= hero.buff(RingOfBenediction.Benediction.class);
+			if (ben!=null){
+				ben_mul*=RingOfBenediction.periodMultiplier(this);
+			}
+		}
+		if ( buff( Stamina.class ) != null) speed *= 1.5f*ben_mul;
+		/** 祝福之戒 */
+
 		if ( buff( Cripple.class ) != null ) speed /= 2f;
-		if ( buff( Stamina.class ) != null) speed *= 1.5f;
 		if ( buff( Adrenaline.class ) != null) speed *= 2f;
 		if ( buff( Haste.class ) != null) speed *= 3f;
 		if ( buff( Dread.class ) != null) speed *= 2f;

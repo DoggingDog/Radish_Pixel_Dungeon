@@ -32,6 +32,8 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ImpSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIcon;
+import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
@@ -72,6 +74,9 @@ public class WndHeroInfo extends WndTabbed {
 				break;
 			case HUNTRESS:
 				tabIcon = new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null);
+				break;
+			case RECTOR:
+				tabIcon = new ItemSprite(ItemSpriteSheet.HOLYANKH, null);
 				break;
 		}
 
@@ -205,6 +210,12 @@ public class WndHeroInfo extends WndTabbed {
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.SPIRIT_BOW),
 							new Image(Assets.Environment.TILES_SEWERS, 32, 64, 16, 16),
 							new ItemSprite(ItemSpriteSheet.GLOVES),
+							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
+					break;
+				case RECTOR:
+					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.HOLYANKH),
+							new ItemSprite(ItemSpriteSheet.HOLDER),
+							new BuffIcon(BuffIndicator.CORRUPT, true),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;
 			}
