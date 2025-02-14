@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
@@ -97,7 +98,11 @@ public class Blooming extends Weapon.Enchantment {
 		if ((t == Terrain.EMPTY || t == Terrain.EMPTY_DECO || t == Terrain.EMBERS
 				|| t == Terrain.GRASS || t == Terrain.FURROWED_GRASS)
 				&& Dungeon.level.plants.get(cell) == null){
-			Level.set(cell, Terrain.HIGH_GRASS);
+			if(Dungeon.isChallenged(Challenges.NO_HERBALISM) && Random.Float(0,100f) < 50f+Dungeon.depth*2f){
+				Level.set(cell,Terrain.FURROWED_GRASS);
+			}
+			else
+				Level.set(cell, Terrain.HIGH_GRASS);
 			GameScene.updateMap(cell);
 			CellEmitter.get( cell ).burst( LeafParticle.LEVEL_SPECIFIC, 4 );
 			return true;

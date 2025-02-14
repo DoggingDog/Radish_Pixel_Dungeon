@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.items.wands;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
@@ -144,6 +145,10 @@ public class WandOfRegrowth extends Wand {
 					}
 				}
 			}
+		}
+
+		if(Dungeon.isChallenged(Challenges.NO_HERBALISM)){
+			furrowedChance += ((50f+Dungeon.depth*2f)/100f);
 		}
 
 		//places grass along center of cone

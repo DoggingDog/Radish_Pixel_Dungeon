@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
@@ -31,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
+import com.watabou.utils.Random;
 
 public class Regrowth extends Blob {
 	
@@ -49,9 +51,12 @@ public class Regrowth extends Blob {
 						if (c == Terrain.EMPTY || c == Terrain.EMBERS || c == Terrain.EMPTY_DECO) {
 							c1 = (cur[cell] > 9 && Actor.findChar( cell ) == null)
 									? Terrain.HIGH_GRASS : Terrain.GRASS;
+							// DoggingDog on 20250214
+							c1 = (Dungeon.isChallenged(Challenges.NO_HERBALISM) && Random.Float(0,100f) < 50f+Dungeon.depth*2f)?Terrain.FURROWED_GRASS:c1;
 						} else if ((c == Terrain.GRASS || c == Terrain.FURROWED_GRASS)
 								&& cur[cell] > 9 && Dungeon.level.plants.get(cell) == null && Actor.findChar( cell ) == null ) {
 							c1 = Terrain.HIGH_GRASS;
+							c1 = (Dungeon.isChallenged(Challenges.NO_HERBALISM) && Random.Float(0,100f) < 50f+Dungeon.depth*2f)?Terrain.FURROWED_GRASS:c1;
 						}
 
 						if (c1 != c) {
