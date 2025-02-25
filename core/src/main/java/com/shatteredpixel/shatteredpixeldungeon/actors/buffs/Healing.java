@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfBenediction;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -87,12 +88,15 @@ public class Healing extends Buff {
 	}
 
 	public void setHeal(int amount, float percentPerTick, int flatPerTick){
-		//multiple sources of healing do not overlap, but do combine the best of their properties
-		healingLeft = Math.max(healingLeft, amount);
-
-		percentHealPerTick = Math.max(percentHealPerTick, percentPerTick);
-
-		flatHealPerTick = Math.max(flatHealPerTick, flatPerTick);
+		if (target == Dungeon.hero){
+			Buff ben=Dungeon.hero.buff(RingOfBenediction.Benediction.class);
+			if (ben!=null){
+				amount*= (int) RingOfBenediction.periodMultiplier(target);
+			}
+		}
+		healingLeft = amount;
+		percentHealPerTick = percentPerTick;
+		flatHealPerTick = flatPerTick;
 	}
 	
 	public void increaseHeal( int amount ){

@@ -24,7 +24,7 @@ public class RingOfBenediction extends Ring {
         return new RingOfBenediction.Benediction();
     }
 
-    public static float periodMultiplier( Char target ){
+    public static float periodMultiplier( Char target ) {
         return (float) Math.pow( 1.2, getBuffedBonus(target, RingOfBenediction.Benediction.class));
     }
 
