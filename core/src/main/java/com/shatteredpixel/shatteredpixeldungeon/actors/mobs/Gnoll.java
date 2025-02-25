@@ -54,4 +54,7 @@ public class Gnoll extends Mob {
 	public int drRoll() {
 		return super.drRoll() + Char.combatRoll(0, 2);
 	}
+
+
+
 }
