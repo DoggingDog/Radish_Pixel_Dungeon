@@ -201,7 +201,15 @@ public enum Talent {
 	/**
 	 * [RECTOR TALENT]
 	 */
-	PRAYER_BEFORE_MEALS(288,2),MENTAL_TELEPATHY(289,2), RAIN_GRACE(290,2),DEVOTIONAL(291,2);
+	PRAYER_BEFORE_MEALS(288,2),MENTAL_TELEPATHY(289,2), RAIN_GRACE(290,2),DEVOTIONAL(291,2),
+
+	BLESS_FOOD(320,2),SOUL_NOWIFI(321,2),LIGHT_STEP(322,2),GOD_BODY(323,2),NOHOPE_LANG(324,2),
+
+	//T3牧师通用
+	ACT_GODPROGRESS(352,3),SMART_BLESSING(353,3),
+
+	ERROR(294,4);
+
 
 	public static class MagicRootDropped extends CounterBuff{{revivePersists = true;}};
 
@@ -928,6 +936,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, INVIGORATING_MEAL, HERB_MIXTURE, REJUVENATING_STEPS, HEIGHTENED_SENSES, DURABLE_PROJECTILES);
 				break;
+			case RECTOR:
+				Collections.addAll(tierTalents, BLESS_FOOD,SOUL_NOWIFI,LIGHT_STEP,GOD_BODY,NOHOPE_LANG);
+				break;
 		}
 		for (Talent talent : tierTalents){
 			if (replacements.containsKey(talent)){
@@ -950,6 +961,9 @@ public enum Talent {
 				break;
 			case HUNTRESS:
 				Collections.addAll(tierTalents, HOLD_BREATH, SEER_SHOT);
+				break;
+			case RECTOR:
+				Collections.addAll(tierTalents, ACT_GODPROGRESS, SMART_BLESSING);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1002,6 +1016,9 @@ public enum Talent {
 				break;
 			case WARDEN:
 				Collections.addAll(tierTalents, DURABLE_TIPS, BARKSKIN, VINE_TRAP);
+				break;
+			case REDCARDINAL:case BATTLEPREIST:
+				Collections.addAll(tierTalents,ERROR,ERROR,ERROR);
 				break;
 		}
 		for (Talent talent : tierTalents){
@@ -1060,6 +1077,9 @@ public enum Talent {
 			case HUNTRESS:
 				Collections.addAll(tierTalents, BRISK_PACE,PHASE_FILLING);
 				break;
+			case RECTOR:
+				Collections.addAll(tierTalents,ERROR,ERROR);
+				break;
 		}
 		//tier 4
 		switch (subcls){
@@ -1092,6 +1112,9 @@ public enum Talent {
 
 			case WARDEN:
 				Collections.addAll(tierTalents, MEDART_SPECIALIST, LAND_HEART);
+				break;
+			case REDCARDINAL:case BATTLEPREIST:
+				Collections.addAll(tierTalents,ERROR,ERROR);
 				break;
 		}
 		for (Talent talent : tierTalents){

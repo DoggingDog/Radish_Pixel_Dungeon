@@ -368,6 +368,8 @@ public enum HeroClass {
 				return new ArmorAbility[]{new SmokeBomb(), new DeathMark(), new ShadowClone()};
 			case HUNTRESS:
 				return new ArmorAbility[]{new SpectralBlades(), new NaturesPower(), new SpiritHawk()};
+			case RECTOR:
+				return new ArmorAbility[]{};
 		}
 	}
 
@@ -406,14 +408,16 @@ public enum HeroClass {
 		if (DeviceCompat.isDebug()) return true;
 
 		switch (this){
-			case WARRIOR: default:
-				return true;
 			case MAGE:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_MAGE);
 			case ROGUE:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_ROGUE);
 			case HUNTRESS:
 				return Badges.isUnlocked(Badges.Badge.UNLOCK_HUNTRESS);
+			case RECTOR:
+				return true;
+			case WARRIOR: default:
+				return true;
 		}
 	}
 	

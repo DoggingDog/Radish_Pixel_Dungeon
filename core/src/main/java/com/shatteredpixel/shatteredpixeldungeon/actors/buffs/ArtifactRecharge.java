@@ -39,6 +39,14 @@ public class ArtifactRecharge extends Buff {
 		type = buffType.POSITIVE;
 	}
 
+	public static void chargeArtifacts( Hero hero, float turns ){
+		for (Buff b : hero.buffs()){
+			if (b instanceof Artifact.ArtifactBuff && !((Artifact.ArtifactBuff) b).isCursed()){
+				if (!((Artifact.ArtifactBuff) b).isCursed()) ((Artifact.ArtifactBuff) b).charge(hero, turns);
+			}
+		}
+	}
+
 	private float left;
 	public boolean ignoreHornOfPlenty;
 
