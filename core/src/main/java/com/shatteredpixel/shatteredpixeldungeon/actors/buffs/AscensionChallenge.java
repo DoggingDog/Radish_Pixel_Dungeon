@@ -120,31 +120,30 @@ public class AscensionChallenge extends Buff {
 		modifiers.put(Scorpio.class,        1.1f);
 
 		//Radish Enemy
-		modifiers.put(GiantWorm.class,            1.1f);
-		modifiers.put(Mayfly.class,               1.1f);
-		modifiers.put(Dog.class,            	  1.1f);
-		modifiers.put(Goblin.class,               1.1f);
+		modifiers.put(GiantWorm.class,            12f);
+		modifiers.put(Mayfly.class,               12f);
+		modifiers.put(Dog.class,            	  12f);
+		modifiers.put(Goblin.class,               12f);
 
-		modifiers.put(Jailer.class,                 1.5f);
-		modifiers.put(Prisoner.class,               1.5f);
-		modifiers.put(Grudge.class,            	    1.5f);
-		modifiers.put(Torturer.class,               1.5f);
+		modifiers.put(Jailer.class,                 5f);
+		modifiers.put(Prisoner.class,               5f);
+		modifiers.put(Grudge.class,            	    5f);
+		modifiers.put(Torturer.class,               5f);
 
-		modifiers.put(GnollZealot.class,                 2.5f);
-		modifiers.put(DM175.class,                       2.5f);
-		modifiers.put(Drake.class,            	         2.5f);
-		modifiers.put(StoneSpirit.class,                 2.5f);
+		modifiers.put(GnollZealot.class,                 20.5f);
+		modifiers.put(DM175.class,                       20.5f);
+		modifiers.put(Drake.class,            	         20.5f);
+		modifiers.put(StoneSpirit.class,                 20.5f);
 
-		modifiers.put(Artillerist.class,                 5.9f);
-		modifiers.put(ClusteredSkeleton.class,           5.9f);
-		modifiers.put(RoyalGuard.class,                  5.9f);
-		modifiers.put(ShieldMage.class,                  5.9f);
+		modifiers.put(Artillerist.class,                 1.9f);
+		modifiers.put(ClusteredSkeleton.class,           1.9f);
+		modifiers.put(RoyalGuard.class,                  1.9f);
+		modifiers.put(ShieldMage.class,                  1.9f);
 
-		modifiers.put(Deminion.class,  						10f);
-		modifiers.put(Gorgon.class,    						10f);
-		modifiers.put(Deviloon.class,  						10f);
-		modifiers.put(DemonLord.class, 						10f);
-
+		modifiers.put(Deminion.class,  						1.1f);
+		modifiers.put(Gorgon.class,    						1.1f);
+		modifiers.put(Deviloon.class,  						1.1f);
+		modifiers.put(DemonLord.class, 						1.1f);
 	}
 
 	public static float statModifier(Char ch){

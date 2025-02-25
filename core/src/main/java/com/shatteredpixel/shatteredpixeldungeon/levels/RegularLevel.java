@@ -118,54 +118,65 @@ public abstract class RegularLevel extends Level {
 		return painter().paint(this, rooms);
 		
 	}
-	
+
 	protected ArrayList<Room> initRooms() {
 		ArrayList<Room> initRooms = new ArrayList<>();
-		initRooms.add ( roomEntrance = EntranceRoom.createEntrance());
-		initRooms.add( roomExit = ExitRoom.createExit());
+		initRooms.add(roomEntrance = EntranceRoom.createEntrance());
+		initRooms.add(roomExit = ExitRoom.createExit());
 
-		//force max standard rooms and multiple by 1.5x for large levels
+		// 计算当前区域（每5层为一个区域）
+		int region = (Dungeon.depth - 1) / 5 + 1;
+
+		// 每区平均房间数增加：1/1/2/2/2
+		int roomIncrement = 0;
+		if (region >= 3) roomIncrement = 2;
+		else if (region >= 1) roomIncrement = 1;
+
+		// 强制最大标准房间数，并根据区域增加房间数
 		int standards = standardRooms(feeling == Feeling.LARGE);
+		standards += roomIncrement; // 增加房间数
+		standards = (int) (standards * 1.15f); // 物品生成数量增加15%
 
-		standards = (int) (standards * 1.15f);
-
-		if (feeling == Feeling.LARGE){
-			standards = (int)Math.ceil(standards * 1.5f);
+		if (feeling == Feeling.LARGE) {
+			standards = (int) Math.ceil(standards * 1.5f);
 		}
+
 		for (int i = 0; i < standards; i++) {
 			StandardRoom s;
 			do {
 				s = StandardRoom.createRoom();
-			} while (!s.setSizeCat( standards-i ));
-			i += s.sizeFactor()-1;
+			} while (!s.setSizeCat(standards - i));
+			i += s.sizeFactor() - 1;
 			initRooms.add(s);
 		}
-		
+
+		// 商店房间
 		if (Dungeon.shopOnLevel())
 			initRooms.add(new ShopRoom());
 
-		//force max special rooms and add one more for large levels
+		// 强制最大特殊房间数，并根据区域增加房间数
 		int specials = specialRooms(feeling == Feeling.LARGE);
+		specials += roomIncrement; // 增加房间数
+		specials = (int) (specials * 1.15f); // 物品生成数量增加15%
 
-		specials = (int) (specials * 1.15f);
-
-		if (feeling == Feeling.LARGE){
+		if (feeling == Feeling.LARGE) {
 			specials++;
 		}
+
 		SpecialRoom.initForFloor();
 		for (int i = 0; i < specials; i++) {
 			SpecialRoom s = SpecialRoom.createRoom();
 			if (s instanceof PitRoom) specials++;
 			initRooms.add(s);
 		}
-		
+
+		// 秘密房间
 		int secrets = SecretRoom.secretsForFloor(Dungeon.depth);
-		//one additional secret for secret levels
 		if (feeling == Feeling.SECRETS) secrets++;
 		for (int i = 0; i < secrets; i++) {
 			initRooms.add(SecretRoom.createRoom());
 		}
-		
+
 		return initRooms;
 	}
 	
@@ -373,7 +384,7 @@ public abstract class RegularLevel extends Level {
 		// drops 3/4/5 items 60%/30%/10% of the time
 		int nItems = 3 + Random.chances(new float[]{6, 3, 1});
 
-		nItems *= 1.1f;
+		nItems *= 1.15f;
 		
 		if (feeling == Feeling.LARGE){
 			nItems += 2;
