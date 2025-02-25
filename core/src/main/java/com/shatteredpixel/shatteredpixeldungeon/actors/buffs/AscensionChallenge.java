@@ -42,6 +42,26 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Guard;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Monk;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Necromancer;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Artillerist;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.ClusteredSkeleton;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.DM175;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Deminion;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.DemonLord;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Deviloon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Dog;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Drake;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.GiantWorm;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.GnollZealot;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Goblin;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Gorgon;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Grudge;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Jailer;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Mayfly;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Prisoner;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.RoyalGuard;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.ShieldMage;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.StoneSpirit;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RadishEnemy.Torturer;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Rat;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.RipperDemon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Scorpio;
@@ -98,6 +118,33 @@ public class AscensionChallenge extends Buff {
 		modifiers.put(Succubus.class,       1.2f);
 		modifiers.put(Eye.class,            1.1f);
 		modifiers.put(Scorpio.class,        1.1f);
+
+		//Radish Enemy
+		modifiers.put(GiantWorm.class,            1.1f);
+		modifiers.put(Mayfly.class,               1.1f);
+		modifiers.put(Dog.class,            	  1.1f);
+		modifiers.put(Goblin.class,               1.1f);
+
+		modifiers.put(Jailer.class,                 1.5f);
+		modifiers.put(Prisoner.class,               1.5f);
+		modifiers.put(Grudge.class,            	    1.5f);
+		modifiers.put(Torturer.class,               1.5f);
+
+		modifiers.put(GnollZealot.class,                 2.5f);
+		modifiers.put(DM175.class,                       2.5f);
+		modifiers.put(Drake.class,            	         2.5f);
+		modifiers.put(StoneSpirit.class,                 2.5f);
+
+		modifiers.put(Artillerist.class,                 5.9f);
+		modifiers.put(ClusteredSkeleton.class,           5.9f);
+		modifiers.put(RoyalGuard.class,                  5.9f);
+		modifiers.put(ShieldMage.class,                  5.9f);
+
+		modifiers.put(Deminion.class,  						10f);
+		modifiers.put(Gorgon.class,    						10f);
+		modifiers.put(Deviloon.class,  						10f);
+		modifiers.put(DemonLord.class, 						10f);
+
 	}
 
 	public static float statModifier(Char ch){
