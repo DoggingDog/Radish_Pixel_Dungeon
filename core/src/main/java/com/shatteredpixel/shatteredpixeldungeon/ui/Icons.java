@@ -142,7 +142,14 @@ public enum Icons {
 	}
 
 	public static Image get( Icons type ) {
-		Image icon = new Image(  !SPDSettings.NORMAL_SKIN() ? Assets.Interfaces.ICONS : Assets.Interfaces.NORMAL_ICONS );
+
+		Image icon;
+		if(!SPDSettings.NORMAL_SKIN()){
+			icon = new Image(Assets.Interfaces.ICONS);
+		} else {
+			icon = new Image(Assets.Interfaces.NORMAL_ICONS);
+		}
+
 		switch (type) {
 
 			case ENTER:

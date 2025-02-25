@@ -64,6 +64,7 @@ import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.generator.TestAr
 import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.generator.TestMissile;
 import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.generator.TestRing;
 import com.shatteredpixel.shatteredpixeldungeon.custom.testmode.generator.TestTalentOFTerminalBook;
+import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.Waterskin;
@@ -205,6 +206,8 @@ public enum HeroClass {
 
 		new StoneOfCard().collect();
 		new SeedOfCard().collect();
+
+		new Amulet().collect();
 
 		hero.heroClass = this;
 		Talent.initClassTalents(hero);

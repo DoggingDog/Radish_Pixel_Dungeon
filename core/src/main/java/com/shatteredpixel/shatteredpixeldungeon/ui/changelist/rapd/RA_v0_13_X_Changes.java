@@ -24,6 +24,7 @@ import java.util.ArrayList;
 public class RA_v0_13_X_Changes {
 
     public static void addAllChanges( ArrayList<ChangeInfo> changeInfos ){
+        add_v05_5_Changes(changeInfos);
         add_v05_0_Changes(changeInfos);
         add_v04_2_Changes(changeInfos);
         add_v04_1_Changes(changeInfos);
@@ -37,6 +38,37 @@ public class RA_v0_13_X_Changes {
         add_v03_3_Changes(changeInfos);
         add_v03_2_Changes(changeInfos);
         add_v03_1_Changes(changeInfos);
+    }
+
+    public static void add_v05_5_Changes( ArrayList<ChangeInfo> changeInfos ) {
+        ChangeInfo changes = new ChangeInfo("v0.5.4", true, "");
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "new"), false, null);
+        changes.hardlight(Window.TITLE_COLOR);
+        changeInfos.add(changes);
+
+        changes.addButton(new ChangeButton(HeroSprite.avatar(HeroClass.RECTOR, 5), ("牧师预载"),
+                ("牧师开始制作，目前已经预载")));
+
+        changes = new ChangeInfo(Messages.get(ChangesScene.class, "changes"), false, null);
+        changes.hardlight(CharSprite.WARNING);
+        changeInfos.add(changes);
+
+        changes.addButton( new ChangeButton((new ItemSprite(ItemSpriteSheet.TAIKIG)), "太刀效果优化",
+                "大太刀效果优化\n" +
+                        "修复大太刀被缴械陷阱传送走冷静和必定暴击的buff仍在"));
+
+        changes.addButton(new ChangeButton(Icons.get(Icons.GOLD), ("其他调整"),
+                ("1.每区平均房间数增加1/1/2/2/2，物品生成数量增加15%，每层食物生成数量额外增加0.33机率\n" +
+                        "2.挑战弱点洞悉的最低伤害上升至1/3/6/10/15\n" +
+                        "3.更改地龙的贴图，让它在潜伏时更显眼。让地龙不会因为集群挑战而醒来")));
+
+        changes.addButton(new ChangeButton(new Image(Assets.Sprites.SPINNER, 144, 0, 16, 16), Messages.get(ChangesScene.class, "bugfixes"),
+                "_-_V0.5.4\n" +
+                        "_-_ 修复祝福之戒不生效的问题\n" +
+                        "_-_ 完善稀有怪返程倍率 1.1/1.5/2.5/5/9"));
     }
 
     public static void add_v05_0_Changes( ArrayList<ChangeInfo> changeInfos ) {

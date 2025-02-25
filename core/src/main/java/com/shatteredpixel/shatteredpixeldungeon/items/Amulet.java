@@ -21,6 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items;
 
+import static com.shatteredpixel.shatteredpixeldungeon.Challenges.TEST_MODE;
+
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
@@ -50,7 +52,7 @@ public class Amulet extends Item {
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		if (hero.buff(AscensionChallenge.class) != null){
+		if (hero.buff(AscensionChallenge.class) != null || Dungeon.isChallenged(TEST_MODE)){
 			actions.clear();
 		} else {
 			actions.add(AC_END);

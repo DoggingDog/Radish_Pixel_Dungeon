@@ -74,7 +74,12 @@ public class MenuPane extends Component {
 	protected void createChildren() {
 		super.createChildren();
 
-		bg = new Image(!SPDSettings.NORMAL_SKIN() ? Assets.Interfaces.MENU : Assets.Interfaces.NORMAL_MENU);
+		if(!SPDSettings.NORMAL_SKIN()){
+			bg = new Image(Assets.Interfaces.MENU);
+		} else {
+			bg = new Image(Assets.Interfaces.NORMAL_MENU);
+		}
+
 		add(bg);
 
 		depthIcon = Icons.get(Dungeon.level.feeling);
