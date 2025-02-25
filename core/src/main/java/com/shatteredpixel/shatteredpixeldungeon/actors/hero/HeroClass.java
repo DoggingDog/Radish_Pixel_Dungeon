@@ -88,7 +88,6 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMappi
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRage;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRemoveCurse;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.MimicTooth;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfMagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.SpiritBow;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.CelestialSphere;
@@ -128,25 +127,10 @@ public enum HeroClass {
 	}
 
 
-	private static void doChallengeSpawn(Hero hero) {
+	private static void doChallengeSpawn() {
 		new ChallengeBag().collect();
 
 		new DictBook().collect();
-		new MimicTooth().collect();
-			/*
-			Mana mana = new Mana();
-			mana.maxMana = 200;
-			mana.curMana = 0;
-			mana.manaRegen = 0.514f;
-			mana.attachTo(hero);
-			 */
-		//new WandOfScanningBeam().identify().collect();
-
-		//Dev Tst
-//			new Spanner().collect();
-//			new RingOfKing().collect();
-//			new GiantKiller().collect();
-//			new FogSword().collect();
 		new EchoplexHammer().collect();
 		new EnemyFlag().collect();
 		new ShadowBooks().collect();
@@ -216,7 +200,7 @@ public enum HeroClass {
 
 		//[TEST MODE]
 		if (Dungeon.isChallenged(Challenges.TEST_MODE))
-			doChallengeSpawn(hero);
+			doChallengeSpawn();
 
 
 		new StoneOfCard().collect();
