@@ -214,7 +214,7 @@ public class WndHeroInfo extends WndTabbed {
 					break;
 				case RECTOR:
 					icons = new Image[]{ new ItemSprite(ItemSpriteSheet.HOLYANKH),
-							new ItemSprite(ItemSpriteSheet.HOLDER),
+							new ItemSprite(ItemSpriteSheet.RING_SKYLUE),
 							new BuffIcon(BuffIndicator.CORRUPT, true),
 							new ItemSprite(ItemSpriteSheet.SCROLL_ISAZ)};
 					break;

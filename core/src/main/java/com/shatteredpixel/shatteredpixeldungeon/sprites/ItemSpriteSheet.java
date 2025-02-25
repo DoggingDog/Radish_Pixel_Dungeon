@@ -592,7 +592,11 @@ public class ItemSpriteSheet {
 	public static final int RING_GOLD		= RINGS+12;
 	public static final int RING_CORAL		= RINGS+13;
 	public static final int RING_PEARL		= RINGS+14;
+
+	public static final int RING_SKYLUE		= RINGS+18;
+
 	static {
+		assignItemRect(RING_SKYLUE,      14,  10);
 		for (int i = RINGS; i < RINGS+16; i++)
 			assignItemRect(i, 8, 10);
 	}

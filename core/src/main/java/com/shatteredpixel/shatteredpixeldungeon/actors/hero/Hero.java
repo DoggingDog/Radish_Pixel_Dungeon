@@ -71,6 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SnipersMark;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.rector.Belief;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.duelist.ElementalStrike;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
@@ -2157,6 +2158,14 @@ public class Hero extends Char {
 	}
 
 	public void earnExp( int exp, Class source ) {
+
+		//信仰 牧师每获得1次经验值则获取1+（0.2*区域数）点信仰值
+		if(hero.heroClass == HeroClass.RECTOR){
+			Belief belief = Dungeon.hero.buff(Belief.class);
+			if(belief != null){
+				belief.getBelief((float) (1+0.2*Dungeon.depth/5));
+			}
+		}
 
 		//xp granted by ascension challenge is only for on-exp gain effects
 		if (source != AscensionChallenge.class) {

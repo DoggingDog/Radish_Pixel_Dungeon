@@ -6,7 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 public class SmallWoodenCross extends Item {
 
     {
-        image = ItemSpriteSheet.RING_PEARL+1;
+        image = ItemSpriteSheet.RING_SKYLUE;
 
         stackable = true;
         unique = true;

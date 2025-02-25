@@ -40,6 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PinCushion;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ScrollEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.SoulMark;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.rector.FaithObstruction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
@@ -607,6 +608,13 @@ public abstract class Wand extends Item {
 
 		if (hero.hasTalent(Talent.DUEL_DANCE) && hero.cooldown() >= 0)
 			Buff.affect(hero, Talent.DuelDanceMissileTracker.class, hero.cooldown());
+
+		if(hero.heroClass == HeroClass.RECTOR){
+			FaithObstruction failed = Dungeon.hero.buff(FaithObstruction.class);
+			if(failed == null){
+				Buff.affect(curUser, FaithObstruction.class, FaithObstruction.DURATION);
+			}
+		}
 	}
 
 	@Override

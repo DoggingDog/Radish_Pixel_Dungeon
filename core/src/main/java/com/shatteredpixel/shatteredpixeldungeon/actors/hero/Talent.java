@@ -34,6 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.PhysicalEmpower;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Recharging;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.RevealedArea;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.WandEmpower;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.rector.Belief;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
@@ -209,6 +210,13 @@ public enum Talent {
 		public void tintIcon(Image icon) { icon.hardlight(0.15f, 0.2f, 0.5f); }
 		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
 	};
+
+	public static class Rain_Grace_Cooldown extends FlavourBuff{
+		public int icon() { return BuffIndicator.TIME; }
+		public void tintIcon(Image icon) { icon.hardlight(0f, 0.6f, 0f); }
+		public float iconFadePercent() { return Math.max(0, visualcooldown() / 50); }
+	};
+
 	public static class LethalMomentumTracker extends FlavourBuff{};
 	public static class StrikingWaveTracker extends FlavourBuff{};
 	public static class WandPreservationCounter extends CounterBuff{{revivePersists = true;}};
@@ -455,6 +463,7 @@ public enum Talent {
 		if (talent == HERB_MIXTURE  &&hero.belongings.getItem(HerbMaker.class)==null){
 			Dungeon.level.drop(new HerbMaker(),Dungeon.hero.pos);
 		}
+
 		if (talent == HOLD_BREATH){
 			Buff.affect(hero, HoldBreathTracker.class);
 		}
@@ -542,6 +551,15 @@ public enum Talent {
 				hero.sprite.emitter().burst(Speck.factory(Speck.HEALING), hero.pointsInTalent(HEARTY_MEAL));
 			}
 		}
+
+		//餐前祈祷
+		if (hero.hasTalent(PRAYER_BEFORE_MEALS)){
+			Belief belief = Dungeon.hero.buff(Belief.class);
+			if(belief != null){
+				belief.getBelief(hero.pointsInTalent(PRAYER_BEFORE_MEALS));
+			}
+		}
+
 		if (hero.hasTalent(IRON_STOMACH)){
 			if (hero.cooldown() > 0) {
 				Buff.affect(hero, WarriorFoodImmunity.class, hero.cooldown());
@@ -682,12 +700,36 @@ public enum Talent {
 		}
 	}
 
+	public static void RectorGetIdentify(Hero hero,Item item){
+		switch (hero.pointsInTalent(MENTAL_TELEPATHY)){
+			case 1:
+				if(!item.cursed){
+					if((item instanceof Weapon || item instanceof Armor)){
+						item.identify();
+					}
+				}
+				break;
+			case 2:
+				if(!item.cursed){
+					if((item instanceof Weapon && hero.belongings.weapon() == item || item instanceof Armor && hero.belongings.armor() == item)){
+						item.identify();
+					}
+					if((item instanceof Ring && hero.belongings.ring() == item) ||(item instanceof Ring && hero.belongings.misc() == item) ){
+						item.identify();
+					}
+				}
+				break;
+		}
+	}
+
 	public static void onItemEquipped( Hero hero, Item item ){
 		boolean identify = false;
 
 		if (hero.pointsInTalent(ARMSMASTERS_INTUITION) == 2 && (item instanceof Weapon || item instanceof Armor)){
 			item.identify();
 		}
+
+		RectorGetIdentify(hero,item);
 
 		if (hero.hasTalent(THIEFS_INTUITION) && item instanceof Ring){
 			if (hero.pointsInTalent(THIEFS_INTUITION) == 2){
