@@ -121,6 +121,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRetributio
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfPsionicBlast;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfSirensSong;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ThirteenLeafClover;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfFireblast;
@@ -136,6 +137,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Bloodblade;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.FogSword;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.GiantKiller;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.LongStick;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.PneumFistGloves;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Scythe;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Seekingspear;
@@ -262,7 +264,7 @@ public abstract class Char extends Actor {
 		} else if (c instanceof Hero
 				&& alignment == Alignment.ALLY
 				&& !hasProp(this, Property.IMMOVABLE)
-				&& Dungeon.level.distance(pos, c.pos) <= 2*Dungeon.hero.pointsInTalent(Talent.ALLY_WARP)){
+				&& Dungeon.level.distance(pos, c.pos) <= 2* hero.pointsInTalent(Talent.ALLY_WARP)){
 			return true;
 		} else {
 			return false;
@@ -943,10 +945,46 @@ public abstract class Char extends Actor {
 		return cachedShield;
 	}
 
+	public void GetMobExp(Mob alter){
+		int exp = hero.lvl <= alter.maxLvl ? alter.EXP : 0;
+		if (hero.buff(AscensionChallenge.class) != null &&
+				exp == 0 && alter.maxLvl > 0 && alter.EXP > 0 && hero.lvl < Hero.MAX_LEVEL){
+			exp = Math.round(10 * alter.spawningWeight());
+		}
+		if (exp > 0) {
+			hero.sprite.showStatusWithIcon(CharSprite.POSITIVE, Integer.toString(exp), FloatingText.EXPERIENCE);
+		}
+		hero.earnExp(exp, getClass());
+	}
+
 	public void damage( int dmg, Object src ) {
 
 		if (!isAlive() || dmg < 0) {
 			return;
+		}
+
+		if (hero.hasTalent(Talent.SOUL_NOWIFI)
+				&& src instanceof Hero && ((Hero) src).belongings.weapon instanceof MeleeWeapon){
+
+					switch (hero.pointsInTalent(Talent.SOUL_NOWIFI)){
+						case 1:
+							if(HT == 1){
+								GetMobExp((Mob) this);
+								HP = HT;
+								Buff.affect(this, ScrollOfSirensSong.Enthralled.class);
+								return;
+							}
+							break;
+						case 2:
+							if(HP <= 5 && !(properties().contains(Property.MINIBOSS) ||
+									properties().contains(Property.BOSS))){
+								GetMobExp((Mob) this);
+								HP = HT;
+								Buff.affect(this, ScrollOfSirensSong.Enthralled.class);
+								return;
+							}
+							break;
+					}
 		}
 
 		if(isInvulnerable(src.getClass())){
@@ -1101,10 +1139,10 @@ public abstract class Char extends Actor {
 			if (src instanceof Pickaxe)                                 icon = FloatingText.PICK_DMG;
 
 			//special case for sniper when using ranged attacks
-			if (src == Dungeon.hero
-					&& Dungeon.hero.subClass == HeroSubClass.SNIPER
-					&& !Dungeon.level.adjacent(Dungeon.hero.pos, pos)
-					&& Dungeon.hero.belongings.attackingWeapon() instanceof MissileWeapon){
+			if (src == hero
+					&& hero.subClass == HeroSubClass.SNIPER
+					&& !Dungeon.level.adjacent(hero.pos, pos)
+					&& hero.belongings.attackingWeapon() instanceof MissileWeapon){
 				icon = FloatingText.PHYS_DMG_NO_BLOCK;
 			}
 
@@ -1366,7 +1404,7 @@ public abstract class Char extends Actor {
 
 		pos = step;
 
-		if (this != Dungeon.hero) {
+		if (this != hero) {
 			sprite.visible = Dungeon.level.heroFOV[pos];
 		}
 

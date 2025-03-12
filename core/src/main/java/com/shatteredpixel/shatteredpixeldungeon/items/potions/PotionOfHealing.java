@@ -29,9 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Blindness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Cripple;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Drowsy;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Haste;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Healing;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Hex;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Slow;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vertigo;
@@ -41,7 +39,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.utils.Random;
 
 public class PotionOfHealing extends Potion {
 
@@ -56,25 +53,6 @@ public class PotionOfHealing extends Potion {
 		identify();
 		cure( hero );
 		heal( hero );
-		BuffAffect(hero);
-	}
-
-	public void BuffAffect(Char ch){
-		if(ch.HP > ch.HT/2){
-			switch (Random.Int(4)){
-				case 0:
-					Buff.affect(ch, Healing.class).setHeal((int) (0.8f * ch.HT + 14), 0.25f, 0);
-					break;
-				case 1:
-					Buff.affect(ch, Haste.class,3f);
-					break;
-				case 2:
-					Buff.affect(ch, Hex.class,3f);
-				default:
-					Buff.affect(ch, Cripple.class,3f);
-					break;
-			}
-		}
 	}
 
 	public static void heal( Char ch ){
@@ -88,11 +66,6 @@ public class PotionOfHealing extends Potion {
 			GLog.p( Messages.get(PotionOfHealing.class, "heal") );
 		}
 
-	}
-
-	public static void pharmacophobiaProc( Hero hero ){
-		// harms the hero for ~40% of their max HP in poison
-		Buff.affect( hero, Poison.class).set(4 + hero.lvl/2);
 	}
 	
 	public static void cure( Char ch ) {

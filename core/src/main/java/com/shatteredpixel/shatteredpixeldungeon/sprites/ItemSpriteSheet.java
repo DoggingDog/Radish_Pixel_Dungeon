@@ -975,6 +975,12 @@ public class ItemSpriteSheet {
 
 	public static final int STONE_CRAD	    = BAGS+10;
 	public static final int SEED_CARD	    = BAGS+11;
+
+	public static final int CORRECT			= BAGS+13;
+	public static final int LIGHTIMUEE		= BAGS+14;
+	public static final int CLEAN			= BAGS+15;
+	public static final int PRAYERS			= BAGS+16;
+
 	static{
 		assignItemRect(WATERSKIN,   16, 14);
 		assignItemRect(BACKPACK,    16, 16);

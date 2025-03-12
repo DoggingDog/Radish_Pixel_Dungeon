@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.GamesInProgress;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ArtifactRecharge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Barrier;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Bless;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.CounterBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
@@ -565,6 +566,17 @@ public enum Talent {
 			Belief belief = Dungeon.hero.buff(Belief.class);
 			if(belief != null){
 				belief.getBelief(hero.pointsInTalent(PRAYER_BEFORE_MEALS));
+			}
+		}
+
+		if (hero.hasTalent(BLESS_FOOD)){
+			switch (Dungeon.hero.pointsInTalent(BLESS_FOOD)){
+				case 1:
+					Buff.affect(hero, Bless.class, 12f);
+					break;
+				case 2:
+					Buff.affect(hero, Bless.class, 20f);
+					break;
 			}
 		}
 
