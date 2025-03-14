@@ -99,10 +99,6 @@ public class Healing extends Buff {
 		flatHealPerTick = flatPerTick;
 	}
 	
-	public void increaseHeal( int amount ){
-		healingLeft += amount;
-	}
-	
 	@Override
 	public void fx(boolean on) {
 		if (on) target.sprite.add( CharSprite.State.HEALING );

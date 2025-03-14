@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.Ratmogrify;
-import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RatSprite;
 import com.watabou.utils.Bundle;
 
@@ -41,10 +40,6 @@ public class Rat extends Mob {
 
 	@Override
 	protected boolean act() {
-
-		PotionOfHealing potion = new PotionOfHealing();
-		potion.BuffAffect(this);
-
 		if (Dungeon.level.heroFOV[pos] && Dungeon.hero.armorAbility instanceof Ratmogrify){
 			alignment = Alignment.ALLY;
 			if (state == SLEEPING) state = WANDERING;

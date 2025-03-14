@@ -48,9 +48,6 @@ public class HeroIcon extends Image {
 	public static final int CHAMPION    = 8;
 	public static final int MONK        = 9;
 
-	public static final int PATLE   	  = 10;
-	public static final int REDLORD       = 11;
-
 	//abilities
 	public static final int HEROIC_LEAP     = 16;
 	public static final int SHOCKWAVE       = 17;
@@ -77,6 +74,11 @@ public class HeroIcon extends Image {
 	public static final int SNIPERS_MARK    = 36;
 	public static final int WEAPON_SWAP     = 37;
 	public static final int MONK_ABILITIES  = 38;
+
+	public static final int BLESS          = 39;
+
+	public static final int PATLE   	  = 10;
+	public static final int REDLORD       = 11;
 
 	public HeroIcon(HeroSubClass subCls){
 		super( Assets.Interfaces.HERO_ICONS );

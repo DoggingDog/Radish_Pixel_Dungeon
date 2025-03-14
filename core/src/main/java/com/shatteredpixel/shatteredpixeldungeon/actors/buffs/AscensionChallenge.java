@@ -130,10 +130,10 @@ public class AscensionChallenge extends Buff {
 		modifiers.put(Grudge.class,            	    5f);
 		modifiers.put(Torturer.class,               5f);
 
-		modifiers.put(GnollZealot.class,                 20.5f);
-		modifiers.put(DM175.class,                       20.5f);
-		modifiers.put(Drake.class,            	         20.5f);
-		modifiers.put(StoneSpirit.class,                 20.5f);
+		modifiers.put(GnollZealot.class,                 2.5f);
+		modifiers.put(DM175.class,                       2.5f);
+		modifiers.put(Drake.class,            	         2.5f);
+		modifiers.put(StoneSpirit.class,                 2.5f);
 
 		modifiers.put(Artillerist.class,                 1.9f);
 		modifiers.put(ClusteredSkeleton.class,           1.9f);
